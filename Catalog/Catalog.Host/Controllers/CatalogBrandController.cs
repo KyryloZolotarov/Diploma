@@ -1,12 +1,48 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Catalog.Host.Models.Requests;
+using Catalog.Host.Models.Responses;
+using Catalog.Host.Services.Interfaces;
+using Microsoft.AspNetCore.Mvc;
+using System.Net;
 
 namespace Catalog.Host.Controllers
 {
-    public class CatalogBrandController : Controller
+    [ApiController]
+    [Route(ComponentDefaults.DefaultRoute)]
+    public class CatalogBrandController : ControllerBase
     {
-        public IActionResult Index()
+        private readonly ILogger<CatalogBrandController> _logger;
+        private readonly ICatalogBrandService _catalogBrandService;
+
+        public CatalogBrandController(
+            ILogger<CatalogBrandController> logger,
+            ICatalogBrandService catalogBrandService)
         {
-            return View();
+            _logger = logger;
+            _catalogBrandService = catalogBrandService;
+        }
+
+        [HttpPost]
+        [ProducesResponseType(typeof(AddBrandResponse<int?>), (int)HttpStatusCode.OK)]
+        public async Task<IActionResult> Add(AddBrandRequest request)
+        {
+            var result = await _catalogBrandService.Add(request.Id, request.BrandName);
+            return Ok(new AddBrandResponse<int?>() { Id = result });
+        }
+
+        [HttpPut]
+        [ProducesResponseType(typeof(UpdateBrandResponse<int?>), (int)HttpStatusCode.OK)]
+        public async Task<IActionResult> Update(UpdateBrandRequest request)
+        {
+            var result = await _catalogBrandService.Update(request.Id, request.BrandName);
+            return Ok(new UpdateBrandResponse<int?>() { Id = result });
+        }
+
+        [HttpDelete]
+        [ProducesResponseType((int)HttpStatusCode.NoContent)]
+        public async Task<IActionResult> Delete(int id)
+        {
+            var result = await _catalogBrandService.Delete(id);
+            return NoContent();
         }
     }
 }
