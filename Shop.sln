@@ -7,6 +7,20 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Catalog", "Catalog", "{224C
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Catalog.Host", "Catalog\Catalog.Host\Catalog.Host.csproj", "{BCA10E51-C647-466C-92D4-3EF81B289444}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Catalog.Tests", "Catalog\Catalog.Tests\Catalog.Tests.csproj", "{064DC280-F6E6-4ABB-8212-18CF997EB4CA}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IdentityServer", "IdentityServer\IdentityServer\IdentityServer.csproj", "{3D89F317-1B0A-4381-AB15-07E8F616B90E}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "IdentityServer", "IdentityServer", "{A6307F1D-123E-41D6-B051-A5B060154437}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{15B8AACB-819A-4497-A7CF-5DB85E382017}"
+	ProjectSection(SolutionItems) = preProject
+		docker-compose.yml = docker-compose.yml
+		settings.ruleset = settings.ruleset
+		Shop.sln.DotSettings = Shop.sln.DotSettings
+		Shop.sln.DotSettings.user = Shop.sln.DotSettings.user
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -17,12 +31,22 @@ Global
 		{BCA10E51-C647-466C-92D4-3EF81B289444}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BCA10E51-C647-466C-92D4-3EF81B289444}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BCA10E51-C647-466C-92D4-3EF81B289444}.Release|Any CPU.Build.0 = Release|Any CPU
+		{064DC280-F6E6-4ABB-8212-18CF997EB4CA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{064DC280-F6E6-4ABB-8212-18CF997EB4CA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{064DC280-F6E6-4ABB-8212-18CF997EB4CA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{064DC280-F6E6-4ABB-8212-18CF997EB4CA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3D89F317-1B0A-4381-AB15-07E8F616B90E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3D89F317-1B0A-4381-AB15-07E8F616B90E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3D89F317-1B0A-4381-AB15-07E8F616B90E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3D89F317-1B0A-4381-AB15-07E8F616B90E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{BCA10E51-C647-466C-92D4-3EF81B289444} = {224CD523-3A45-4EBE-A882-152123933015}
+		{064DC280-F6E6-4ABB-8212-18CF997EB4CA} = {224CD523-3A45-4EBE-A882-152123933015}
+		{3D89F317-1B0A-4381-AB15-07E8F616B90E} = {A6307F1D-123E-41D6-B051-A5B060154437}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {9C56D067-759B-4D5D-A196-DB49C191C3FF}
