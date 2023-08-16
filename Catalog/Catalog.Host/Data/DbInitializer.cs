@@ -22,6 +22,20 @@ public static class DbInitializer
             await context.SaveChangesAsync();
         }
 
+        if (!context.CatalogSubTypes.Any())
+        {
+            await context.CatalogSubTypes.AddRangeAsync(GetPreconfiguredCatalogSubTypes());
+
+            await context.SaveChangesAsync();
+        }
+
+        if (!context.CatalogModels.Any())
+        {
+            await context.CatalogModels.AddRangeAsync(GetPreconfiguredCatalogModels());
+
+            await context.SaveChangesAsync();
+        }
+
         if (!context.CatalogItems.Any())
         {
             await context.CatalogItems.AddRangeAsync(GetPreconfiguredItems());
@@ -39,6 +53,30 @@ public static class DbInitializer
             new CatalogBrand() { Brand = "Visual Studio" },
             new CatalogBrand() { Brand = "SQL Server" },
             new CatalogBrand() { Brand = "Other" }
+        };
+    }
+
+    private static IEnumerable<CatalogSubType> GetPreconfiguredCatalogSubTypes()
+    {
+        return new List<CatalogSubType>()
+        {
+            new CatalogSubType() { SubType = "Azure" },
+            new CatalogSubType() { SubType = ".NET" },
+            new CatalogSubType() { SubType = "Visual Studio" },
+            new CatalogSubType() { SubType = "SQL Server" },
+            new CatalogSubType() { SubType = "Other" }
+        };
+    }
+
+    private static IEnumerable<CatalogModel> GetPreconfiguredCatalogModels()
+    {
+        return new List<CatalogModel>()
+        {
+            new CatalogModel() { Model = "Azure" },
+            new CatalogModel() { Model = ".NET" },
+            new CatalogModel() { Model = "Visual Studio" },
+            new CatalogModel() { Model = "SQL Server" },
+            new CatalogModel() { Model = "Other" }
         };
     }
 

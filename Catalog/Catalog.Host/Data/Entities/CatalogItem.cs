@@ -13,17 +13,17 @@
         public string PictureFileName { get; set; }
         public string PartNumber { get; set; }
 
-        public int CatalogTypeId { get; set; }
+        public int CatalogSubTypeId { get; set; }
 
-        public CatalogType CatalogType { get; set; }
+        public CatalogSubType CatalogSubType { get; set; }
 
         public int CatalogBrandId { get; set; }
 
         public CatalogBrand CatalogBrand { get; set; }
 
-        public int CatalogSubTypeId { get; set; }
+        public int CatalogTypeId { get; set; }
 
-        public CatalogSubType CatalogSubType { get; set; }
+        public CatalogType CatalogType { get; set; }
 
         public int CatalogModelId { get; set; }
 

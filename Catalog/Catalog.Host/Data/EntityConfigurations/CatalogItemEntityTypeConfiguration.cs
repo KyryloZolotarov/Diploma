@@ -23,12 +23,12 @@ public class CatalogItemEntityTypeConfiguration
         builder.Property(ci => ci.PictureFileName)
             .IsRequired(false);
 
-        builder.HasOne(ci => ci.CatalogBrand)
+        builder.HasOne(ci => ci.CatalogSubType)
             .WithMany()
-            .HasForeignKey(ci => ci.CatalogBrandId);
+            .HasForeignKey(ci => ci.CatalogSubTypeId);
 
-        builder.HasOne(ci => ci.CatalogType)
+        builder.HasOne(ci => ci.CatalogModel)
             .WithMany()
-            .HasForeignKey(ci => ci.CatalogTypeId);
+            .HasForeignKey(ci => ci.CatalogModelId);
     }
 }

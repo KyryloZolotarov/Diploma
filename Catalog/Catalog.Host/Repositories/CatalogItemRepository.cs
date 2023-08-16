@@ -45,10 +45,10 @@ namespace Catalog.Host.Repositories
             var totalItems = await query.LongCountAsync();
 
             var itemsOnPage = await query.OrderBy(c => c.Name)
-               .Include(i => i.CatalogBrand)
-               .Include(i => i.CatalogType)
                 .Include(i => i.CatalogSubType)
                 .Include(i => i.CatalogModel)
+               .Include(i => i.CatalogBrand)
+               .Include(i => i.CatalogType)
                .Skip(pageSize * pageIndex)
                .Take(pageSize)
                .ToListAsync();

@@ -1,10 +1,10 @@
-﻿using Catalog.Host.Models.Requests.AddRequsts;
+﻿using System.Net;
+using Catalog.Host.Models.Requests.AddRequsts;
 using Catalog.Host.Models.Requests.UpdateRequsts;
 using Catalog.Host.Models.Responses.AddResponses;
 using Catalog.Host.Models.Responses.UpdateResponses;
 using Catalog.Host.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
-using System.Net;
 
 namespace Catalog.Host.Controllers
 {

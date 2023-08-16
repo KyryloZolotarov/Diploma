@@ -5,5 +5,7 @@
         public int Id { get; set; }
 
         public string Model { get; set; }
+
+        public CatalogBrandDto CatalogBrand { get; set; }
     }
 }

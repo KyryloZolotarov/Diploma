@@ -4,12 +4,9 @@ using Catalog.Host.Models.Requests;
 using Catalog.Host.Models.Responses;
 using Catalog.Host.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
-using System.Net;
 
 namespace Catalog.Host.Controllers
 {
-    public class CatalogBffController : Controller
-    {
         [ApiController]
         [Route(ComponentDefaults.DefaultRoute)]
         public class CatalogBffController : ControllerBase

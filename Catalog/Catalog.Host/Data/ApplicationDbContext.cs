@@ -13,15 +13,15 @@ public class ApplicationDbContext : DbContext
     public DbSet<CatalogItem> CatalogItems { get; set; } = null!;
     public DbSet<CatalogBrand> CatalogBrands { get; set; } = null!;
     public DbSet<CatalogType> CatalogTypes { get; set; } = null!;
-    public DbSet<CatalogSubType> CatalogSubType { get; set; } = null!;
-    public DbSet<CatalogModel> CatalogModel { get; set; } = null!;
+    public DbSet<CatalogSubType> CatalogSubTypes { get; set; } = null!;
+    public DbSet<CatalogModel> CatalogModels { get; set; } = null!;
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
         builder.ApplyConfiguration(new CatalogBrandEntityTypeConfiguration());
         builder.ApplyConfiguration(new CatalogTypeEntityTypeConfiguration());
         builder.ApplyConfiguration(new CatalogItemEntityTypeConfiguration());
-        builder.ApplyConfiguration(new CatalogSubTypeEntitySubTypeConfiguration());
-        builder.ApplyConfiguration(new CatalogModelEntityModelConfiguration());
+        builder.ApplyConfiguration(new CatalogSubTypeEntityTypeConfiguration());
+        builder.ApplyConfiguration(new CatalogModelEntityTypeConfiguration());
     }
 }
