@@ -2,5 +2,8 @@
 {
     public class CatalogSubTypeDto
     {
+        public int Id { get; set; }
+
+        public string SubType { get; set; }
     }
 }

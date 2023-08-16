@@ -17,6 +17,7 @@
         public int CatalogBrandId { get; set; }
 
         public int CatalogSubTypeId { get; set; }
+        public int CatalogModelId { get; set; }
 
         public int AvailableStock { get; set; }
     }

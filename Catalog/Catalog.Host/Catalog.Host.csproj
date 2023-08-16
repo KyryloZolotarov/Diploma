@@ -5,6 +5,7 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <UserSecretsId>c8883973-6025-4c96-9d66-bd15bda1a122</UserSecretsId>
+	<CodeAnalysisRuleSet>../../settings.ruleset</CodeAnalysisRuleSet>
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
     <DockerfileContext>..\..</DockerfileContext>
   </PropertyGroup>
@@ -22,5 +23,8 @@
         <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
         <PackageReference Include="StyleCop.Analyzers" Version="1.1.118" />
   </ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\..\Infrastructure\Infrastructure\Infrastructure.csproj" />
+	</ItemGroup>
 
 </Project>
