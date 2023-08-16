@@ -1,5 +1,7 @@
-﻿using Catalog.Host.Models.Requests;
-using Catalog.Host.Models.Responses;
+﻿using Catalog.Host.Models.Requests.AddRequsts;
+using Catalog.Host.Models.Requests.UpdateRequsts;
+using Catalog.Host.Models.Responses.AddResponses;
+using Catalog.Host.Models.Responses.UpdateResponses;
 using Catalog.Host.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;

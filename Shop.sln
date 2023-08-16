@@ -5,9 +5,9 @@ VisualStudioVersion = 17.6.33723.286
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Catalog", "Catalog", "{224CD523-3A45-4EBE-A882-152123933015}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Catalog.Host", "Catalog\Catalog.Host\Catalog.Host.csproj", "{BCA10E51-C647-466C-92D4-3EF81B289444}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Catalog.Host", "Catalog\Catalog.Host\Catalog.Host.csproj", "{BCA10E51-C647-466C-92D4-3EF81B289444}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Catalog.Tests", "Catalog\Catalog.Tests\Catalog.Tests.csproj", "{064DC280-F6E6-4ABB-8212-18CF997EB4CA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Catalog.Tests", "Catalog\Catalog.Tests\Catalog.Tests.csproj", "{064DC280-F6E6-4ABB-8212-18CF997EB4CA}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IdentityServer", "IdentityServer\IdentityServer\IdentityServer.csproj", "{3D89F317-1B0A-4381-AB15-07E8F616B90E}"
 EndProject
@@ -20,6 +20,12 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		Shop.sln.DotSettings = Shop.sln.DotSettings
 		Shop.sln.DotSettings.user = Shop.sln.DotSettings.user
 	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infrastructure", "Infrastructure", "{72DE8424-CCC1-4108-B9B1-06C61C03C031}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Infrastructure", "Infrastructure\Infrastructure\Infrastructure.csproj", "{8C82D519-788F-4E03-95E4-319EB3386AB4}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Infrastructure.UnitTests", "Infrastructure\Infrastructure.UnitTests\Infrastructure.UnitTests.csproj", "{A10E14D3-7232-497B-883A-BBEAB9FECBD2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +45,14 @@ Global
 		{3D89F317-1B0A-4381-AB15-07E8F616B90E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3D89F317-1B0A-4381-AB15-07E8F616B90E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3D89F317-1B0A-4381-AB15-07E8F616B90E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8C82D519-788F-4E03-95E4-319EB3386AB4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8C82D519-788F-4E03-95E4-319EB3386AB4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8C82D519-788F-4E03-95E4-319EB3386AB4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8C82D519-788F-4E03-95E4-319EB3386AB4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A10E14D3-7232-497B-883A-BBEAB9FECBD2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A10E14D3-7232-497B-883A-BBEAB9FECBD2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A10E14D3-7232-497B-883A-BBEAB9FECBD2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A10E14D3-7232-497B-883A-BBEAB9FECBD2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -47,6 +61,8 @@ Global
 		{BCA10E51-C647-466C-92D4-3EF81B289444} = {224CD523-3A45-4EBE-A882-152123933015}
 		{064DC280-F6E6-4ABB-8212-18CF997EB4CA} = {224CD523-3A45-4EBE-A882-152123933015}
 		{3D89F317-1B0A-4381-AB15-07E8F616B90E} = {A6307F1D-123E-41D6-B051-A5B060154437}
+		{8C82D519-788F-4E03-95E4-319EB3386AB4} = {72DE8424-CCC1-4108-B9B1-06C61C03C031}
+		{A10E14D3-7232-497B-883A-BBEAB9FECBD2} = {72DE8424-CCC1-4108-B9B1-06C61C03C031}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {9C56D067-759B-4D5D-A196-DB49C191C3FF}

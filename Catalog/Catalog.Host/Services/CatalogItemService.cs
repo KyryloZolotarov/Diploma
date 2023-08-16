@@ -1,6 +1,8 @@
-﻿namespace Catalog.Host.Services
+﻿using Catalog.Host.Services.Interfaces;
+
+namespace Catalog.Host.Services
 {
-    public class CatalogItemService
+    public class CatalogItemService : ICatalogItemService
     {
     }
 }

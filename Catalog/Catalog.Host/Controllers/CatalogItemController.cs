@@ -1,12 +1,48 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Catalog.Host.Models.Requests.AddRequsts;
+using Catalog.Host.Models.Requests.UpdateRequsts;
+using Catalog.Host.Models.Responses.AddResponses;
+using Catalog.Host.Models.Responses.UpdateResponses;
+using Catalog.Host.Services.Interfaces;
+using Microsoft.AspNetCore.Mvc;
+using System.Net;
 
 namespace Catalog.Host.Controllers
 {
     public class CatalogItemController : Controller
     {
-        public IActionResult Index()
+        private readonly ILogger<CatalogItemController> _logger;
+        private readonly ICatalogItemService _catalogItemService;
+
+        public CatalogItemController(
+            ILogger<CatalogItemController> logger,
+            ICatalogItemService catalogItemService)
         {
-            return View();
+            _logger = logger;
+            _catalogItemService = catalogItemService;
+        }
+
+        [HttpPost]
+        [ProducesResponseType(typeof(AddItemResponse<int?>), (int)HttpStatusCode.OK)]
+        public async Task<IActionResult> Add(AddItemRequest request)
+        {
+            var result = await _catalogItemService.Add(request.Name, request.Description, request.Price, request.AvailableStock, request.CatalogBrandId, request.CatalogTypeId, request.PictureFileName, request.CatalogSubTypeId, request.PartNumber);
+            return Ok(new AddItemResponse<int?>() { Id = result });
+        }
+
+        [HttpPut]
+        [ProducesResponseType(typeof(UpdateItemResponse<int?>), (int)HttpStatusCode.OK)]
+        public async Task<IActionResult> Update(UpdateItemRequest request)
+        {
+            var result = await _catalogItemService.Update(request.Name, request.Description, request.Price, request.AvailableStock, request.CatalogBrandId, request.CatalogTypeId, request.PictureFileName, request.CatalogSubTypeId, request.PartNumber);
+            return Ok(new UpdateItemResponse<int?>() { Id = result });
+        }
+
+        [HttpDelete]
+        [ProducesResponseType((int)HttpStatusCode.NoContent)]
+        public async Task<IActionResult> Delete(int id)
+        {
+            await _catalogItemService.Delete(id);
+            return NoContent();
         }
     }
 }
