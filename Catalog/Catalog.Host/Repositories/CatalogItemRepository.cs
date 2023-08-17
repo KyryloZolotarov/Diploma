@@ -25,12 +25,12 @@ namespace Catalog.Host.Repositories
 
             if (brandFilter.HasValue)
             {
-                query = query.Where(w => w.CatalogBrandId == brandFilter.Value);
+                query = query.Where(w => w.CatalogModel.CatalogBrandId == brandFilter.Value);
             }
 
             if (typeFilter.HasValue)
             {
-                query = query.Where(w => w.CatalogTypeId == typeFilter.Value);
+                query = query.Where(w => w.CatalogSubType.CatalogTypeId == typeFilter.Value);
             }
 
             if (subTypeFilter.HasValue)
@@ -47,7 +47,9 @@ namespace Catalog.Host.Repositories
 
             var itemsOnPage = await query.OrderBy(c => c.Name)
                 .Include(i => i.CatalogSubType)
+                .Include(i => i.CatalogSubType.CatalogType)
                 .Include(i => i.CatalogModel)
+                .Include(i => i.CatalogModel.CatalogBrand)
                 .Skip(pageSize * pageIndex)
                 .Take(pageSize)
                 .ToListAsync();
@@ -59,7 +61,9 @@ namespace Catalog.Host.Repositories
         {
             return _dbContext.CatalogItems
                 .Include(i => i.CatalogSubType)
+                .Include(i => i.CatalogSubType)
                 .Include(i => i.CatalogModel)
+                .Include(i => i.CatalogModel.CatalogBrand)
                 .FirstAsync(h => h.Id == id);
         }
 
@@ -70,7 +74,19 @@ namespace Catalog.Host.Repositories
             switch (modelStatus && subTypeStatus)
             {
                 case false:
-                    throw new BusinessException($"Brand with Id: {catalogModelId.ToString()} was not found");
+                    if (modelStatus == false && subTypeStatus == false)
+                    {
+                        throw new BusinessException($"Model Id: {catalogModelId} and SubType id: {catalogSubTypeId} were not found");
+                    }
+                    else if (subTypeStatus == false)
+                    {
+                        throw new BusinessException($"SubType Id: {catalogSubTypeId} was not found");
+                    }
+                    else
+                    {
+                        throw new BusinessException($"Model Id: {catalogModelId} was not found");
+                    }
+
                 case true:
                     var item1 = new CatalogItem
                     {
@@ -98,7 +114,19 @@ namespace Catalog.Host.Repositories
             switch (modelStatus && subTypeStatus)
             {
                 case false:
-                    throw new BusinessException($"Brand with Id: {catalogModelId.ToString()} was not found");
+                    if (modelStatus == false && subTypeStatus == false)
+                    {
+                        throw new BusinessException($"Model Id: {catalogModelId} and SubType id: {catalogSubTypeId} were not found");
+                    }
+                    else if (subTypeStatus == false)
+                    {
+                        throw new BusinessException($"SubType Id: {catalogSubTypeId} was not found");
+                    }
+                    else
+                    {
+                        throw new BusinessException($"Model Id: {catalogModelId} was not found");
+                    }
+
                 case true:
                     var item1 = new CatalogItem
                     {
@@ -130,7 +158,7 @@ namespace Catalog.Host.Repositories
         public async Task<IEnumerable<CatalogType>> GetTypesAsync()
         {
             return await _dbContext.CatalogItems
-                .Select(h => h.CatalogType)
+                .Select(h => h.CatalogSubType.CatalogType)
                 .Distinct()
                 .ToListAsync();
         }
@@ -138,7 +166,7 @@ namespace Catalog.Host.Repositories
         public async Task<IEnumerable<CatalogBrand>> GetBrandsAsync()
         {
             return await _dbContext.CatalogItems
-                .Select(h => h.CatalogBrand)
+                .Select(h => h.CatalogModel.CatalogBrand)
                 .Distinct()
                 .ToListAsync();
         }
