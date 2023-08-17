@@ -16,14 +16,14 @@ namespace Catalog.Host.Services
             _catalogSubTypeRepository = catalogSubTypeRepository;
         }
 
-        public Task<int?> Add(int id, string subTypeName)
+        public Task<int?> Add(int id, string subTypeName, int typeId)
         {
-            return ExecuteSafeAsync(() => _catalogSubTypeRepository.Add(id, subTypeName));
+            return ExecuteSafeAsync(() => _catalogSubTypeRepository.Add(id, subTypeName, typeId));
         }
 
-        public Task<int?> Update(int id, string subTypeName)
+        public Task<int?> Update(int id, string subTypeName, int typeId)
         {
-            return ExecuteSafeAsync(() => _catalogSubTypeRepository.Update(id, subTypeName));
+            return ExecuteSafeAsync(() => _catalogSubTypeRepository.Update(id, subTypeName, typeId));
         }
 
         public Task<int?> Delete(int id)

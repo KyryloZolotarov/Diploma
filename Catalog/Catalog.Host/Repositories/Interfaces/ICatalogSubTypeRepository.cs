@@ -2,8 +2,8 @@
 {
     public interface ICatalogSubTypeRepository
     {
-        Task<int?> Add(int id, string subTypeName);
-        Task<int?> Update(int id, string subTypeName);
+        Task<int?> Add(int id, string subTypeName, int typeId);
+        Task<int?> Update(int id, string subTypeName, int typeId);
         Task<int?> Delete(int id);
     }
 }

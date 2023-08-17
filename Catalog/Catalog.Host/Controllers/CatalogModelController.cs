@@ -3,8 +3,6 @@ using Catalog.Host.Models.Requests.UpdateRequsts;
 using Catalog.Host.Models.Responses.AddResponses;
 using Catalog.Host.Models.Responses.UpdateResponses;
 using Catalog.Host.Services.Interfaces;
-using Microsoft.AspNetCore.Mvc;
-using System.Net;
 
 namespace Catalog.Host.Controllers
 {
@@ -27,7 +25,7 @@ namespace Catalog.Host.Controllers
         [ProducesResponseType(typeof(AddModelResponse<int?>), (int)HttpStatusCode.OK)]
         public async Task<IActionResult> Add(AddModelRequest request)
         {
-            var result = await _catalogModelService.Add(request.Id, request.ModelName);
+            var result = await _catalogModelService.Add(request.Id, request.ModelName, request.CatalogBrandId);
             return Ok(new AddModelResponse<int?>() { Id = result });
         }
 
@@ -35,7 +33,7 @@ namespace Catalog.Host.Controllers
         [ProducesResponseType(typeof(UpdateModelResponse<int?>), (int)HttpStatusCode.OK)]
         public async Task<IActionResult> Update(UpdateModelRequest request)
         {
-            var result = await _catalogModelService.Update(request.Id, request.ModelName);
+            var result = await _catalogModelService.Update(request.Id, request.ModelName, request.CatalogBrandId);
             return Ok(new UpdateModelResponse<int?>() { Id = result });
         }
 

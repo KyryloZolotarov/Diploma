@@ -17,14 +17,6 @@
 
         public CatalogSubType CatalogSubType { get; set; }
 
-        public int CatalogBrandId { get; set; }
-
-        public CatalogBrand CatalogBrand { get; set; }
-
-        public int CatalogTypeId { get; set; }
-
-        public CatalogType CatalogType { get; set; }
-
         public int CatalogModelId { get; set; }
 
         public CatalogModel CatalogModel { get; set; }

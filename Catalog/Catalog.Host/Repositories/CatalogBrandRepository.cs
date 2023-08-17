@@ -46,8 +46,8 @@ namespace Catalog.Host.Repositories
         public async Task<int?> Delete(int id)
         {
             var itemDelete = await _dbContext.CatalogItems
-                .Include(i => i.CatalogBrand)
-                .Include(i => i.CatalogType)
+                .Include(i => i.CatalogModel)
+                .Include(i => i.CatalogSubType)
                 .FirstAsync(h => h.Id == id);
             var item = _dbContext.Remove(itemDelete);
             await _dbContext.SaveChangesAsync();

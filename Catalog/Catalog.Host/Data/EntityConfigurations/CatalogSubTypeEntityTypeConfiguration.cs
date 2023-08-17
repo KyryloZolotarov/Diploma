@@ -21,7 +21,8 @@ namespace Catalog.Host.Data.EntityConfigurations
 
             builder.HasOne(ci => ci.CatalogType)
                 .WithMany()
-                .HasForeignKey(ci => ci.CatalogTypeId);
+                .HasForeignKey(ci => ci.CatalogTypeId)
+                .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

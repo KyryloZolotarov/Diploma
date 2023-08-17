@@ -21,7 +21,8 @@ namespace Catalog.Host.Data.EntityConfigurations
 
             builder.HasOne(ci => ci.CatalogBrand)
                 .WithMany()
-                .HasForeignKey(ci => ci.CatalogBrandId);
+                .HasForeignKey(ci => ci.CatalogBrandId)
+                .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

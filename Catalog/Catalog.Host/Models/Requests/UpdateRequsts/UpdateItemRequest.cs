@@ -12,11 +12,7 @@
 
         public string PictureFileName { get; set; } = null!;
 
-        public int CatalogTypeId { get; set; }
-
         public int CatalogSubTypeId { get; set; }
-
-        public int CatalogBrandId { get; set; }
 
         public int CatalogModelId { get; set; }
 

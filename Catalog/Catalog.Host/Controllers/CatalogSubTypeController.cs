@@ -3,8 +3,6 @@ using Catalog.Host.Models.Requests.UpdateRequsts;
 using Catalog.Host.Models.Responses.AddResponses;
 using Catalog.Host.Models.Responses.UpdateResponses;
 using Catalog.Host.Services.Interfaces;
-using Microsoft.AspNetCore.Mvc;
-using System.Net;
 
 namespace Catalog.Host.Controllers
 {
@@ -27,7 +25,7 @@ namespace Catalog.Host.Controllers
         [ProducesResponseType(typeof(AddSubTypeResponse<int?>), (int)HttpStatusCode.OK)]
         public async Task<IActionResult> Add(AddSubTypeRequest request)
         {
-            var result = await _catalogSubTypeService.Add(request.Id, request.SubTypeName);
+            var result = await _catalogSubTypeService.Add(request.Id, request.SubTypeName, request.CatalogTypeId);
             return Ok(new AddSubTypeResponse<int?>() { Id = result });
         }
 
@@ -35,7 +33,7 @@ namespace Catalog.Host.Controllers
         [ProducesResponseType(typeof(UpdateSubTypeResponse<int?>), (int)HttpStatusCode.OK)]
         public async Task<IActionResult> Update(UpdateSubTypeRequest request)
         {
-            var result = await _catalogSubTypeService.Update(request.Id, request.SubTypeName);
+            var result = await _catalogSubTypeService.Update(request.Id, request.SubTypeName, request.CatalogTypeId);
             return Ok(new UpdateSubTypeResponse<int?>() { Id = result });
         }
 

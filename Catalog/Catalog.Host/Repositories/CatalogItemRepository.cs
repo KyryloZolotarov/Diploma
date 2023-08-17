@@ -1,6 +1,8 @@
 ﻿using Catalog.Host.Data.Entities;
 using Catalog.Host.Data;
 using Catalog.Host.Repositories.Interfaces;
+using Infrastructure.Exceptions;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 
 namespace Catalog.Host.Repositories
 {
@@ -36,7 +38,6 @@ namespace Catalog.Host.Repositories
                 query = query.Where(w => w.CatalogSubTypeId == subTypeFilter.Value);
             }
 
-
             if (modelFilter.HasValue)
             {
                 query = query.Where(w => w.CatalogModelId == modelFilter.Value);
@@ -47,11 +48,9 @@ namespace Catalog.Host.Repositories
             var itemsOnPage = await query.OrderBy(c => c.Name)
                 .Include(i => i.CatalogSubType)
                 .Include(i => i.CatalogModel)
-               .Include(i => i.CatalogBrand)
-               .Include(i => i.CatalogType)
-               .Skip(pageSize * pageIndex)
-               .Take(pageSize)
-               .ToListAsync();
+                .Skip(pageSize * pageIndex)
+                .Take(pageSize)
+                .ToListAsync();
 
             return new PaginatedItems<CatalogItem>() { TotalCount = totalItems, Data = itemsOnPage };
         }
@@ -59,60 +58,71 @@ namespace Catalog.Host.Repositories
         public Task<CatalogItem> GetByIdAsync(int id)
         {
             return _dbContext.CatalogItems
-                .Include(i => i.CatalogBrand)
-                .Include(i => i.CatalogType)
                 .Include(i => i.CatalogSubType)
                 .Include(i => i.CatalogModel)
                 .FirstAsync(h => h.Id == id);
         }
 
-        public async Task<int?> Add(string name, string description, decimal price, int availableStock, int catalogBrandId, int catalogTypeId, string pictureFileName, int catalogSubTypeId, int catalogModelId, string partNumber)
+        public async Task<int?> Add(string name, string description, decimal price, int availableStock, string pictureFileName, int catalogSubTypeId, int catalogModelId, string partNumber)
         {
-            var item1 = new CatalogItem
+            var modelStatus = await _dbContext.CatalogBrands.AnyAsync(h => h.Id == catalogModelId);
+            var subTypeStatus = await _dbContext.CatalogBrands.AnyAsync(h => h.Id == catalogSubTypeId);
+            switch (modelStatus && subTypeStatus)
             {
-                CatalogBrandId = catalogBrandId,
-                CatalogTypeId = catalogTypeId,
-                Description = description,
-                Name = name,
-                PictureFileName = pictureFileName,
-                Price = price,
-                AvailableStock = availableStock,
-                CatalogModelId = catalogModelId,
-                CatalogSubTypeId = catalogSubTypeId,
-                PartNumber = partNumber
-            };
-            var item = await _dbContext.AddAsync(item1);
+                case false:
+                    throw new BusinessException($"Brand with Id: {catalogModelId.ToString()} was not found");
+                case true:
+                    var item1 = new CatalogItem
+                    {
+                        Description = description,
+                        Name = name,
+                        PictureFileName = pictureFileName,
+                        Price = price,
+                        AvailableStock = availableStock,
+                        CatalogModelId = catalogModelId,
+                        CatalogSubTypeId = catalogSubTypeId,
+                        PartNumber = partNumber
+                    };
+                    var item = await _dbContext.AddAsync(item1);
 
-            await _dbContext.SaveChangesAsync();
+                    await _dbContext.SaveChangesAsync();
 
-            return item.Entity.Id;
+                    return item.Entity.Id;
+            }
         }
 
-        public async Task<int?> Update(string name, string description, decimal price, int availableStock, int catalogBrandId, int catalogTypeId, string pictureFileName, int catalogSubTypeId, int catalogModelId, string partNumber)
+        public async Task<int?> Update(string name, string description, decimal price, int availableStock, string pictureFileName, int catalogSubTypeId, int catalogModelId, string partNumber)
         {
-            var item = _dbContext.Update(new CatalogItem
+            var modelStatus = await _dbContext.CatalogBrands.AnyAsync(h => h.Id == catalogModelId);
+            var subTypeStatus = await _dbContext.CatalogBrands.AnyAsync(h => h.Id == catalogSubTypeId);
+            switch (modelStatus && subTypeStatus)
             {
-                CatalogBrandId = catalogBrandId,
-                CatalogTypeId = catalogTypeId,
-                Description = description,
-                Name = name,
-                PictureFileName = pictureFileName,
-                Price = price,
-                AvailableStock = availableStock,
-                CatalogModelId = catalogModelId,
-                CatalogSubTypeId = catalogSubTypeId,
-                PartNumber = partNumber
-            });
+                case false:
+                    throw new BusinessException($"Brand with Id: {catalogModelId.ToString()} was not found");
+                case true:
+                    var item1 = new CatalogItem
+                    {
+                        Description = description,
+                        Name = name,
+                        PictureFileName = pictureFileName,
+                        Price = price,
+                        AvailableStock = availableStock,
+                        CatalogModelId = catalogModelId,
+                        CatalogSubTypeId = catalogSubTypeId,
+                        PartNumber = partNumber
+                    };
+                    var item = _dbContext.Update(item1);
 
-            await _dbContext.SaveChangesAsync();
+                    await _dbContext.SaveChangesAsync();
 
-            return item.Entity.Id;
+                    return item.Entity.Id;
+            }
         }
 
         public async Task<int?> Delete(int id)
         {
             var itemDelete = await _dbContext.CatalogItems.FirstAsync(h => h.Id == id);
-            var item = _dbContext.Remove(itemDelete);
+            _dbContext.Remove(itemDelete);
             await _dbContext.SaveChangesAsync();
             return itemDelete.Id;
         }

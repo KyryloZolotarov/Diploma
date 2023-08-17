@@ -1,7 +1,10 @@
-﻿using Catalog.Host.Data.Entities;
-using Catalog.Host.Data;
-using Catalog.Host.Repositories.Interfaces;
+﻿using System;
 using System.Data;
+using Catalog.Host.Data;
+using Catalog.Host.Data.Entities;
+using Catalog.Host.Repositories.Interfaces;
+using Infrastructure.Exceptions;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 
 namespace Catalog.Host.Repositories
 {
@@ -18,36 +21,48 @@ namespace Catalog.Host.Repositories
             _logger = logger;
         }
 
-        public async Task<int?> Add(int id, string subTypeName)
+        public async Task<int?> Add(int id, string subTypeName, int typeId)
         {
-            var subType = await _dbContext.AddAsync(new CatalogSubType
+            var subTypeStatus = await _dbContext.CatalogTypes.AnyAsync(h => h.Id == typeId);
+            switch (subTypeStatus)
             {
-                Id = id,
-                SubType = subTypeName
-            });
-
-            await _dbContext.SaveChangesAsync();
-
-            return subType.Entity.Id;
+                case false:
+                    throw new BusinessException($"Type with Id: {typeId.ToString()} was not found");
+                case true:
+                    var subType = await _dbContext.AddAsync(new CatalogModel
+                    {
+                        Id = id,
+                        Model = subTypeName,
+                        CatalogBrandId = typeId
+                    });
+                    await _dbContext.SaveChangesAsync();
+                    return subType.Entity.Id;
+            }
         }
 
-        public async Task<int?> Update(int id, string subTypeName)
+        public async Task<int?> Update(int id, string subTypeName, int typeId)
         {
-            var subType = _dbContext.Update(new CatalogSubType
+            var subTypeStatus = await _dbContext.CatalogTypes.AnyAsync(h => h.Id == typeId);
+            switch (subTypeStatus)
             {
-                Id = id,
-                SubType = subTypeName
-            });
-
-            await _dbContext.SaveChangesAsync();
-
-            return subType.Entity.Id;
+                case false:
+                    throw new BusinessException($"Type with Id: {typeId.ToString()} was not found");
+                case true:
+                    var subType = _dbContext.Update(new CatalogModel
+                    {
+                        Id = id,
+                        Model = subTypeName,
+                        CatalogBrandId = typeId
+                    });
+                    await _dbContext.SaveChangesAsync();
+                    return subType.Entity.Id;
+            }
         }
 
         public async Task<int?> Delete(int id)
         {
-            var subTypeDelete = await _dbContext.CatalogSubType.FirstAsync(h => h.Id == id);
-            var subType = _dbContext.Remove(subTypeDelete);
+            var subTypeDelete = await _dbContext.CatalogSubTypes.FirstAsync(h => h.Id == id);
+            _dbContext.Remove(subTypeDelete);
             await _dbContext.SaveChangesAsync();
             return subTypeDelete.Id;
         }
