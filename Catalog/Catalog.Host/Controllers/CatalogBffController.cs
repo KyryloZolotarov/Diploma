@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace Catalog.Host.Controllers
 {
         [ApiController]
-        [Authorize(Policy = AuthPolicy.AllowEndUserPolicy)]
+        [Authorize(Policy = AuthPolicy.AllowClientPolicy)]
         [Route(ComponentDefaults.DefaultRoute)]
         public class CatalogBffController : ControllerBase
         {
