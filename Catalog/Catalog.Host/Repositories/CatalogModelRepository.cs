@@ -18,17 +18,18 @@ namespace Catalog.Host.Repositories
             _logger = logger;
         }
 
-        public async Task<int?> Add(int id, string modelName, int brandId)
+        public async Task<int?> Add(string modelName, int brandId)
         {
+            var id = await _dbContext.CatalogModels.MaxAsync(b => b.Id);
             var brandStatus = await _dbContext.CatalogBrands.AnyAsync(h => h.Id == brandId);
             switch (brandStatus)
             {
                 case false:
-                    throw new BusinessException($"Brand with Id: {brandId.ToString()} was not found");
+                    throw new BusinessException($"Brand with Id: {brandId} was not found");
                 case true:
                     var model = await _dbContext.AddAsync(new CatalogModel
                     {
-                        Id = id,
+                        Id = id++,
                         Model = modelName,
                         CatalogBrandId = brandId
                     });
@@ -39,24 +40,40 @@ namespace Catalog.Host.Repositories
 
         public async Task<int?> Update(int id, string modelName, int brandId)
         {
-            var brandStatus = await _dbContext.CatalogBrands.AnyAsync(h => h.Id == brandId);
-            switch (brandStatus)
+            var modelExists = await _dbContext.CatalogBrands.AnyAsync(h => h.Id == id);
+            if (modelExists == true)
             {
-                case false:
-                    throw new BusinessException($"Brand with Id: {brandId.ToString()} was not found");
-                case true:
-                    var model = _dbContext.Update(new CatalogModel { Id = id, Model = modelName, CatalogBrandId = brandId });
-                    await _dbContext.SaveChangesAsync();
-                    return model.Entity.Id;
+                var brandStatus = await _dbContext.CatalogBrands.AnyAsync(h => h.Id == brandId);
+                switch (brandStatus)
+                {
+                    case false:
+                        throw new BusinessException($"Brand with Id: {brandId.ToString()} was not found");
+                    case true:
+                        var model = _dbContext.Update(new CatalogModel { Id = id, Model = modelName, CatalogBrandId = brandId });
+                        await _dbContext.SaveChangesAsync();
+                        return model.Entity.Id;
+                }
+            }
+            else
+            {
+                throw new BusinessException($"Model with Id: {id} was not found");
             }
         }
 
         public async Task<int?> Delete(int id)
         {
-            var modelDelete = await _dbContext.CatalogModels.FirstAsync(h => h.Id == id);
-            _dbContext.Remove(modelDelete);
-            await _dbContext.SaveChangesAsync();
-            return modelDelete.Id;
+            var modelExists = await _dbContext.CatalogModels.AnyAsync(x => x.Id == id);
+            if (modelExists == true)
+            {
+                var modelDelete = await _dbContext.CatalogModels.FirstAsync(h => h.Id == id);
+                _dbContext.Remove(modelDelete);
+                await _dbContext.SaveChangesAsync();
+                return modelDelete.Id;
+            }
+            else
+            {
+                throw new BusinessException($"Model id: {id} was not founded");
+            }
         }
     }
 }

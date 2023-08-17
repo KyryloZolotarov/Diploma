@@ -79,7 +79,6 @@ namespace Catalog.Tests.Services
             var typeId = 1;
             int? id = null;
 
-
             var dbContextTransactionMock = new Mock<IDbContextTransaction>();
             dbContextWrapperMock.Setup(s => s.BeginTransactionAsync(CancellationToken.None)).ReturnsAsync(dbContextTransactionMock.Object);
 
@@ -100,7 +99,6 @@ namespace Catalog.Tests.Services
             var typeId = 1;
             int? id = null;
 
-
             var dbContextTransactionMock = new Mock<IDbContextTransaction>();
             dbContextWrapperMock.Setup(s => s.BeginTransactionAsync(CancellationToken.None)).ReturnsAsync(dbContextTransactionMock.Object);
 
@@ -110,7 +108,6 @@ namespace Catalog.Tests.Services
             var result = await catalogTypeService.Update(typeId, typeName);
             result.Should().BeNull();
         }
-
 
         [Fact]
         public async Task DeleteTypeAsync_ReturnsCatalogTypeIdFailed()

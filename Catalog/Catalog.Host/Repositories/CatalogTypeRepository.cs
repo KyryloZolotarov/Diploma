@@ -1,6 +1,7 @@
 ﻿using Catalog.Host.Data.Entities;
 using Catalog.Host.Data;
 using Catalog.Host.Repositories.Interfaces;
+using Infrastructure.Exceptions;
 
 namespace Catalog.Host.Repositories
 {
@@ -45,10 +46,18 @@ namespace Catalog.Host.Repositories
 
         public async Task<int?> Delete(int id)
         {
-            var itemDelete = await _dbContext.CatalogItems.FirstAsync(h => h.Id == id);
-            var item = _dbContext.Remove(itemDelete);
-            await _dbContext.SaveChangesAsync();
-            return itemDelete.Id;
+            var typeExists = await _dbContext.CatalogTypes.AnyAsync(x => x.Id == id);
+            if (typeExists == true)
+            {
+                var typeDelete = await _dbContext.CatalogTypes.FirstAsync(h => h.Id == id);
+                _dbContext.Remove(typeDelete);
+                await _dbContext.SaveChangesAsync();
+                return typeDelete.Id;
+            }
+            else
+            {
+                throw new BusinessException($"Type id: {id} was not founded");
+            }
         }
     }
 }

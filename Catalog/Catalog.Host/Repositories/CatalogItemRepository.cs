@@ -149,10 +149,18 @@ namespace Catalog.Host.Repositories
 
         public async Task<int?> Delete(int id)
         {
-            var itemDelete = await _dbContext.CatalogItems.FirstAsync(h => h.Id == id);
-            _dbContext.Remove(itemDelete);
-            await _dbContext.SaveChangesAsync();
-            return itemDelete.Id;
+            var itemExists = await _dbContext.CatalogItems.AnyAsync(x => x.Id == id);
+            if (itemExists == true)
+            {
+                var itemDelete = await _dbContext.CatalogItems.FirstAsync(h => h.Id == id);
+                _dbContext.Remove(itemDelete);
+                await _dbContext.SaveChangesAsync();
+                return itemDelete.Id;
+            }
+            else
+            {
+                throw new BusinessException($"Item id: {id} was not founded");
+            }
         }
 
         public async Task<IEnumerable<CatalogType>> GetTypesAsync()

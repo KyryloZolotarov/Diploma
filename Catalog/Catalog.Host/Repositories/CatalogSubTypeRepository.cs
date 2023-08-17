@@ -61,10 +61,18 @@ namespace Catalog.Host.Repositories
 
         public async Task<int?> Delete(int id)
         {
-            var subTypeDelete = await _dbContext.CatalogSubTypes.FirstAsync(h => h.Id == id);
-            _dbContext.Remove(subTypeDelete);
-            await _dbContext.SaveChangesAsync();
-            return subTypeDelete.Id;
+            var subTypeExists = await _dbContext.CatalogSubTypes.AnyAsync(x => x.Id == id);
+            if (subTypeExists == true)
+            {
+                var subTypeDelete = await _dbContext.CatalogSubTypes.FirstAsync(h => h.Id == id);
+                _dbContext.Remove(subTypeDelete);
+                await _dbContext.SaveChangesAsync();
+                return subTypeDelete.Id;
+            }
+            else
+            {
+                throw new BusinessException($"SubType id: {id} was not founded");
+            }
         }
     }
 }

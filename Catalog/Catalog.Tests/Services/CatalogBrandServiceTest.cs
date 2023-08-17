@@ -19,13 +19,13 @@ namespace Catalog.Tests.Services
             var dbContextTransactionMock = new Mock<IDbContextTransaction>();
             dbContextWrapperMock.Setup(s => s.BeginTransactionAsync(CancellationToken.None)).ReturnsAsync(dbContextTransactionMock.Object);
 
-            catalogBrandRepositoryMock.Setup(h => h.Add(It.IsAny<int>(), It.IsAny<string>())).ReturnsAsync(id);
+            catalogBrandRepositoryMock.Setup(h => h.Add(It.IsAny<string>())).ReturnsAsync(id);
             var catalogBrandService = new CatalogBrandService(dbContextWrapperMock.Object, loggerMock.Object, catalogBrandRepositoryMock.Object);
 
             var result = await catalogBrandService.Add(id, brandName);
             Assert.NotNull(result);
             Assert.Equal(id, result.Value);
-            catalogBrandRepositoryMock.Verify(x => x.Add(It.IsAny<int>(), It.IsAny<string>()), Times.Once());
+            catalogBrandRepositoryMock.Verify(x => x.Add(It.IsAny<string>()), Times.Once());
         }
 
         [Fact]
@@ -82,7 +82,7 @@ namespace Catalog.Tests.Services
             var dbContextTransactionMock = new Mock<IDbContextTransaction>();
             dbContextWrapperMock.Setup(s => s.BeginTransactionAsync(CancellationToken.None)).ReturnsAsync(dbContextTransactionMock.Object);
 
-            catalogBrandRepositoryMock.Setup(h => h.Add(It.IsAny<int>(), It.IsAny<string>())).ReturnsAsync(id);
+            catalogBrandRepositoryMock.Setup(h => h.Add(It.IsAny<string>())).ReturnsAsync(id);
             var catalogBrandService = new CatalogBrandService(dbContextWrapperMock.Object, loggerMock.Object, catalogBrandRepositoryMock.Object);
 
             var result = await catalogBrandService.Add(brandId, brandName);

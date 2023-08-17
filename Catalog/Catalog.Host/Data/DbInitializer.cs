@@ -48,11 +48,11 @@ public static class DbInitializer
     {
         return new List<CatalogBrand>()
         {
-            new CatalogBrand() { Brand = "Azure" },
-            new CatalogBrand() { Brand = ".NET" },
-            new CatalogBrand() { Brand = "Visual Studio" },
-            new CatalogBrand() { Brand = "SQL Server" },
-            new CatalogBrand() { Brand = "Other" }
+            new CatalogBrand() { Brand = "Honda" },
+            new CatalogBrand() { Brand = "Mazda" },
+            new CatalogBrand() { Brand = "Toyota" },
+            new CatalogBrand() { Brand = "Volkswagen" },
+            new CatalogBrand() { Brand = "BMW" }
         };
     }
 
@@ -60,11 +60,11 @@ public static class DbInitializer
     {
         return new List<CatalogSubType>()
         {
-            new CatalogSubType() { SubType = "Azure" },
-            new CatalogSubType() { SubType = ".NET" },
-            new CatalogSubType() { SubType = "Visual Studio" },
-            new CatalogSubType() { SubType = "SQL Server" },
-            new CatalogSubType() { SubType = "Other" }
+            new CatalogSubType() { SubType = "Engine Belts", CatalogTypeId = 1 },
+            new CatalogSubType() { SubType = "Engine Block", CatalogTypeId = 1 },
+            new CatalogSubType() { SubType = "Front", CatalogTypeId = 4 },
+            new CatalogSubType() { SubType = "Back", CatalogTypeId = 4 },
+            new CatalogSubType() { SubType = "Body Electronics", CatalogTypeId = 3 }
         };
     }
 
@@ -72,11 +72,11 @@ public static class DbInitializer
     {
         return new List<CatalogModel>()
         {
-            new CatalogModel() { Model = "Azure" },
-            new CatalogModel() { Model = ".NET" },
-            new CatalogModel() { Model = "Visual Studio" },
-            new CatalogModel() { Model = "SQL Server" },
-            new CatalogModel() { Model = "Other" }
+            new CatalogModel() { Model = "3", CatalogBrandId = 1 },
+            new CatalogModel() { Model = "5", CatalogBrandId = 5 },
+            new CatalogModel() { Model = "Corolla", CatalogBrandId = 3 },
+            new CatalogModel() { Model = "Camry", CatalogBrandId = 3 },
+            new CatalogModel() { Model = "Jetta", CatalogBrandId = 4 }
         };
     }
 
@@ -84,10 +84,10 @@ public static class DbInitializer
     {
         return new List<CatalogType>()
         {
-            new CatalogType() { Type = "Mug" },
-            new CatalogType() { Type = "T-Shirt" },
-            new CatalogType() { Type = "Sheet" },
-            new CatalogType() { Type = "USB Memory Stick" }
+            new CatalogType() { Type = "Suspention" },
+            new CatalogType() { Type = "Engine" },
+            new CatalogType() { Type = "Electronics" },
+            new CatalogType() { Type = "Body Parts" }
         };
     }
 
@@ -95,18 +95,18 @@ public static class DbInitializer
     {
         return new List<CatalogItem>()
         {
-            new CatalogItem { CatalogSubTypeId = 2, CatalogBrandId = 2, AvailableStock = 100, Description = ".NET Bot Black Hoodie", Name = ".NET Bot Black Hoodie", Price = 19.5M, PictureFileName = "1.png" },
-            new CatalogItem { CatalogSubTypeId = 1, CatalogBrandId = 2, AvailableStock = 100, Description = ".NET Black & White Mug", Name = ".NET Black & White Mug", Price = 8.50M, PictureFileName = "2.png" },
-            new CatalogItem { CatalogSubTypeId = 2, CatalogBrandId = 5, AvailableStock = 100, Description = "Prism White T-Shirt", Name = "Prism White T-Shirt", Price = 12, PictureFileName = "3.png" },
-            new CatalogItem { CatalogSubTypeId = 2, CatalogBrandId = 2, AvailableStock = 100, Description = ".NET Foundation T-shirt", Name = ".NET Foundation T-shirt", Price = 12, PictureFileName = "4.png" },
-            new CatalogItem { CatalogSubTypeId = 3, CatalogBrandId = 5, AvailableStock = 100, Description = "Roslyn Red Sheet", Name = "Roslyn Red Sheet", Price = 8.5M, PictureFileName = "5.png" },
-            new CatalogItem { CatalogSubTypeId = 2, CatalogBrandId = 2, AvailableStock = 100, Description = ".NET Blue Hoodie", Name = ".NET Blue Hoodie", Price = 12, PictureFileName = "6.png" },
-            new CatalogItem { CatalogSubTypeId = 2, CatalogBrandId = 5, AvailableStock = 100, Description = "Roslyn Red T-Shirt", Name = "Roslyn Red T-Shirt", Price = 12, PictureFileName = "7.png" },
-            new CatalogItem { CatalogSubTypeId = 2, CatalogBrandId = 5, AvailableStock = 100, Description = "Kudu Purple Hoodie", Name = "Kudu Purple Hoodie", Price = 8.5M, PictureFileName = "8.png" },
-            new CatalogItem { CatalogSubTypeId = 1, CatalogBrandId = 5, AvailableStock = 100, Description = "Cup<T> White Mug", Name = "Cup<T> White Mug", Price = 12, PictureFileName = "9.png" },
-            new CatalogItem { CatalogSubTypeId = 3, CatalogBrandId = 2, AvailableStock = 100, Description = ".NET Foundation Sheet", Name = ".NET Foundation Sheet", Price = 12, PictureFileName = "10.png" },
-            new CatalogItem { CatalogSubTypeId = 3, CatalogBrandId = 2, AvailableStock = 100, Description = "Cup<T> Sheet", Name = "Cup<T> Sheet", Price = 8.5M, PictureFileName = "11.png" },
-            new CatalogItem { CatalogSubTypeId = 2, CatalogBrandId = 5, AvailableStock = 100, Description = "Prism White TShirt", Name = "Prism White TShirt", Price = 12, PictureFileName = "12.png" },
+            new CatalogItem { CatalogSubTypeId = 2, CatalogModelId = 2, AvailableStock = 100, Description = "some description", Name = ".NET Bot Black Hoodie", Price = 19.5M, PictureFileName = "1.png" },
+            new CatalogItem { CatalogSubTypeId = 1, CatalogModelId = 2, AvailableStock = 100, Description = "some description", Name = ".NET Black & White Mug", Price = 8.50M, PictureFileName = "2.png" },
+            new CatalogItem { CatalogSubTypeId = 2, CatalogModelId = 5, AvailableStock = 100, Description = "some description", Name = "Prism White T-Shirt", Price = 12, PictureFileName = "3.png" },
+            new CatalogItem { CatalogSubTypeId = 2, CatalogModelId = 2, AvailableStock = 100, Description = "some description", Name = ".NET Foundation T-shirt", Price = 12, PictureFileName = "4.png" },
+            new CatalogItem { CatalogSubTypeId = 3, CatalogModelId = 5, AvailableStock = 100, Description = "some description", Name = "Roslyn Red Sheet", Price = 8.5M, PictureFileName = "5.png" },
+            new CatalogItem { CatalogSubTypeId = 2, CatalogModelId = 2, AvailableStock = 100, Description = "some description", Name = ".NET Blue Hoodie", Price = 12, PictureFileName = "6.png" },
+            new CatalogItem { CatalogSubTypeId = 2, CatalogModelId = 5, AvailableStock = 100, Description = "some description", Name = "Roslyn Red T-Shirt", Price = 12, PictureFileName = "7.png" },
+            new CatalogItem { CatalogSubTypeId = 2, CatalogModelId = 5, AvailableStock = 100, Description = "some description", Name = "Kudu Purple Hoodie", Price = 8.5M, PictureFileName = "8.png" },
+            new CatalogItem { CatalogSubTypeId = 1, CatalogModelId = 5, AvailableStock = 100, Description = "some description", Name = "Cup<T> White Mug", Price = 12, PictureFileName = "9.png" },
+            new CatalogItem { CatalogSubTypeId = 3, CatalogModelId = 2, AvailableStock = 100, Description = "some description", Name = ".NET Foundation Sheet", Price = 12, PictureFileName = "10.png" },
+            new CatalogItem { CatalogSubTypeId = 3, CatalogModelId = 2, AvailableStock = 100, Description = "some description", Name = "Cup<T> Sheet", Price = 8.5M, PictureFileName = "11.png" },
+            new CatalogItem { CatalogSubTypeId = 2, CatalogModelId = 5, AvailableStock = 100, Description = "some description", Name = "Prism White TShirt", Price = 12, PictureFileName = "12.png" },
         };
     }
 }
