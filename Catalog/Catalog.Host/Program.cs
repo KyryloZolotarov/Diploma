@@ -1,34 +1,100 @@
+using Catalog.Host.Configurations;
+using Catalog.Host.Data;
+using Catalog.Host.Repositories.Interfaces;
+using Catalog.Host.Repositories;
+using Catalog.Host.Services.Interfaces;
+using Catalog.Host.Services;
+using Infrastructure.Filters;
+
 namespace Catalog.Host
 {
     public class Program
     {
         public static void Main(string[] args)
         {
+            var configuration = GetConfiguration();
+
             var builder = WebApplication.CreateBuilder(args);
 
-            // Add services to the container.
-            builder.Services.AddControllers();
+            builder.Services.AddControllers(options =>
+            {
+                options.Filters.Add(typeof(HttpGlobalExceptionFilter));
+            })
+                .AddJsonOptions(options => options.JsonSerializerOptions.WriteIndented = true);
 
-            // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-            builder.Services.AddEndpointsApiExplorer();
+            builder.Services.Configure<CatalogConfig>(configuration);
             builder.Services.AddSwaggerGen();
+            builder.Services.AddAutoMapper(typeof(Program));
+
+            builder.Services.AddTransient<ICatalogItemRepository, CatalogItemRepository>();
+            builder.Services.AddTransient<ICatalogService, CatalogService>();
+            builder.Services.AddTransient<ICatalogItemService, CatalogItemService>();
+            builder.Services.AddTransient<ICatalogBrandService, CatalogBrandService>();
+            builder.Services.AddTransient<ICatalogBrandRepository, CatalogBrandRepository>();
+            builder.Services.AddTransient<ICatalogTypeService, CatalogTypeService>();
+            builder.Services.AddTransient<ICatalogTypeRepository, CatalogTypeRepository>();
+            builder.Services.AddTransient<ICatalogSubTypeRepository, CatalogSubTypeRepository>();
+            builder.Services.AddTransient<ICatalogModelRepository, CatalogModelRepository>();
+            builder.Services.AddTransient<ICatalogModelService, CatalogModelService>();
+            builder.Services.AddTransient<ICatalogSubTypeService, CatalogSubTypeService>();
+
+            builder.Services.AddDbContextFactory<ApplicationDbContext>(opts => opts.UseNpgsql(configuration["ConnectionString"]));
+            builder.Services.AddScoped<IDbContextWrapper<ApplicationDbContext>, DbContextWrapper<ApplicationDbContext>>();
+
+            builder.Services.AddCors(options =>
+            {
+                options.AddPolicy(
+                    "CorsPolicy",
+                    builder => builder
+                        .SetIsOriginAllowed((host) => true)
+                        .AllowAnyMethod()
+                        .AllowAnyHeader()
+                        .AllowCredentials());
+            });
 
             var app = builder.Build();
 
-            // Configure the HTTP request pipeline.
-            if (app.Environment.IsDevelopment())
+            app.UseSwagger();
+            app.UseSwaggerUI();
+            app.UseRouting();
+            app.UseCors("CorsPolicy");
+            app.UseEndpoints(endpoints =>
             {
-                app.UseSwagger();
-                app.UseSwaggerUI();
+                endpoints.MapDefaultControllerRoute();
+                endpoints.MapControllers();
+            });
+
+            CreateDbIfNotExists(app);
+            app.Run();
+
+            IConfiguration GetConfiguration()
+            {
+                var builder = new ConfigurationBuilder()
+                    .SetBasePath(Directory.GetCurrentDirectory())
+                    .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+                    .AddEnvironmentVariables();
+
+                return builder.Build();
             }
 
-            app.UseHttpsRedirection();
+            void CreateDbIfNotExists(IHost host)
+            {
+                using (var scope = host.Services.CreateScope())
+                {
+                    var services = scope.ServiceProvider;
+                    try
+                    {
+                        var context = services.GetRequiredService<ApplicationDbContext>();
 
-            app.UseAuthorization();
-
-            app.MapControllers();
-
-            app.Run();
+                        DbInitializer.Initialize(context).Wait();
+                    }
+                    catch (Exception ex)
+                    {
+                        var logger = services.GetRequiredService<ILogger<Program>>();
+                        logger.LogError(ex, "An error occurred creating the DB.");
+                    }
+                }
+            }
         }
     }
 }
