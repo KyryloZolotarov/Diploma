@@ -3,11 +3,14 @@ using Catalog.Host.Models.Enums;
 using Catalog.Host.Models.Requests;
 using Catalog.Host.Models.Responses;
 using Catalog.Host.Services.Interfaces;
+using Infrastructure.Identity;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Catalog.Host.Controllers
 {
         [ApiController]
+        [Authorize(Policy = AuthPolicy.AllowEndUserPolicy)]
         [Route(ComponentDefaults.DefaultRoute)]
         public class CatalogBffController : ControllerBase
         {
