@@ -22,7 +22,7 @@ namespace Catalog.Tests.Services
             catalogBrandRepositoryMock.Setup(h => h.Add(It.IsAny<string>())).ReturnsAsync(id);
             var catalogBrandService = new CatalogBrandService(dbContextWrapperMock.Object, loggerMock.Object, catalogBrandRepositoryMock.Object);
 
-            var result = await catalogBrandService.Add(id, brandName);
+            var result = await catalogBrandService.Add(brandName);
             Assert.NotNull(result);
             Assert.Equal(id, result.Value);
             catalogBrandRepositoryMock.Verify(x => x.Add(It.IsAny<string>()), Times.Once());
@@ -76,7 +76,6 @@ namespace Catalog.Tests.Services
             var loggerMock = new Mock<ILogger<BaseDataService<ApplicationDbContext>>>();
             var catalogBrandRepositoryMock = new Mock<ICatalogBrandRepository>();
             var brandName = "Test brand";
-            var brandId = 1;
             int? id = null;
 
             var dbContextTransactionMock = new Mock<IDbContextTransaction>();
@@ -85,7 +84,7 @@ namespace Catalog.Tests.Services
             catalogBrandRepositoryMock.Setup(h => h.Add(It.IsAny<string>())).ReturnsAsync(id);
             var catalogBrandService = new CatalogBrandService(dbContextWrapperMock.Object, loggerMock.Object, catalogBrandRepositoryMock.Object);
 
-            var result = await catalogBrandService.Add(brandId, brandName);
+            var result = await catalogBrandService.Add(brandName);
             result.Should().BeNull();
         }
 
