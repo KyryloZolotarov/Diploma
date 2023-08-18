@@ -37,7 +37,7 @@ namespace Catalog.Host.Controllers
         [ProducesResponseType(typeof(UpdateItemResponse<int?>), (int)HttpStatusCode.OK)]
         public async Task<IActionResult> Update(UpdateItemRequest request)
         {
-            var result = await _catalogItemService.Update(request.Name, request.Description, request.Price, request.AvailableStock, request.PictureFileName, request.CatalogSubTypeId, request.CatalogModelId, request.PartNumber);
+            var result = await _catalogItemService.Update(request.Id, request.Name, request.Description, request.Price, request.AvailableStock, request.PictureFileName, request.CatalogSubTypeId, request.CatalogModelId, request.PartNumber);
             return Ok(new UpdateItemResponse<int?>() { Id = result });
         }
 

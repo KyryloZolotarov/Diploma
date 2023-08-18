@@ -20,21 +20,21 @@ namespace Catalog.Host.Repositories
 
         public async Task<int?> Add(string modelName, int brandId)
         {
-            var id = await _dbContext.CatalogModels.MaxAsync(b => b.Id);
             var brandStatus = await _dbContext.CatalogBrands.AnyAsync(h => h.Id == brandId);
-            switch (brandStatus)
+            if (brandStatus == true)
             {
-                case false:
-                    throw new BusinessException($"Brand with Id: {brandId} was not found");
-                case true:
-                    var model = await _dbContext.AddAsync(new CatalogModel
-                    {
-                        Id = id++,
-                        Model = modelName,
-                        CatalogBrandId = brandId
-                    });
-                    await _dbContext.SaveChangesAsync();
-                    return model.Entity.Id;
+                var model = await _dbContext.AddAsync(new CatalogModel
+                {
+                    Model = modelName,
+                    CatalogBrandId = brandId
+                });
+                await _dbContext.SaveChangesAsync();
+                _logger.LogInformation($"Model {model.Entity.Model} id: {model.Entity.Id} added");
+                return model.Entity.Id;
+            }
+            else
+            {
+                throw new BusinessException($"Brand with Id: {brandId} was not found");
             }
         }
 
@@ -44,14 +44,16 @@ namespace Catalog.Host.Repositories
             if (modelExists == true)
             {
                 var brandStatus = await _dbContext.CatalogBrands.AnyAsync(h => h.Id == brandId);
-                switch (brandStatus)
+                if (brandStatus == true)
                 {
-                    case false:
-                        throw new BusinessException($"Brand with Id: {brandId.ToString()} was not found");
-                    case true:
-                        var model = _dbContext.Update(new CatalogModel { Id = id, Model = modelName, CatalogBrandId = brandId });
-                        await _dbContext.SaveChangesAsync();
-                        return model.Entity.Id;
+                    var model = _dbContext.Update(new CatalogModel { Id = id, Model = modelName, CatalogBrandId = brandId });
+                    await _dbContext.SaveChangesAsync();
+                    _logger.LogInformation($"Model {model.Entity.Model} id: {model.Entity.Id} updated");
+                    return model.Entity.Id;
+                }
+                else
+                {
+                    throw new BusinessException($"Brand with Id: {brandId} was not found");
                 }
             }
             else
@@ -68,6 +70,7 @@ namespace Catalog.Host.Repositories
                 var modelDelete = await _dbContext.CatalogModels.FirstAsync(h => h.Id == id);
                 _dbContext.Remove(modelDelete);
                 await _dbContext.SaveChangesAsync();
+                _logger.LogInformation($"Model {modelDelete.Model} id: {modelDelete.Id} deleted");
                 return modelDelete.Id;
             }
             else

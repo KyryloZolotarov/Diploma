@@ -30,7 +30,7 @@ namespace Catalog.Host.Controllers
         [ProducesResponseType(typeof(AddBrandResponse<int?>), (int)HttpStatusCode.OK)]
         public async Task<IActionResult> Add(AddBrandRequest request)
         {
-            var result = await _catalogBrandService.Add(request.Id, request.BrandName);
+            var result = await _catalogBrandService.Add(request.BrandName);
             return Ok(new AddBrandResponse<int?>() { Id = result });
         }
 

@@ -22,9 +22,9 @@ namespace Catalog.Host.Services
             return ExecuteSafeAsync(() => _catalogItemRepository.Add(name, description, price, availableStock, pictureFileName, subTypeId, modelId, partNumber));
         }
 
-        public Task<int?> Update(string name, string description, decimal price, int availableStock, string pictureFileName, int subTypeId, int modelId, string partNumber)
+        public Task<int?> Update(int id, string name, string description, decimal price, int availableStock, string pictureFileName, int subTypeId, int modelId, string partNumber)
         {
-            return ExecuteSafeAsync(() => _catalogItemRepository.Update(name, description, price, availableStock, pictureFileName, subTypeId, modelId, partNumber));
+            return ExecuteSafeAsync(() => _catalogItemRepository.Update(id, name, description, price, availableStock, pictureFileName, subTypeId, modelId, partNumber));
         }
 
         public Task<int?> Delete(int id)

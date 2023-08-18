@@ -28,7 +28,7 @@ namespace Catalog.Host.Controllers
         [ProducesResponseType(typeof(AddModelResponse<int?>), (int)HttpStatusCode.OK)]
         public async Task<IActionResult> Add(AddModelRequest request)
         {
-            var result = await _catalogModelService.Add(request.Id, request.ModelName, request.CatalogBrandId);
+            var result = await _catalogModelService.Add(request.ModelName, request.CatalogBrandId);
             return Ok(new AddModelResponse<int?>() { Id = result });
         }
 

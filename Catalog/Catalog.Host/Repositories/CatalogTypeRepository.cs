@@ -1,5 +1,6 @@
-﻿using Catalog.Host.Data.Entities;
+﻿using System.Data;
 using Catalog.Host.Data;
+using Catalog.Host.Data.Entities;
 using Catalog.Host.Repositories.Interfaces;
 using Infrastructure.Exceptions;
 
@@ -18,30 +19,36 @@ namespace Catalog.Host.Repositories
             _logger = logger;
         }
 
-        public async Task<int?> Add(int id, string typeName)
+        public async Task<int?> Add(string typeName)
         {
-            var item = await _dbContext.AddAsync(new CatalogType
+            var type = await _dbContext.AddAsync(new CatalogType
             {
-                Id = id,
                 Type = typeName
             });
 
             await _dbContext.SaveChangesAsync();
-
-            return item.Entity.Id;
+            _logger.LogInformation($"Type {type.Entity.Type} id: {type.Entity.Id} added");
+            return type.Entity.Id;
         }
 
         public async Task<int?> Update(int id, string typeName)
         {
-            var item = _dbContext.Update(new CatalogType
+            var typeExists = await _dbContext.CatalogTypes.AnyAsync(x => x.Id == id);
+            if (typeExists == true)
             {
-                Id = id,
-                Type = typeName
-            });
-
-            await _dbContext.SaveChangesAsync();
-
-            return item.Entity.Id;
+                var type = _dbContext.Update(new CatalogType
+                {
+                    Id = id,
+                    Type = typeName
+                });
+                await _dbContext.SaveChangesAsync();
+                _logger.LogInformation($"Type {type.Entity.Type} id: {type.Entity.Id} updated");
+                return type.Entity.Id;
+            }
+            else
+            {
+                throw new BusinessException($"Type id: {id} was not founded");
+            }
         }
 
         public async Task<int?> Delete(int id)
@@ -52,6 +59,7 @@ namespace Catalog.Host.Repositories
                 var typeDelete = await _dbContext.CatalogTypes.FirstAsync(h => h.Id == id);
                 _dbContext.Remove(typeDelete);
                 await _dbContext.SaveChangesAsync();
+                _logger.LogInformation($"Type {typeDelete.Type} id: {typeDelete.Id} deleted");
                 return typeDelete.Id;
             }
             else

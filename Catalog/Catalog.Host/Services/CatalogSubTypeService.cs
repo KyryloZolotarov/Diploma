@@ -16,9 +16,9 @@ namespace Catalog.Host.Services
             _catalogSubTypeRepository = catalogSubTypeRepository;
         }
 
-        public Task<int?> Add(int id, string subTypeName, int typeId)
+        public Task<int?> Add(string subTypeName, int typeId)
         {
-            return ExecuteSafeAsync(() => _catalogSubTypeRepository.Add(id, subTypeName, typeId));
+            return ExecuteSafeAsync(() => _catalogSubTypeRepository.Add(subTypeName, typeId));
         }
 
         public Task<int?> Update(int id, string subTypeName, int typeId)

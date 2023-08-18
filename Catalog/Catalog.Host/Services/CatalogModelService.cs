@@ -16,7 +16,7 @@ namespace Catalog.Host.Services
             _catalogModelRepository = catalogModelRepository;
         }
 
-        public Task<int?> Add(int id, string modelName, int brandId)
+        public Task<int?> Add(string modelName, int brandId)
         {
             return ExecuteSafeAsync(() => _catalogModelRepository.Add(modelName, brandId));
         }

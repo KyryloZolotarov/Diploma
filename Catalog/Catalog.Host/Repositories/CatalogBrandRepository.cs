@@ -20,32 +20,33 @@ namespace Catalog.Host.Repositories
 
         public async Task<int?> Add(string brandName)
         {
-            var id = await _dbContext.CatalogBrands.MaxAsync(b => b.Id);
-            var item = await _dbContext.AddAsync(new CatalogBrand
+            var brand = await _dbContext.AddAsync(new CatalogBrand
             {
-                Id = id++,
                 Brand = brandName
             });
 
             await _dbContext.SaveChangesAsync();
-
-            return item.Entity.Id;
+            _logger.LogInformation($"Brand {brand.Entity.Brand} id: {brand.Entity.Id} added");
+            return brand.Entity.Id;
         }
 
         public async Task<int?> Update(int id, string brandName)
         {
-            var itemExists = await _dbContext.CatalogBrands.AnyAsync(x => x.Id == id);
-            switch (itemExists)
+            var brandExists = await _dbContext.CatalogBrands.AnyAsync(x => x.Id == id);
+            if (brandExists == true)
             {
-                case true:
-                    var item = _dbContext.Update(new CatalogBrand
-                    {
-                        Id = id,
-                        Brand = brandName
-                    });
-                    await _dbContext.SaveChangesAsync();
-                    return item.Entity.Id;
-                case false: throw new BusinessException($"Brand id: {id} was not founded");
+                var brand = _dbContext.Update(new CatalogBrand
+                {
+                    Id = id,
+                    Brand = brandName
+                });
+                await _dbContext.SaveChangesAsync();
+                _logger.LogInformation($"Brand {brand.Entity.Brand} id: {brand.Entity.Id} updated");
+                return brand.Entity.Id;
+            }
+            else
+            {
+                throw new BusinessException($"Brand id: {id} was not founded");
             }
         }
 
@@ -57,6 +58,7 @@ namespace Catalog.Host.Repositories
                 var brandDelete = await _dbContext.CatalogBrands.FirstAsync(h => h.Id == id);
                 _dbContext.Remove(brandDelete);
                 await _dbContext.SaveChangesAsync();
+                _logger.LogInformation($"Brand {brandDelete.Brand} id: {brandDelete.Id} deleted");
                 return brandDelete.Id;
             }
             else

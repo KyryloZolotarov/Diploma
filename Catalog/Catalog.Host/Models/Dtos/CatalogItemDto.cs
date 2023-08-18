@@ -12,11 +12,7 @@
 
         public string PictureUrl { get; set; }
 
-        public CatalogTypeDto CatalogType { get; set; }
-
         public CatalogSubTypeDto CatalogSubType { get; set; }
-
-        public CatalogBrandDto CatalogBrand { get; set; }
 
         public CatalogModelDto CatalogModel { get; set; }
 

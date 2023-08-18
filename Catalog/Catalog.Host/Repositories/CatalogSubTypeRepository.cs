@@ -21,41 +21,43 @@ namespace Catalog.Host.Repositories
             _logger = logger;
         }
 
-        public async Task<int?> Add(int id, string subTypeName, int typeId)
+        public async Task<int?> Add(string subTypeName, int typeId)
         {
             var subTypeStatus = await _dbContext.CatalogTypes.AnyAsync(h => h.Id == typeId);
-            switch (subTypeStatus)
+            if (subTypeStatus == true)
             {
-                case false:
-                    throw new BusinessException($"Type with Id: {typeId.ToString()} was not found");
-                case true:
-                    var subType = await _dbContext.AddAsync(new CatalogModel
-                    {
-                        Id = id,
-                        Model = subTypeName,
-                        CatalogBrandId = typeId
-                    });
-                    await _dbContext.SaveChangesAsync();
-                    return subType.Entity.Id;
+                var subType = await _dbContext.AddAsync(new CatalogSubType
+                {
+                    SubType = subTypeName,
+                    CatalogTypeId = typeId
+                });
+                await _dbContext.SaveChangesAsync();
+                _logger.LogInformation($"SubType {subType.Entity.SubType} id: {subType.Entity.Id} added");
+                return subType.Entity.Id;
+            }
+            else
+            {
+                throw new BusinessException($"Type with Id: {typeId} was not found");
             }
         }
 
         public async Task<int?> Update(int id, string subTypeName, int typeId)
         {
             var subTypeStatus = await _dbContext.CatalogTypes.AnyAsync(h => h.Id == typeId);
-            switch (subTypeStatus)
+            if (subTypeStatus == true)
             {
-                case false:
-                    throw new BusinessException($"Type with Id: {typeId.ToString()} was not found");
-                case true:
-                    var subType = _dbContext.Update(new CatalogModel
-                    {
-                        Id = id,
-                        Model = subTypeName,
-                        CatalogBrandId = typeId
-                    });
-                    await _dbContext.SaveChangesAsync();
-                    return subType.Entity.Id;
+                var subType = _dbContext.Update(new CatalogSubType
+                {
+                    SubType = subTypeName,
+                    CatalogTypeId = typeId
+                });
+                await _dbContext.SaveChangesAsync();
+                _logger.LogInformation($"SubType {subType.Entity.SubType} id: {subType.Entity.Id} updated");
+                return subType.Entity.Id;
+            }
+            else
+            {
+                throw new BusinessException($"Type with Id: {typeId.ToString()} was not found");
             }
         }
 
@@ -67,6 +69,7 @@ namespace Catalog.Host.Repositories
                 var subTypeDelete = await _dbContext.CatalogSubTypes.FirstAsync(h => h.Id == id);
                 _dbContext.Remove(subTypeDelete);
                 await _dbContext.SaveChangesAsync();
+                _logger.LogInformation($"SubType {subTypeDelete.SubType} id: {subTypeDelete.Id} deleted");
                 return subTypeDelete.Id;
             }
             else

@@ -56,5 +56,21 @@ namespace Catalog.Host.Controllers
                 var result = await _catalogService.GetCatalogBrandsAsync();
                 return Ok(result);
             }
+
+            [HttpGet]
+            [ProducesResponseType(typeof(IEnumerable<CatalogSubTypeDto>), (int)HttpStatusCode.OK)]
+            public async Task<IActionResult> GetSubTypes()
+            {
+            var result = await _catalogService.GetCatalogSubTypesAsync();
+            return Ok(result);
+            }
+
+            [HttpGet]
+            [ProducesResponseType(typeof(IEnumerable<CatalogModelDto>), (int)HttpStatusCode.OK)]
+            public async Task<IActionResult> GetModels()
+            {
+            var result = await _catalogService.GetCatalogModelsAsync();
+            return Ok(result);
+            }
         }
 }
