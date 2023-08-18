@@ -19,13 +19,13 @@ namespace Catalog.Tests.Services
             var dbContextTransactionMock = new Mock<IDbContextTransaction>();
             dbContextWrapperMock.Setup(s => s.BeginTransactionAsync(CancellationToken.None)).ReturnsAsync(dbContextTransactionMock.Object);
 
-            catalogTypeRepositoryMock.Setup(h => h.Add(It.IsAny<int>(), It.IsAny<string>())).ReturnsAsync(id);
+            catalogTypeRepositoryMock.Setup(h => h.Add(It.IsAny<string>())).ReturnsAsync(id);
             var catalogTypeService = new CatalogTypeService(dbContextWrapperMock.Object, loggerMock.Object, catalogTypeRepositoryMock.Object);
 
-            var result = await catalogTypeService.Add(id, typeName);
+            var result = await catalogTypeService.Add(typeName);
             Assert.NotNull(result);
             Assert.Equal(id, result.Value);
-            catalogTypeRepositoryMock.Verify(x => x.Add(It.IsAny<int>(), It.IsAny<string>()), Times.Once());
+            catalogTypeRepositoryMock.Verify(x => x.Add(It.IsAny<string>()), Times.Once());
         }
 
         [Fact]
@@ -76,16 +76,15 @@ namespace Catalog.Tests.Services
             var loggerMock = new Mock<ILogger<BaseDataService<ApplicationDbContext>>>();
             var catalogTypeRepositoryMock = new Mock<ICatalogTypeRepository>();
             var typeName = "Test type";
-            var typeId = 1;
             int? id = null;
 
             var dbContextTransactionMock = new Mock<IDbContextTransaction>();
             dbContextWrapperMock.Setup(s => s.BeginTransactionAsync(CancellationToken.None)).ReturnsAsync(dbContextTransactionMock.Object);
 
-            catalogTypeRepositoryMock.Setup(h => h.Add(It.IsAny<int>(), It.IsAny<string>())).ReturnsAsync(id);
+            catalogTypeRepositoryMock.Setup(h => h.Add(It.IsAny<string>())).ReturnsAsync(id);
             var catalogTypeService = new CatalogTypeService(dbContextWrapperMock.Object, loggerMock.Object, catalogTypeRepositoryMock.Object);
 
-            var result = await catalogTypeService.Add(typeId, typeName);
+            var result = await catalogTypeService.Add(typeName);
             result.Should().BeNull();
         }
 

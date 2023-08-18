@@ -7,125 +7,129 @@ namespace Catalog.Tests.Services
 {
     public class CatalogSubTypeServiceTest
     {
-        [Fact]
-        public async Task AddSubTypeAsync_ReturnsCatalogSubTypeIdSuccessfully()
-        {
-            var dbContextWrapperMock = new Mock<IDbContextWrapper<ApplicationDbContext>>();
-            var loggerMock = new Mock<ILogger<BaseDataService<ApplicationDbContext>>>();
-            var catalogTypeRepositoryMock = new Mock<ICatalogTypeRepository>();
-            var typeName = "Test type";
-            var id = 1;
+            [Fact]
+            public async Task AddSubTypeAsync_ReturnsIntSuccessfully()
+            {
+                var dbContextWrapperMock = new Mock<IDbContextWrapper<ApplicationDbContext>>();
+                var loggerMock = new Mock<ILogger<BaseDataService<ApplicationDbContext>>>();
+                var catalogSubTypeRepositoryMock = new Mock<ICatalogSubTypeRepository>();
+                var subTypeName = "Test subtype";
+                var typeId = 1;
+                var id = 1;
 
-            var dbContextTransactionMock = new Mock<IDbContextTransaction>();
-            dbContextWrapperMock.Setup(s => s.BeginTransactionAsync(CancellationToken.None)).ReturnsAsync(dbContextTransactionMock.Object);
+                var dbContextTransactionMock = new Mock<IDbContextTransaction>();
+                dbContextWrapperMock.Setup(s => s.BeginTransactionAsync(CancellationToken.None)).ReturnsAsync(dbContextTransactionMock.Object);
 
-            catalogTypeRepositoryMock.Setup(h => h.Add(It.IsAny<int>(), It.IsAny<string>())).ReturnsAsync(id);
-            var catalogTypeService = new CatalogTypeService(dbContextWrapperMock.Object, loggerMock.Object, catalogTypeRepositoryMock.Object);
+                catalogSubTypeRepositoryMock.Setup(h => h.Add(It.IsAny<string>(), It.IsAny<int>())).ReturnsAsync(id);
+                var catalogSubTypeService = new CatalogSubTypeService(dbContextWrapperMock.Object, loggerMock.Object, catalogSubTypeRepositoryMock.Object);
 
-            var result = await catalogTypeService.Add(id, typeName);
-            Assert.NotNull(result);
-            Assert.Equal(id, result.Value);
-            catalogTypeRepositoryMock.Verify(x => x.Add(It.IsAny<int>(), It.IsAny<string>()), Times.Once());
-        }
+                var result = await catalogSubTypeService.Add(subTypeName, typeId);
+                Assert.NotNull(result);
+                Assert.Equal(id, result.Value);
+                catalogSubTypeRepositoryMock.Verify(x => x.Add(It.IsAny<string>(), It.IsAny<int>()), Times.Once());
+            }
 
-        [Fact]
-        public async Task UpdateTypeAsync_ReturnsCatalogTypeIdSuccessfully()
-        {
-            var dbContextWrapperMock = new Mock<IDbContextWrapper<ApplicationDbContext>>();
-            var loggerMock = new Mock<ILogger<BaseDataService<ApplicationDbContext>>>();
-            var catalogTypeRepositoryMock = new Mock<ICatalogTypeRepository>();
-            var typeName = "Test type";
-            var id = 1;
+            [Fact]
+            public async Task UpdateSubTypeAsync_ReturnsIntSuccessfully()
+            {
+                var dbContextWrapperMock = new Mock<IDbContextWrapper<ApplicationDbContext>>();
+                var loggerMock = new Mock<ILogger<BaseDataService<ApplicationDbContext>>>();
+                var catalogSubTypeRepositoryMock = new Mock<ICatalogSubTypeRepository>();
+                var subTypeName = "Test SubType";
+                var typeId = 1;
+                var subTypeId = 1;
+                var id = 1;
 
-            var dbContextTransactionMock = new Mock<IDbContextTransaction>();
-            dbContextWrapperMock.Setup(s => s.BeginTransactionAsync(CancellationToken.None)).ReturnsAsync(dbContextTransactionMock.Object);
+                var dbContextTransactionMock = new Mock<IDbContextTransaction>();
+                dbContextWrapperMock.Setup(s => s.BeginTransactionAsync(CancellationToken.None)).ReturnsAsync(dbContextTransactionMock.Object);
 
-            catalogTypeRepositoryMock.Setup(h => h.Update(It.IsAny<int>(), It.IsAny<string>())).ReturnsAsync(id);
-            var catalogTypeService = new CatalogTypeService(dbContextWrapperMock.Object, loggerMock.Object, catalogTypeRepositoryMock.Object);
+                catalogSubTypeRepositoryMock.Setup(h => h.Update(It.IsAny<int>(), It.IsAny<string>(), It.IsAny<int>())).ReturnsAsync(id);
+                var catalogSubTypeService = new CatalogSubTypeService(dbContextWrapperMock.Object, loggerMock.Object, catalogSubTypeRepositoryMock.Object);
 
-            var result = await catalogTypeService.Update(id, typeName);
-            Assert.NotNull(result);
-            Assert.Equal(id, result.Value);
-            catalogTypeRepositoryMock.Verify(x => x.Update(It.IsAny<int>(), It.IsAny<string>()), Times.Once());
-        }
+                var result = await catalogSubTypeService.Update(subTypeId, subTypeName, typeId);
+                Assert.NotNull(result);
+                Assert.Equal(id, result.Value);
+                catalogSubTypeRepositoryMock.Verify(x => x.Update(It.IsAny<int>(), It.IsAny<string>(), It.IsAny<int>()), Times.Once());
+            }
 
-        [Fact]
-        public async Task DeleteTypeAsync_ReturnsCatalogTypeIdSuccessfully()
-        {
-            var dbContextWrapperMock = new Mock<IDbContextWrapper<ApplicationDbContext>>();
-            var loggerMock = new Mock<ILogger<BaseDataService<ApplicationDbContext>>>();
-            var catalogTypeRepositoryMock = new Mock<ICatalogTypeRepository>();
-            var id = 1;
+            [Fact]
+            public async Task DeleteSubTypeAsync_ReturnsIntSuccessfully()
+            {
+                var dbContextWrapperMock = new Mock<IDbContextWrapper<ApplicationDbContext>>();
+                var loggerMock = new Mock<ILogger<BaseDataService<ApplicationDbContext>>>();
+                var catalogSubTypeRepositoryMock = new Mock<ICatalogSubTypeRepository>();
+                var id = 1;
 
-            var dbContextTransactionMock = new Mock<IDbContextTransaction>();
-            dbContextWrapperMock.Setup(s => s.BeginTransactionAsync(CancellationToken.None)).ReturnsAsync(dbContextTransactionMock.Object);
+                var dbContextTransactionMock = new Mock<IDbContextTransaction>();
+                dbContextWrapperMock.Setup(s => s.BeginTransactionAsync(CancellationToken.None)).ReturnsAsync(dbContextTransactionMock.Object);
 
-            catalogTypeRepositoryMock.Setup(h => h.Delete(It.IsAny<int>())).ReturnsAsync(id);
-            var catalogTypeService = new CatalogTypeService(dbContextWrapperMock.Object, loggerMock.Object, catalogTypeRepositoryMock.Object);
+                catalogSubTypeRepositoryMock.Setup(h => h.Delete(It.IsAny<int>())).ReturnsAsync(id);
+                var catalogSubTypeService = new CatalogSubTypeService(dbContextWrapperMock.Object, loggerMock.Object, catalogSubTypeRepositoryMock.Object);
 
-            var result = await catalogTypeService.Delete(id);
-            Assert.NotNull(result);
-            Assert.Equal(id, result.Value);
-            catalogTypeRepositoryMock.Verify(x => x.Delete(It.IsAny<int>()), Times.Once());
-        }
+                var result = await catalogSubTypeService.Delete(id);
+                Assert.NotNull(result);
+                Assert.Equal(id, result.Value);
+                catalogSubTypeRepositoryMock.Verify(x => x.Delete(It.IsAny<int>()), Times.Once());
+            }
 
-        [Fact]
-        public async Task AddBrandAsync_ReturnsCatalogTypeIdFailed()
-        {
-            var dbContextWrapperMock = new Mock<IDbContextWrapper<ApplicationDbContext>>();
-            var loggerMock = new Mock<ILogger<BaseDataService<ApplicationDbContext>>>();
-            var catalogTypeRepositoryMock = new Mock<ICatalogTypeRepository>();
-            var typeName = "Test type";
-            var typeId = 1;
-            int? id = null;
+            [Fact]
+            public async Task AddSubTypeAsync_ReturnsIdFailed()
+            {
+                var dbContextWrapperMock = new Mock<IDbContextWrapper<ApplicationDbContext>>();
+                var loggerMock = new Mock<ILogger<BaseDataService<ApplicationDbContext>>>();
+                var catalogSubTypeRepositoryMock = new Mock<ICatalogSubTypeRepository>();
+                var subTypeName = "Test SubType";
+                var typeId = 1;
+                int? id = null;
 
-            var dbContextTransactionMock = new Mock<IDbContextTransaction>();
-            dbContextWrapperMock.Setup(s => s.BeginTransactionAsync(CancellationToken.None)).ReturnsAsync(dbContextTransactionMock.Object);
+                var dbContextTransactionMock = new Mock<IDbContextTransaction>();
+                dbContextWrapperMock.Setup(s => s.BeginTransactionAsync(CancellationToken.None)).ReturnsAsync(dbContextTransactionMock.Object);
 
-            catalogTypeRepositoryMock.Setup(h => h.Add(It.IsAny<int>(), It.IsAny<string>())).ReturnsAsync(id);
-            var catalogTypeService = new CatalogTypeService(dbContextWrapperMock.Object, loggerMock.Object, catalogTypeRepositoryMock.Object);
+                catalogSubTypeRepositoryMock.Setup(h => h.Add(It.IsAny<string>(), It.IsAny<int>())).ReturnsAsync(id);
+                var catalogSubTypeService = new CatalogSubTypeService(dbContextWrapperMock.Object, loggerMock.Object, catalogSubTypeRepositoryMock.Object);
 
-            var result = await catalogTypeService.Add(typeId, typeName);
-            result.Should().BeNull();
-        }
+                var result = await catalogSubTypeService.Add(subTypeName, typeId);
+                result.Should().BeNull();
+            }
 
-        [Fact]
-        public async Task UpdateTypedAsync_ReturnsCatalogTypeIdFailed()
-        {
-            var dbContextWrapperMock = new Mock<IDbContextWrapper<ApplicationDbContext>>();
-            var loggerMock = new Mock<ILogger<BaseDataService<ApplicationDbContext>>>();
-            var catalogTypeRepositoryMock = new Mock<ICatalogTypeRepository>();
-            var typeName = "Test type";
-            var typeId = 1;
-            int? id = null;
+            [Fact]
+            public async Task UpdateSubTypeAsync_ReturnsIntFailed()
+            {
+                var dbContextWrapperMock = new Mock<IDbContextWrapper<ApplicationDbContext>>();
+                var loggerMock = new Mock<ILogger<BaseDataService<ApplicationDbContext>>>();
+                var catalogSubTypeRepositoryMock = new Mock<ICatalogSubTypeRepository>();
+                var subTypeName = "Test SubType";
+                var subtypeId = 1;
+                var typeId = 1;
+                int? id = null;
 
-            var dbContextTransactionMock = new Mock<IDbContextTransaction>();
-            dbContextWrapperMock.Setup(s => s.BeginTransactionAsync(CancellationToken.None)).ReturnsAsync(dbContextTransactionMock.Object);
+                var dbContextTransactionMock = new Mock<IDbContextTransaction>();
+                dbContextWrapperMock.Setup(s => s.BeginTransactionAsync(CancellationToken.None)).ReturnsAsync(dbContextTransactionMock.Object);
 
-            catalogTypeRepositoryMock.Setup(h => h.Update(It.IsAny<int>(), It.IsAny<string>())).ReturnsAsync(id);
-            var catalogTypeService = new CatalogTypeService(dbContextWrapperMock.Object, loggerMock.Object, catalogTypeRepositoryMock.Object);
+                catalogSubTypeRepositoryMock.Setup(h => h.Update(It.IsAny<int>(), It.IsAny<string>(), It.IsAny<int>())).ReturnsAsync(id);
+                var catalogSubTypeService = new CatalogSubTypeService(dbContextWrapperMock.Object, loggerMock.Object, catalogSubTypeRepositoryMock.Object);
 
-            var result = await catalogTypeService.Update(typeId, typeName);
-            result.Should().BeNull();
-        }
+                var result = await catalogSubTypeService.Update(subtypeId, subTypeName, typeId);
+                result.Should().BeNull();
+            }
 
-        [Fact]
-        public async Task DeleteTypeAsync_ReturnsCatalogTypeIdFailed()
-        {
-            var dbContextWrapperMock = new Mock<IDbContextWrapper<ApplicationDbContext>>();
-            var loggerMock = new Mock<ILogger<BaseDataService<ApplicationDbContext>>>();
-            var catalogTypeRepositoryMock = new Mock<ICatalogTypeRepository>();
-            int? id = null;
-            var requestId = 1;
+            [Fact]
+            public async Task DeleteSubTypeAsync_ReturnsIntFailed()
+            {
+                var dbContextWrapperMock = new Mock<IDbContextWrapper<ApplicationDbContext>>();
+                var loggerMock = new Mock<ILogger<BaseDataService<ApplicationDbContext>>>();
+                var catalogSubTypeRepositoryMock = new Mock<ICatalogSubTypeRepository>();
+                int? id = null;
+                var requestId = 1;
 
-            var dbContextTransactionMock = new Mock<IDbContextTransaction>();
-            dbContextWrapperMock.Setup(s => s.BeginTransactionAsync(CancellationToken.None)).ReturnsAsync(dbContextTransactionMock.Object);
+                var dbContextTransactionMock = new Mock<IDbContextTransaction>();
+                dbContextWrapperMock.Setup(s => s.BeginTransactionAsync(CancellationToken.None)).ReturnsAsync(dbContextTransactionMock.Object);
 
-            catalogTypeRepositoryMock.Setup(h => h.Delete(It.IsAny<int>())).ReturnsAsync(id);
-            var catalogTypeService = new CatalogTypeService(dbContextWrapperMock.Object, loggerMock.Object, catalogTypeRepositoryMock.Object);
+                catalogSubTypeRepositoryMock.Setup(h => h.Delete(It.IsAny<int>())).ReturnsAsync(id);
+                var catalogSubTypeService = new CatalogSubTypeService(dbContextWrapperMock.Object, loggerMock.Object, catalogSubTypeRepositoryMock.Object);
 
-            var result = await catalogTypeService.Delete(requestId);
-            result.Should().BeNull();
-        }
+                var result = await catalogSubTypeService.Delete(requestId);
+                result.Should().BeNull();
+            }
     }
 }
