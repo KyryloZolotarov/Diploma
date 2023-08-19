@@ -22,7 +22,7 @@ namespace Catalog.Tests.Services
             var pageIndex = 0;
             var filter = new Dictionary<CatalogFilter, int>();
 
-            var pagingPaginatedItemsSuccess = new PaginatedItems<CatalogItem>()
+            PaginatedItems<CatalogItem>? pagingPaginatedItemsSuccess = new PaginatedItems<CatalogItem>()
             {
                 Data = new List<CatalogItem>()
             {
@@ -165,7 +165,7 @@ namespace Catalog.Tests.Services
 
             var result = await catalogService.GetCatalogBrandsAsync();
             Assert.NotNull(result);
-            catalogItemRepositoryMock.Verify(x => x.GetTypesAsync(), Times.Once());
+            catalogItemRepositoryMock.Verify(x => x.GetBrandsAsync(), Times.Once());
         }
 
         [Fact]
@@ -345,7 +345,7 @@ namespace Catalog.Tests.Services
             var dbContextTransactionMock = new Mock<IDbContextTransaction>();
             dbContextWrapperMock.Setup(s => s.BeginTransactionAsync(CancellationToken.None)).ReturnsAsync(dbContextTransactionMock.Object);
 
-            catalogItemRepositoryMock.Setup(h => h.GetSubTypesAsync()).Returns((Func<IEnumerable<CatalogTypeDto>>)null!);
+            catalogItemRepositoryMock.Setup(h => h.GetTypesAsync()).Returns((Func<IEnumerable<CatalogTypeDto>>)null!);
 
             var catalogService = new CatalogService(dbContextWrapperMock.Object, loggerMock.Object, catalogItemRepositoryMock.Object, mapperMock.Object);
             var result = await catalogService.GetCatalogTypesAsync();
