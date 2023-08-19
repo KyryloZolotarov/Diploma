@@ -22,7 +22,7 @@ namespace Catalog.Tests.Services
             var pageIndex = 0;
             var filter = new Dictionary<CatalogFilter, int>();
 
-            PaginatedItems<CatalogItem>? pagingPaginatedItemsSuccess = new PaginatedItems<CatalogItem>()
+            var pagingPaginatedItemsSuccess = new PaginatedItems<CatalogItem>()
             {
                 Data = new List<CatalogItem>()
             {
