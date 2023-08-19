@@ -50,7 +50,7 @@ namespace Catalog.Tests.Services
             var dbContextTransactionMock = new Mock<IDbContextTransaction>();
             dbContextWrapperMock.Setup(s => s.BeginTransactionAsync(CancellationToken.None)).ReturnsAsync(dbContextTransactionMock.Object);
 
-            catalogItemRepositoryMock.Setup(h => h.GetByPageAsync(It.IsAny<int>(), It.IsAny<int>(), It.IsAny<int>(), It.IsAny<int>(), It.IsAny<int>(), It.IsAny<int>()))
+            catalogItemRepositoryMock.Setup(h => h.GetByPageAsync(It.IsAny<int>(), It.IsAny<int>(), It.IsAny<int?>(), It.IsAny<int?>(), It.IsAny<int?>(), It.IsAny<int?>()))
                 .ReturnsAsync(pagingPaginatedItemsSuccess);
             var catalogService = new CatalogService(dbContextWrapperMock.Object, loggerMock.Object, catalogItemRepositoryMock.Object, mapperMock.Object);
 
@@ -62,7 +62,7 @@ namespace Catalog.Tests.Services
             }
 
             Assert.Equal(pageSize, result.PageSize);
-            catalogItemRepositoryMock.Verify(x => x.GetByPageAsync(It.IsAny<int>(), It.IsAny<int>(), It.IsAny<int>(), It.IsAny<int>(), It.IsAny<int>(), It.IsAny<int>()), Times.Once());
+            catalogItemRepositoryMock.Verify(x => x.GetByPageAsync(It.IsAny<int>(), It.IsAny<int>(), It.IsAny<int?>(), It.IsAny<int?>(), It.IsAny<int?>(), It.IsAny<int?>()), Times.Once());
         }
 
         [Fact]
