@@ -19,19 +19,16 @@ namespace IdentityServer
         {
             return new ApiResource[]
             {
-                new ApiResource("alevelwebsite.com")
-                {
-                    Scopes = new List<Scope>
-                    {
-                        new Scope("mvc")
-                    },
-                },
                 new ApiResource("catalog")
                 {
                     Scopes = new List<Scope>
                     {
                         new Scope("catalog.catalogbff"),
                         new Scope("catalog.catalogitem"),
+                        new Scope("catalog.catalogbrand"),
+                        new Scope("catalog.catalogtype"),
+                        new Scope("catalog.catalogsubtype"),
+                        new Scope("catalog.catalogmodel")
                     },
                 }
             };
@@ -41,17 +38,6 @@ namespace IdentityServer
         {
             return new[]
             {
-                new Client
-                {
-                    ClientId = "mvc_pkce",
-                    ClientName = "MVC PKCE Client",
-                    AllowedGrantTypes = GrantTypes.Code,
-                    ClientSecrets = {new Secret("secret".Sha256())},
-                    RedirectUris = { $"{configuration["MvcUrl"]}/signin-oidc"},
-                    AllowedScopes = {"openid", "profile", "mvc"},
-                    RequirePkce = true,
-                    RequireConsent = false
-                },
                 new Client
                 {
                     ClientId = "catalog",
@@ -77,22 +63,12 @@ namespace IdentityServer
 
                     AllowedScopes =
                     {
-                        "mvc", "catalog.catalogbff", "catalog.catalogitem"
-                    }
-                },
-                new Client
-                {
-                    ClientId = "basketswaggerui",
-                    ClientName = "Basket Swagger UI",
-                    AllowedGrantTypes = GrantTypes.Implicit,
-                    AllowAccessTokensViaBrowser = true,
-
-                    RedirectUris = { $"{configuration["BasketApi"]}/swagger/oauth2-redirect.html" },
-                    PostLogoutRedirectUris = { $"{configuration["BasketApi"]}/swagger/" },
-
-                    AllowedScopes =
-                    {
-                        "mvc"
+                        "catalog.catalogbff",
+                        "catalog.catalogitem",
+                        "catalog.catalogbrand",
+                        "catalog.catalogtype",
+                        "catalog.catalogsubtype",
+                        "catalog.catalogmodel"
                     }
                 },
             };

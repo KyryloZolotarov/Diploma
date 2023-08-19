@@ -45,9 +45,12 @@ namespace Catalog.Host
                             TokenUrl = new Uri($"{authority}/connect/token"),
                             Scopes = new Dictionary<string, string>()
                 {
-                    { "mvc", "website" },
                     { "catalog.catalogbff", "catalog.catalogbff" },
-                    { "catalog.catalogitem", "catalog.catalogitem" }
+                    { "catalog.catalogitem", "catalog.catalogitem" },
+                    { "catalog.catalogbrand", "catalog.catalogbrand" },
+                    { "catalog.catalogtype", "catalog.catalogtype" },
+                    { "catalog.catalogsubtype", "catalog.catalogsubtype" },
+                    { "catalog.catalogmodel", "catalog.catalogmodel" }
                 }
                         }
                     }
