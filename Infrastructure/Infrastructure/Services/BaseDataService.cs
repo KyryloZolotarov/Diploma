@@ -1,3 +1,4 @@
+using Infrastructure.Exceptions;
 using Infrastructure.Services.Interfaces;
 
 namespace Infrastructure.Services;
@@ -30,6 +31,12 @@ public abstract class BaseDataService<T>
 
             await transaction.CommitAsync(cancellationToken);
         }
+        catch (BusinessException ex)
+        {
+            await transaction.RollbackAsync(cancellationToken);
+            _logger.LogError(ex, $"transaction is rollbacked");
+            throw;
+        }
         catch (Exception ex)
         {
             await transaction.RollbackAsync(cancellationToken);
@@ -48,6 +55,12 @@ public abstract class BaseDataService<T>
             await transaction.CommitAsync(cancellationToken);
 
             return result;
+        }
+        catch (BusinessException ex)
+        {
+            await transaction.RollbackAsync(cancellationToken);
+            _logger.LogError(ex, $"transaction is rollbacked");
+            throw;
         }
         catch (Exception ex)
         {

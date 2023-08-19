@@ -5,7 +5,7 @@ namespace Catalog.Host.Models.Requests.AddRequsts
     public class AddBrandRequest
     {
         [Required]
-        [StringLength(20)]
+        [MaxLength(30)]
         public string BrandName { get; set; } = string.Empty;
     }
 }
