@@ -10,6 +10,7 @@ namespace Catalog.Host.Controllers
 {
     [ApiController]
     [Authorize(Policy = AuthPolicy.AllowClientPolicy)]
+    [Scope("catalog.catalogmodel")]
     [Route(ComponentDefaults.DefaultRoute)]
     public class CatalogModelController : Controller
     {

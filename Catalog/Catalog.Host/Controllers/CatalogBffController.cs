@@ -11,6 +11,7 @@ namespace Catalog.Host.Controllers
 {
         [ApiController]
         [Authorize(Policy = AuthPolicy.AllowClientPolicy)]
+        [Scope ("catalog.catalogbff")]
         [Route(ComponentDefaults.DefaultRoute)]
         public class CatalogBffController : ControllerBase
         {
