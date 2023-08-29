@@ -10,8 +10,8 @@ using Microsoft.AspNetCore.Mvc;
 namespace Catalog.Host.Controllers
 {
         [ApiController]
-        [Authorize(Policy = AuthPolicy.AllowClientPolicy)]
-        [Scope ("catalog.catalogbff")]
+        [Authorize(Policy = AuthPolicy.AllowEndUserPolicy)]
+        [Scope("catalog.catalogbff")]
         [Route(ComponentDefaults.DefaultRoute)]
         public class CatalogBffController : ControllerBase
         {
@@ -26,6 +26,7 @@ namespace Catalog.Host.Controllers
                 _catalogService = catalogService;
             }
 
+            [AllowAnonymous]
             [HttpPost]
             [ProducesResponseType(typeof(PaginatedItemsResponse<CatalogItemDto>), (int)HttpStatusCode.OK)]
             public async Task<IActionResult> Items(PaginatedItemsRequest<CatalogFilter> request)
@@ -42,6 +43,7 @@ namespace Catalog.Host.Controllers
                 return Ok(result);
             }
 
+            [AllowAnonymous]
             [HttpGet]
             [ProducesResponseType(typeof(IEnumerable<CatalogTypeDto>), (int)HttpStatusCode.OK)]
             public async Task<IActionResult> GetTypes()
@@ -50,6 +52,7 @@ namespace Catalog.Host.Controllers
                 return Ok(result);
             }
 
+            [AllowAnonymous]
             [HttpGet]
             [ProducesResponseType(typeof(IEnumerable<CatalogBrandDto>), (int)HttpStatusCode.OK)]
             public async Task<IActionResult> GetBrands()
@@ -58,6 +61,7 @@ namespace Catalog.Host.Controllers
                 return Ok(result);
             }
 
+            [AllowAnonymous]
             [HttpGet]
             [ProducesResponseType(typeof(IEnumerable<CatalogSubTypeDto>), (int)HttpStatusCode.OK)]
             public async Task<IActionResult> GetSubTypes()
@@ -66,6 +70,7 @@ namespace Catalog.Host.Controllers
             return Ok(result);
             }
 
+            [AllowAnonymous]
             [HttpGet]
             [ProducesResponseType(typeof(IEnumerable<CatalogModelDto>), (int)HttpStatusCode.OK)]
             public async Task<IActionResult> GetModels()

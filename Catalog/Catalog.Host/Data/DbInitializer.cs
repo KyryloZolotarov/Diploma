@@ -95,18 +95,18 @@ public static class DbInitializer
     {
         return new List<CatalogItem>()
         {
-            new CatalogItem { CatalogSubTypeId = 2, CatalogModelId = 2, AvailableStock = 100, Description = "some description", Name = ".NET Bot Black Hoodie", Price = 19.5M, PictureFileName = "1.png" },
-            new CatalogItem { CatalogSubTypeId = 1, CatalogModelId = 2, AvailableStock = 100, Description = "some description", Name = ".NET Black & White Mug", Price = 8.50M, PictureFileName = "2.png" },
-            new CatalogItem { CatalogSubTypeId = 2, CatalogModelId = 5, AvailableStock = 100, Description = "some description", Name = "Prism White T-Shirt", Price = 12, PictureFileName = "3.png" },
-            new CatalogItem { CatalogSubTypeId = 2, CatalogModelId = 2, AvailableStock = 100, Description = "some description", Name = ".NET Foundation T-shirt", Price = 12, PictureFileName = "4.png" },
-            new CatalogItem { CatalogSubTypeId = 3, CatalogModelId = 5, AvailableStock = 100, Description = "some description", Name = "Roslyn Red Sheet", Price = 8.5M, PictureFileName = "5.png" },
-            new CatalogItem { CatalogSubTypeId = 2, CatalogModelId = 2, AvailableStock = 100, Description = "some description", Name = ".NET Blue Hoodie", Price = 12, PictureFileName = "6.png" },
-            new CatalogItem { CatalogSubTypeId = 2, CatalogModelId = 5, AvailableStock = 100, Description = "some description", Name = "Roslyn Red T-Shirt", Price = 12, PictureFileName = "7.png" },
-            new CatalogItem { CatalogSubTypeId = 2, CatalogModelId = 5, AvailableStock = 100, Description = "some description", Name = "Kudu Purple Hoodie", Price = 8.5M, PictureFileName = "8.png" },
-            new CatalogItem { CatalogSubTypeId = 1, CatalogModelId = 5, AvailableStock = 100, Description = "some description", Name = "Cup<T> White Mug", Price = 12, PictureFileName = "9.png" },
-            new CatalogItem { CatalogSubTypeId = 3, CatalogModelId = 2, AvailableStock = 100, Description = "some description", Name = ".NET Foundation Sheet", Price = 12, PictureFileName = "10.png" },
-            new CatalogItem { CatalogSubTypeId = 3, CatalogModelId = 2, AvailableStock = 100, Description = "some description", Name = "Cup<T> Sheet", Price = 8.5M, PictureFileName = "11.png" },
-            new CatalogItem { CatalogSubTypeId = 2, CatalogModelId = 5, AvailableStock = 100, Description = "some description", Name = "Prism White TShirt", Price = 12, PictureFileName = "12.png" },
+            new CatalogItem { CatalogSubTypeId = 2, CatalogModelId = 2, AvailableStock = 100, Description = "some description", Name = "Crankshaft", Price = 500, PictureFileName = "1.png" },
+            new CatalogItem { CatalogSubTypeId = 1, CatalogModelId = 2, AvailableStock = 100, Description = "some description", Name = "Alternator Belt", Price = 10, PictureFileName = "2.png" },
+            new CatalogItem { CatalogSubTypeId = 2, CatalogModelId = 5, AvailableStock = 100, Description = "some description", Name = "Cylinder Block", Price = 1000, PictureFileName = "3.png" },
+            new CatalogItem { CatalogSubTypeId = 2, CatalogModelId = 2, AvailableStock = 100, Description = "some description", Name = "Piston", Price = 50, PictureFileName = "4.png" },
+            new CatalogItem { CatalogSubTypeId = 3, CatalogModelId = 5, AvailableStock = 100, Description = "some description", Name = "Hood", Price = 300, PictureFileName = "5.png" },
+            new CatalogItem { CatalogSubTypeId = 2, CatalogModelId = 2, AvailableStock = 100, Description = "some description", Name = "Oil seal", Price = 12, PictureFileName = "6.png" },
+            new CatalogItem { CatalogSubTypeId = 2, CatalogModelId = 3, AvailableStock = 100, Description = "some description", Name = "Connecting rod", Price = 80, PictureFileName = "7.png" },
+            new CatalogItem { CatalogSubTypeId = 2, CatalogModelId = 4, AvailableStock = 100, Description = "some description", Name = "Connecting rod bearings set", Price = 20, PictureFileName = "8.png" },
+            new CatalogItem { CatalogSubTypeId = 1, CatalogModelId = 5, AvailableStock = 100, Description = "some description", Name = "Timing Belt", Price = 20, PictureFileName = "9.png" },
+            new CatalogItem { CatalogSubTypeId = 3, CatalogModelId = 1, AvailableStock = 100, Description = "some description", Name = "Bumper", Price = 300, PictureFileName = "10.png" },
+            new CatalogItem { CatalogSubTypeId = 3, CatalogModelId = 1, AvailableStock = 100, Description = "some description", Name = "Fender Left", Price = 150, PictureFileName = "11.png" },
+            new CatalogItem { CatalogSubTypeId = 2, CatalogModelId = 5, AvailableStock = 100, Description = "some description", Name = "Root Bearings set", Price = 40, PictureFileName = "12.png" },
         };
     }
 }

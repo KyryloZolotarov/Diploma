@@ -44,14 +44,14 @@ namespace Catalog.Host
                             AuthorizationUrl = new Uri($"{authority}/connect/authorize"),
                             TokenUrl = new Uri($"{authority}/connect/token"),
                             Scopes = new Dictionary<string, string>()
-                {
-                    { "catalog.catalogbff", "catalog.catalogbff" },
-                    { "catalog.catalogitem", "catalog.catalogitem" },
-                    { "catalog.catalogbrand", "catalog.catalogbrand" },
-                    { "catalog.catalogtype", "catalog.catalogtype" },
-                    { "catalog.catalogsubtype", "catalog.catalogsubtype" },
-                    { "catalog.catalogmodel", "catalog.catalogmodel" }
-                }
+                            {
+                                { "catalog.catalogbff", "catalog.catalogbff" },
+                                { "catalog.catalogitem", "catalog.catalogitem" },
+                                { "catalog.catalogbrand", "catalog.catalogbrand" },
+                                { "catalog.catalogtype", "catalog.catalogtype" },
+                                { "catalog.catalogsubtype", "catalog.catalogsubtype" },
+                                { "catalog.catalogmodel", "catalog.catalogmodel" }
+                            }
                         }
                     }
                 });
@@ -95,12 +95,12 @@ namespace Catalog.Host
             var app = builder.Build();
 
             app.UseSwagger()
-    .UseSwaggerUI(setup =>
-    {
-        setup.SwaggerEndpoint($"{configuration["PathBase"]}/swagger/v1/swagger.json", "Catalog.API V1");
-        setup.OAuthClientId("catalogswaggerui");
-        setup.OAuthAppName("Catalog Swagger UI");
-    });
+            .UseSwaggerUI(setup =>
+            {
+                setup.SwaggerEndpoint($"{configuration["PathBase"]}/swagger/v1/swagger.json", "Catalog.API V1");
+                setup.OAuthClientId("catalogswaggerui");
+                setup.OAuthAppName("Catalog Swagger UI");
+            });
 
             app.UseRouting();
             app.UseCors("CorsPolicy");
