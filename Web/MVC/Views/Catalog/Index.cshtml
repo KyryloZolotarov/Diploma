@@ -43,12 +43,12 @@
     {
     <partial name="_pagination" for="PaginationInfo" />
 
-    <div class="esh-catalog-items row">
+        <div class="esh-catalog-items row">
         @foreach (var catalogItem in Model.CatalogItems)
             {
-        <div class="esh-catalog-item col-md-4">
-            <partial name="_product" model="catalogItem" />
-        </div>
+                <div class="esh-catalog-item col-md-4">
+                    <partial name="_product" model="catalogItem" />
+                </div>
             }
     </div>
 

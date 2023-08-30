@@ -5,6 +5,7 @@ using MVC.ViewModels;
 
 namespace MVC.Controllers
 {
+    [Authorize]
     public class AccountController : Controller
     {
         private readonly ILogger<AccountController> _logger;

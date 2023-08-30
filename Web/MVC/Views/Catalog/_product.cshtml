@@ -2,14 +2,17 @@
 
 
 <form>
-
-    <img class="esh-catalog-thumbnail" src="@Model.PictureUrl" />
-
-    <div class="esh-catalog-name">
-        <span>@Model.Name</span>
-    </div>
-    <div class="esh-catalog-price">
-        <span>@Model.Price.ToString("N2")</span>
+    <div class="card" style="width:100%">
+        <div style="height:300px;  vertical-align: middle">
+            <img class="esh-catalog-thumbnail" src="@Model.PictureUrl" alt="Card image">
+        </div>        
+        <div class="card-body">
+            <p class="card-text">@Model.Name</p>
+            <div class="esh-catalog-price">
+                <span>@Model.Price.ToString("N2")</span>
+            </div>
+            <a href="#" class="btn btn-primary">Details</a>
+        </div>
     </div>
     <input type="hidden" asp-for="@Model.Id" name="id" />
 </form>
