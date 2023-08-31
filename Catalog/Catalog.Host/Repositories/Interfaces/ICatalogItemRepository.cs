@@ -10,9 +10,9 @@ namespace Catalog.Host.Repositories.Interfaces
         Task<int?> Add(string name, string description, decimal price, int availableStock, string pictureFileName, int catalogSubTypeId, int catalogModelId, string partNumber);
         Task<int?> Update(int id, string name, string description, decimal price, int availableStock, string pictureFileName, int catalogSubTypeId, int catalogModelId, string partNumber);
         Task<int?> Delete(int id);
-        Task<IEnumerable<CatalogType>> GetTypesAsync();
-        Task<IEnumerable<CatalogBrand>> GetBrandsAsync();
-        Task<IEnumerable<CatalogSubType>> GetSubTypesAsync();
-        Task<IEnumerable<CatalogModel>> GetModelsAsync();
+        Task<List<CatalogType>> GetTypesAsync();
+        Task<List<CatalogBrand>> GetBrandsAsync();
+        Task<IEnumerable<CatalogSubType>> GetSubTypesAsync(int id);
+        Task<IEnumerable<CatalogModel>> GetModelsAsync(int id);
     }
 }

@@ -96,19 +96,19 @@ namespace Catalog.Host.Services
             });
         }
 
-        public async Task<IEnumerable<CatalogSubTypeDto>> GetCatalogSubTypesAsync()
+        public async Task<IEnumerable<CatalogSubTypeDto>> GetCatalogSubTypesAsync(int id)
         {
             return await ExecuteSafeAsync(async () =>
             {
-                return (await _catalogItemRepository.GetSubTypesAsync()).Select(s => _mapper.Map<CatalogSubTypeDto>(s)).ToList();
+                return (await _catalogItemRepository.GetSubTypesAsync(id)).Select(s => _mapper.Map<CatalogSubTypeDto>(s)).ToList();
             });
         }
 
-        public async Task<IEnumerable<CatalogModelDto>> GetCatalogModelsAsync()
+        public async Task<IEnumerable<CatalogModelDto>> GetCatalogModelsAsync(int id)
         {
             return await ExecuteSafeAsync(async () =>
             {
-                return (await _catalogItemRepository.GetModelsAsync()).Select(s => _mapper.Map<CatalogModelDto>(s)).ToList();
+                return (await _catalogItemRepository.GetModelsAsync(id)).Select(s => _mapper.Map<CatalogModelDto>(s)).ToList();
             });
         }
     }

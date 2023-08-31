@@ -60,8 +60,8 @@ public static class DbInitializer
     {
         return new List<CatalogSubType>()
         {
-            new CatalogSubType() { SubType = "Engine Belts", CatalogTypeId = 1 },
-            new CatalogSubType() { SubType = "Engine Block", CatalogTypeId = 1 },
+            new CatalogSubType() { SubType = "Engine Belts", CatalogTypeId = 2 },
+            new CatalogSubType() { SubType = "Engine Block", CatalogTypeId = 2 },
             new CatalogSubType() { SubType = "Front", CatalogTypeId = 4 },
             new CatalogSubType() { SubType = "Back", CatalogTypeId = 4 },
             new CatalogSubType() { SubType = "Body Electronics", CatalogTypeId = 3 }
@@ -72,7 +72,7 @@ public static class DbInitializer
     {
         return new List<CatalogModel>()
         {
-            new CatalogModel() { Model = "3", CatalogBrandId = 1 },
+            new CatalogModel() { Model = "3", CatalogBrandId = 2 },
             new CatalogModel() { Model = "5", CatalogBrandId = 5 },
             new CatalogModel() { Model = "Corolla", CatalogBrandId = 3 },
             new CatalogModel() { Model = "Camry", CatalogBrandId = 3 },

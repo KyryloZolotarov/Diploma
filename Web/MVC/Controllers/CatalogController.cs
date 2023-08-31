@@ -1,4 +1,6 @@
-﻿using MVC.Services.Interfaces;
+﻿using Microsoft.AspNetCore.Mvc.Rendering;
+using MVC.Services.Interfaces;
+using MVC.ViewModels;
 using MVC.ViewModels.CatalogViewModels;
 using MVC.ViewModels.Pagination;
 
@@ -30,13 +32,12 @@ public class CatalogController : Controller
             TotalItems = catalog.Count,
             TotalPages = (int)Math.Ceiling((decimal)catalog.Count / itemsPage.Value)
         };
+
         var vm = new IndexViewModel()
         {
             CatalogItems = catalog.Data,
             Brands = (await _catalogService.GetBrands()).Select(x => new SelectListItem(x.Brand, x.Id.ToString())).Append(new SelectListItem("All", null)),
-            Models = (await _catalogService.GetModels()).Select(x => new SelectListItem(x.Model, x.Id.ToString())).Append(new SelectListItem("All", null)),
             Types = (await _catalogService.GetTypes()).Select(x => new SelectListItem(x.Type, x.Id.ToString())).Append(new SelectListItem("All", null)),
-            SubTypes = (await _catalogService.GetSubTypes()).Select(x => new SelectListItem(x.SubType, x.Id.ToString())).Append(new SelectListItem("All", null)),
             PaginationInfo = info
         };
 
@@ -44,5 +45,21 @@ public class CatalogController : Controller
         vm.PaginationInfo.Previous = (vm.PaginationInfo.ActualPage == 0) ? "is-disabled" : "";
 
         return View(vm);
+    }
+
+    public async Task<IActionResult> GetModels(int? selectedBrand)
+    {
+        var models = await _catalogService.GetModelsByBrand(selectedBrand);
+        var modelItems = models.Select(x => new SelectListItem { Value = x.Id.ToString(), Text = x.Model }).ToList();
+        modelItems.Append(new SelectListItem { Value = "", Text = "All" });
+        return Json(modelItems);
+    }
+
+    public async Task<IActionResult> GetSubTypes(int? selectedType)
+    {
+        var models = await _catalogService.GetSubTypesByType(selectedType);
+        var modelItems = models.Select(x => new SelectListItem { Value = x.Id.ToString(), Text = x.SubType }).ToList();
+        modelItems.Append(new SelectListItem { Value = "", Text = "All" });
+        return Json(modelItems);
     }
 }

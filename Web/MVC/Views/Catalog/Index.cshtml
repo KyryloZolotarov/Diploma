@@ -4,60 +4,110 @@
     ViewData["Title"] = "Catalog";
 }
 <section class="esh-catalog-hero">
-    <div class="container">
+    <div class="container-fluid">
     </div>
 </section>
 
 <section class="esh-catalog-filters">
-    <div class="container">
+    <div class="container-fluid">
         <form asp-action="Index" asp-controller="Catalog" method="post">
             <label class="esh-catalog-label" data-title="brand">
-                <select asp-for="@Model.BrandFilterApplied" asp-items="@Model.Brands" class="esh-catalog-filter"></select>
+                <select id="brandDropdown" asp-for="@Model.BrandFilterApplied" asp-items="@Model.Brands" class="esh-catalog-filter"></select>
             </label>
             <label class="esh-catalog-label" data-title="model">
-                <select asp-for="@Model.ModelFilterApplied" asp-items="@Model.Models" class="esh-catalog-filter"></select>
+                <select id="modelDropdown" asp-for="@Model.ModelFilterApplied" class="esh-catalog-filter">
+                    <option value="">All</option>
+                </select>
             </label>
             <label class="esh-catalog-label" data-title="type">
-                <select asp-for="@Model.TypesFilterApplied" asp-items="@Model.Types" class="esh-catalog-filter"></select>
+                <select id="typeDropdown" asp-for="@Model.TypesFilterApplied" asp-items="@Model.Types" class="esh-catalog-filter"></select>
             </label>
             <label class="esh-catalog-label" data-title="subtype">
-                <select asp-for="@Model.SubTypeFilterApplied" asp-items="@Model.SubTypes" class="esh-catalog-filter"></select>
+                <select id="subTypeDropdown" asp-for="@Model.SubTypeFilterApplied" class="esh-catalog-filter">
+                    <option value="">All</option>
+                </select>
             </label>
             <input class="esh-catalog-send" type="image" src="~/images/arrow-right.svg" />
         </form>
     </div>
 </section>
 
-<div class="container">
+<div class="container-fluid">
     <div class="row">
         <br />
         @if(ViewBag.BasketInoperativeMsg != null)
         {
-        <div class="alert alert-warning" role="alert">
-            &nbsp;@ViewBag.BasketInoperativeMsg
-        </div>
+            <div class="alert alert-warning" role="alert">
+                &nbsp;@ViewBag.BasketInoperativeMsg
+            </div>
         }
     </div>
 
-    @if (Model.CatalogItems.Count() > 0)
+    @if (Model.CatalogItems.Any())
     {
-    <partial name="_pagination" for="PaginationInfo" />
+        <partial name="_pagination" for="PaginationInfo" />
 
         <div class="esh-catalog-items row">
-        @foreach (var catalogItem in Model.CatalogItems)
+            @foreach (var catalogItem in Model.CatalogItems)
             {
                 <div class="esh-catalog-item col-md-4">
                     <partial name="_product" model="catalogItem" />
                 </div>
             }
-    </div>
+        </div>
 
-    <partial name="_pagination" for="PaginationInfo" />
+        <partial name="_pagination" for="PaginationInfo" />
     }
     else
     {
-    <div class="esh-catalog-items row">
-        THERE ARE NO RESULTS THAT MATCH YOUR SEARCH
-    </div>
+        <div class="esh-catalog-items row">
+            THERE ARE NO RESULTS THAT MATCH YOUR SEARCH
+        </div>
     }
 </div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            $("#brandDropdown").change(function () {
+                var selectedBrand = $(this).val();
+                $.ajax({
+                    url: "/Catalog/GetModels",
+                    type: "GET",
+                    data: { selectedBrand: selectedBrand },
+                    success: function (data) {
+                        $("#modelDropdown").empty();
+                        $.each(data, function (index, item) {
+                            $("#modelDropdown").append($('<option>', {
+                                value: item.value,
+                                text: item.text
+                            }));
+                        });
+                    }
+                });
+            });
+        });
+    </script>
+
+    <script>
+        $(document).ready(function () {
+            $("#typeDropdown").change(function () {
+                var selectedType = $(this).val();
+                $.ajax({
+                    url: "/Catalog/GetSubTypes",
+                    type: "GET",
+                    data: { selectedType: selectedType },
+                    success: function (data) {
+                        $("#subTypeDropdown").empty();
+                        $.each(data, function (index, item) {
+                            $("#subTypeDropdown").append($('<option>', {
+                                value: item.value,
+                                text: item.text
+                            }));
+                        });
+                    }
+                });
+            });
+        });
+    </script>
+}

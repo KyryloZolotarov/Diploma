@@ -194,12 +194,12 @@ namespace Catalog.Tests.Services
             var dbContextTransactionMock = new Mock<IDbContextTransaction>();
             dbContextWrapperMock.Setup(s => s.BeginTransactionAsync(CancellationToken.None)).ReturnsAsync(dbContextTransactionMock.Object);
 
-            catalogItemRepositoryMock.Setup(h => h.GetSubTypesAsync()).ReturnsAsync(subTypesSuccess);
+            catalogItemRepositoryMock.Setup(h => h.GetSubTypesAsync(0)).ReturnsAsync(subTypesSuccess);
             var catalogService = new CatalogService(dbContextWrapperMock.Object, loggerMock.Object, catalogItemRepositoryMock.Object, mapperMock.Object);
 
-            var result = await catalogService.GetCatalogSubTypesAsync();
+            var result = await catalogService.GetCatalogSubTypesAsync(0);
             Assert.NotNull(result);
-            catalogItemRepositoryMock.Verify(x => x.GetSubTypesAsync(), Times.Once());
+            catalogItemRepositoryMock.Verify(x => x.GetSubTypesAsync(0), Times.Once());
         }
 
         [Fact]
@@ -228,12 +228,12 @@ namespace Catalog.Tests.Services
             var dbContextTransactionMock = new Mock<IDbContextTransaction>();
             dbContextWrapperMock.Setup(s => s.BeginTransactionAsync(CancellationToken.None)).ReturnsAsync(dbContextTransactionMock.Object);
 
-            catalogItemRepositoryMock.Setup(h => h.GetModelsAsync()).ReturnsAsync(modelsSuccess);
+            catalogItemRepositoryMock.Setup(h => h.GetModelsAsync(0)).ReturnsAsync(modelsSuccess);
             var catalogService = new CatalogService(dbContextWrapperMock.Object, loggerMock.Object, catalogItemRepositoryMock.Object, mapperMock.Object);
 
-            var result = await catalogService.GetCatalogModelsAsync();
+            var result = await catalogService.GetCatalogModelsAsync(0);
             Assert.NotNull(result);
-            catalogItemRepositoryMock.Verify(x => x.GetModelsAsync(), Times.Once());
+            catalogItemRepositoryMock.Verify(x => x.GetModelsAsync(0), Times.Once());
         }
 
         [Fact]
@@ -301,10 +301,10 @@ namespace Catalog.Tests.Services
             var dbContextTransactionMock = new Mock<IDbContextTransaction>();
             dbContextWrapperMock.Setup(s => s.BeginTransactionAsync(CancellationToken.None)).ReturnsAsync(dbContextTransactionMock.Object);
 
-            catalogItemRepositoryMock.Setup(h => h.GetModelsAsync()).Returns((Func<IEnumerable<CatalogSubTypeDto>>)null!);
+            catalogItemRepositoryMock.Setup(h => h.GetModelsAsync(0)).Returns((Func<IEnumerable<CatalogSubTypeDto>>)null!);
 
             var catalogService = new CatalogService(dbContextWrapperMock.Object, loggerMock.Object, catalogItemRepositoryMock.Object, mapperMock.Object);
-            var result = await catalogService.GetCatalogModelsAsync();
+            var result = await catalogService.GetCatalogModelsAsync(0);
             result.Should().BeNull();
         }
 
@@ -323,10 +323,10 @@ namespace Catalog.Tests.Services
             var dbContextTransactionMock = new Mock<IDbContextTransaction>();
             dbContextWrapperMock.Setup(s => s.BeginTransactionAsync(CancellationToken.None)).ReturnsAsync(dbContextTransactionMock.Object);
 
-            catalogItemRepositoryMock.Setup(h => h.GetSubTypesAsync()).Returns((Func<IEnumerable<CatalogSubTypeDto>>)null!);
+            catalogItemRepositoryMock.Setup(h => h.GetSubTypesAsync(0)).Returns((Func<IEnumerable<CatalogSubTypeDto>>)null!);
 
             var catalogService = new CatalogService(dbContextWrapperMock.Object, loggerMock.Object, catalogItemRepositoryMock.Object, mapperMock.Object);
-            var result = await catalogService.GetCatalogSubTypesAsync();
+            var result = await catalogService.GetCatalogSubTypesAsync(0);
             result.Should().BeNull();
         }
 

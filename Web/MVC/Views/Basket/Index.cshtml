@@ -1,0 +1,52 @@
+﻿@using Microsoft.EntityFrameworkCore
+@model MVC.ViewModels.BasketViewModels.IndexViewModel
+
+@{
+    ViewData["Title"] = "Basket";
+}
+<div class="container-fluid">
+    <div class="row">
+        <br />
+        @if(ViewBag.BasketInoperativeMsg != null)
+        {
+            <div class="alert alert-warning" role="alert">
+                &nbsp;@ViewBag.BasketInoperativeMsg
+            </div>
+        }
+    </div>
+
+    @if (Model.CatalogItems.Count() > 0)
+    {
+
+        <div class="container-fluid">          
+            <table class="table">
+            <thead>
+            <tr>
+                <th>Part Name</th>
+                <th>Brand</th>
+                <th>Model</th>
+                <th>Price</th>
+            </tr>
+            </thead>
+            <tbody>
+
+            @foreach (var catalogItem in Model.CatalogItems)
+            {
+                <tr>
+                    <td>@catalogItem.Name</td>
+                    <td>@catalogItem.CatalogModel.CatalogBrand.Brand</td>
+                    <td>@catalogItem.CatalogModel.Model</td>
+                    <td>@catalogItem.Price.ToString()$"</td>
+                </tr>
+            }
+            </tbody>
+            </table>
+        </div>
+    }
+    else
+    {
+        <div class="esh-catalog-items row">
+            Your basket is empty
+        </div>
+    }
+</div>

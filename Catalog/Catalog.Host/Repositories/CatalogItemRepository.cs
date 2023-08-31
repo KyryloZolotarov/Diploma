@@ -165,7 +165,7 @@ namespace Catalog.Host.Repositories
             }
         }
 
-        public async Task<IEnumerable<CatalogType>> GetTypesAsync()
+        public async Task<List<CatalogType>> GetTypesAsync()
         {
             return await _dbContext.CatalogItems
                 .Select(h => h.CatalogSubType.CatalogType)
@@ -173,7 +173,7 @@ namespace Catalog.Host.Repositories
                 .ToListAsync();
         }
 
-        public async Task<IEnumerable<CatalogBrand>> GetBrandsAsync()
+        public async Task<List<CatalogBrand>> GetBrandsAsync()
         {
             return await _dbContext.CatalogItems
                 .Select(h => h.CatalogModel.CatalogBrand)
@@ -181,18 +181,20 @@ namespace Catalog.Host.Repositories
                 .ToListAsync();
         }
 
-        public async Task<IEnumerable<CatalogSubType>> GetSubTypesAsync()
+        public async Task<IEnumerable<CatalogSubType>> GetSubTypesAsync(int id)
         {
             return await _dbContext.CatalogItems
                 .Select(h => h.CatalogSubType)
+                .Where(x => x.CatalogTypeId == id)
                 .Distinct()
                 .ToListAsync();
         }
 
-        public async Task<IEnumerable<CatalogModel>> GetModelsAsync()
+        public async Task<IEnumerable<CatalogModel>> GetModelsAsync(int id)
         {
             return await _dbContext.CatalogItems
                 .Select(h => h.CatalogModel)
+                .Where(x => x.CatalogBrandId == id)
                 .Distinct()
                 .ToListAsync();
         }

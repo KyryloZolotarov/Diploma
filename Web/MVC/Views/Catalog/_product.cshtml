@@ -1,18 +1,44 @@
 ﻿@model CatalogItem
 
 
-<form>
-    <div class="card" style="width:100%">
-        <div style="height:300px;  vertical-align: middle">
-            <img class="esh-catalog-thumbnail" src="@Model.PictureUrl" alt="Card image">
-        </div>        
-        <div class="card-body">
-            <p class="card-text">@Model.Name</p>
-            <div class="esh-catalog-price">
-                <span>@Model.Price.ToString("N2")</span>
+
+@if (Context.User.Identity.IsAuthenticated)
+{
+    <form>
+        <div class="card" style="width:100%">
+            <div style="height:300px;  vertical-align: middle">
+                <img class="esh-catalog-thumbnail" src="@Model.PictureUrl" alt="Card image">
+            </div>        
+            <div class="card-body">
+                <a href="#" class="card-link">
+                    <p class="card-text">@Model.Name</p>
+                </a>
+                <p class="card-text">@Model.CatalogModel.CatalogBrand.Brand @Model.CatalogModel.Model</p>
+                <div class="esh-catalog-price">
+                    <span>@Model.Price.ToString("N2")</span>
+                </div>
+                <a asp-for="@Model.Id" asp-action="Index" asp-controller="Basket" method="post" class="btn btn-primary">Add to cart</a>
             </div>
-            <a href="#" class="btn btn-primary">Details</a>
         </div>
-    </div>
-    <input type="hidden" asp-for="@Model.Id" name="id" />
-</form>
+    </form>
+}
+else
+{
+
+    <form>
+        <div class="card" style="width:100%">
+            <div style="height:300px;  vertical-align: middle">
+                <img class="esh-catalog-thumbnail" src="@Model.PictureUrl" alt="Card image">
+            </div>
+            <div class="card-body">
+                <a href="#" class="card-link">
+                    <p class="card-text">@Model.Name</p>
+                </a>
+                <p class="card-text">@Model.CatalogModel.CatalogBrand.Brand @Model.CatalogModel.Model</p>
+                <div class="esh-catalog-price">
+                    <span>@Model.Price.ToString("N2")</span>
+                </div>
+            </div>
+        </div>
+    </form>
+}

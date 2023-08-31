@@ -62,20 +62,20 @@ namespace Catalog.Host.Controllers
             }
 
             [AllowAnonymous]
-            [HttpGet]
+            [HttpGet("{id}")]
             [ProducesResponseType(typeof(IEnumerable<CatalogSubTypeDto>), (int)HttpStatusCode.OK)]
-            public async Task<IActionResult> GetSubTypes()
+            public async Task<IActionResult> GetSubTypes([FromRoute] int id)
             {
-            var result = await _catalogService.GetCatalogSubTypesAsync();
+            var result = await _catalogService.GetCatalogSubTypesAsync(id);
             return Ok(result);
             }
 
             [AllowAnonymous]
-            [HttpGet]
+            [HttpGet("{id}")]
             [ProducesResponseType(typeof(IEnumerable<CatalogModelDto>), (int)HttpStatusCode.OK)]
-            public async Task<IActionResult> GetModels()
+            public async Task<IActionResult> GetModels([FromRoute] int id)
             {
-            var result = await _catalogService.GetCatalogModelsAsync();
+            var result = await _catalogService.GetCatalogModelsAsync(id);
             return Ok(result);
             }
         }

@@ -1,6 +1,6 @@
 namespace MVC.ViewModels;
 
-public class CatalogBrand
+public record CatalogBrand
 {
     public int Id { get; set; }
 

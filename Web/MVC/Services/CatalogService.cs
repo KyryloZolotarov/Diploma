@@ -63,9 +63,9 @@ public class CatalogService : ICatalogService
         return result;
     }
 
-    public async Task<IEnumerable<CatalogModel>> GetModels()
+    public async Task<IEnumerable<CatalogModel>> GetModelsByBrand(int? selectedBrand)
     {
-        return await _httpClient.SendAsync<IEnumerable<CatalogModel>>($"{_settings.Value.CatalogUrl}/GetModels", HttpMethod.Get);
+        return await _httpClient.SendAsync<IEnumerable<CatalogModel>>($"{_settings.Value.CatalogUrl}/GetModels?{selectedBrand}", HttpMethod.Get);
     }
 
     public async Task<IEnumerable<CatalogType>> GetTypes()
@@ -73,8 +73,8 @@ public class CatalogService : ICatalogService
         return await _httpClient.SendAsync<IEnumerable<CatalogType>>($"{_settings.Value.CatalogUrl}/GetTypes", HttpMethod.Get);
     }
 
-    public async Task<IEnumerable<CatalogSubType>> GetSubTypes()
+    public async Task<IEnumerable<CatalogSubType>> GetSubTypesByType(int? selectedType)
     {
-        return await _httpClient.SendAsync<IEnumerable<CatalogSubType>>($"{_settings.Value.CatalogUrl}/GetSubTypes", HttpMethod.Get);
+        return await _httpClient.SendAsync<IEnumerable<CatalogSubType>>($"{_settings.Value.CatalogUrl}/GetSubTypes?{selectedType}", HttpMethod.Get);
     }
 }
