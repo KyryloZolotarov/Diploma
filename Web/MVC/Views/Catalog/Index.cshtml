@@ -71,20 +71,28 @@
         $(document).ready(function () {
             $("#brandDropdown").change(function () {
                 var selectedBrand = $(this).val();
-                $.ajax({
-                    url: "/Catalog/GetModels",
-                    type: "GET",
-                    data: { selectedBrand: selectedBrand },
-                    success: function (data) {
-                        $("#modelDropdown").empty();
-                        $.each(data, function (index, item) {
-                            $("#modelDropdown").append($('<option>', {
-                                value: item.value,
-                                text: item.text
-                            }));
-                        });
-                    }
-                });
+                if (selectedBrand === "") {
+                    $("#modelDropdown").empty();
+                    $("#modelDropdown").append($('<option>', {
+                        value: "",
+                        text: "All"
+                    }));
+                } else {
+                    $.ajax({
+                        url: "/Catalog/GetModels",
+                        type: "GET",
+                        data: { selectedBrand: selectedBrand },
+                        success: function (data) {
+                            $("#modelDropdown").empty();
+                            $.each(data, function (index, item) {
+                                $("#modelDropdown").append($('<option>', {
+                                    value: item.value,
+                                    text: item.text
+                                }));
+                            });
+                        }
+                    });
+                }
             });
         });
     </script>
@@ -92,6 +100,14 @@
     <script>
         $(document).ready(function () {
             $("#typeDropdown").change(function () {
+                var selectedType = $(this).val();
+                if (selectedBrand === "") {
+                    $("subTypeDropdown").empty();
+                    $("#subTypeDropdown").append($('<option>', {
+                        value: "",
+                        text: "All"
+                    }));
+                } else {
                 var selectedType = $(this).val();
                 $.ajax({
                     url: "/Catalog/GetSubTypes",
@@ -107,6 +123,7 @@
                         });
                     }
                 });
+                }
             });
         });
     </script>

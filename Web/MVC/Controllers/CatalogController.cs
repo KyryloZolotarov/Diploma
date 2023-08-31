@@ -49,6 +49,15 @@ public class CatalogController : Controller
 
     public async Task<IActionResult> GetModels(int? selectedBrand)
     {
+        if (selectedBrand == null)
+        {
+            var initialModels = new List<SelectListItem>
+            {
+                new SelectListItem { Value = "", Text = "All" },
+            };
+            return Json(initialModels);
+        }
+
         var models = await _catalogService.GetModelsByBrand(selectedBrand);
         var modelItems = models.Select(x => new SelectListItem { Value = x.Id.ToString(), Text = x.Model }).ToList();
         modelItems.Append(new SelectListItem { Value = "", Text = "All" });
@@ -57,6 +66,14 @@ public class CatalogController : Controller
 
     public async Task<IActionResult> GetSubTypes(int? selectedType)
     {
+        if (selectedType == null)
+        {
+            var initialSubType = new List<SelectListItem>
+            {
+                new SelectListItem { Value = "", Text = "All" }
+            };
+            return Json(initialSubType);
+        }
         var models = await _catalogService.GetSubTypesByType(selectedType);
         var modelItems = models.Select(x => new SelectListItem { Value = x.Id.ToString(), Text = x.SubType }).ToList();
         modelItems.Append(new SelectListItem { Value = "", Text = "All" });
