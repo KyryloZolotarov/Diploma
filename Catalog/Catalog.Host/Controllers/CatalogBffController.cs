@@ -36,11 +36,11 @@ namespace Catalog.Host.Controllers
             }
 
             [AllowAnonymous]
-            [HttpPost]
-            [ProducesResponseType(typeof(PaginatedItemsResponse<CatalogItemDto>), (int)HttpStatusCode.OK)]
-            public async Task<IActionResult> ListItems(PaginatedItemsRequest<CatalogFilter> request)
+            [HttpGet]
+            [ProducesResponseType(typeof(ItemsForBasketResponse<CatalogItemDto>), (int)HttpStatusCode.OK)]
+            public async Task<IActionResult> ListItems(ItemsForBasketRequest request)
             {
-                var result = await _catalogService.GetCatalogItemsAsync(request.PageSize, request.PageIndex, request.Filters);
+                var result = await _catalogService.GetListCatalogItemsAsync(request.Items);
                 return Ok(result);
             }
 

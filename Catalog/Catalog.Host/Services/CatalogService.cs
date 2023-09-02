@@ -80,6 +80,17 @@ namespace Catalog.Host.Services
             });
         }
 
+        public async Task<IEnumerable<CatalogItemDto>> GetListCatalogItemsAsync(List<BasketItemDto> items)
+        {
+            var itemsId = items.Select(item => int.Parse(item.Id)).ToList();
+
+            return await ExecuteSafeAsync(async () =>
+            {
+                var result = await _catalogItemRepository.GetItemsListAsync(itemsId);
+                return _mapper.Map<List<CatalogItemDto>>(result);
+            });
+        }
+
         public async Task<IEnumerable<CatalogTypeDto>> GetCatalogTypesAsync()
         {
             return await ExecuteSafeAsync(async () =>

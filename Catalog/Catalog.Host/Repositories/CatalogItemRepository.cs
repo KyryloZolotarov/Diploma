@@ -67,6 +67,23 @@ namespace Catalog.Host.Repositories
                 .FirstAsync(h => h.Id == id);
         }
 
+        public async Task<List<CatalogItem>> GetItemsListAsync(List<int> itemsId)
+        {
+            List<CatalogItem> items = new List<CatalogItem>();
+            foreach (var id in itemsId)
+            {
+                var item = await _dbContext.CatalogItems
+                    .Include(i => i.CatalogSubType)
+                    .Include(i => i.CatalogSubType)
+                    .Include(i => i.CatalogModel)
+                    .Include(i => i.CatalogModel.CatalogBrand)
+                    .FirstAsync(h => h.Id == id);
+                items.Add(item);
+            }
+
+            return items;
+        }
+
         public async Task<int?> Add(string name, string description, decimal price, int availableStock, string pictureFileName, int catalogSubTypeId, int catalogModelId, string partNumber)
         {
             var modelStatus = await _dbContext.CatalogBrands.AnyAsync(h => h.Id == catalogModelId);

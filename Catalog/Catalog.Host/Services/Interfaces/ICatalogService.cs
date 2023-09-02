@@ -12,5 +12,6 @@ namespace Catalog.Host.Services.Interfaces
         Task<CatalogItemDto> GetCatalogItemByIdAsync(int id);
         Task<IEnumerable<CatalogModelDto>> GetCatalogModelsAsync(int id);
         Task<IEnumerable<CatalogSubTypeDto>> GetCatalogSubTypesAsync(int id);
+        Task<IEnumerable<CatalogItemDto>> GetListCatalogItemsAsync(List<BasketItemDto> items);
     }
 }
