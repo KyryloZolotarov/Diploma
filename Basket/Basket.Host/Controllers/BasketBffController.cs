@@ -11,7 +11,7 @@ namespace Basket.Host.Controllers
 {
     [ApiController]
     [Authorize(Policy = AuthPolicy.AllowEndUserPolicy)]
-    [Scope("catalog.basketbff")]
+    [Scope("basket.basketbff")]
     [Route(ComponentDefaults.DefaultRoute)]
     public class BasketBffController : ControllerBase
     {
@@ -28,19 +28,37 @@ namespace Basket.Host.Controllers
 
         [HttpPost]
         [ProducesResponseType((int)HttpStatusCode.OK)]
-        public async Task<IActionResult> TestAdd(AddRequest data)
+        public async Task<IActionResult> Add(string itenId)
         {
             var basketId = User.Claims.FirstOrDefault(x => x.Type == "sub")?.Value;
-            await _basketService.TestAdd(basketId!, data.Data);
+            await _basketService.Add(basketId!, itenId);
             return Ok();
         }
 
-        [HttpPost]
+        [HttpGet]
         [ProducesResponseType(typeof(GetResponse), (int)HttpStatusCode.OK)]
-        public async Task<IActionResult> TestGet()
+        public async Task<IActionResult> Get()
         {
             var basketId = User.Claims.FirstOrDefault(x => x.Type == "sub")?.Value;
-            var response = await _basketService.TestGet(basketId!);
+            var response = await _basketService.Get(basketId!);
+            return Ok(response);
+        }
+
+        [HttpDelete]
+        [ProducesResponseType((int)HttpStatusCode.NotFound)]
+        public async Task<IActionResult> Delete()
+        {
+            var basketId = User.Claims.FirstOrDefault(x => x.Type == "sub")?.Value;
+            await _basketService.Delete(basketId!);
+            return NotFound();
+        }
+
+        [HttpDelete]
+        [ProducesResponseType((int)HttpStatusCode.OK)]
+        public async Task<IActionResult> DeleteItem(string itemId)
+        {
+            var basketId = User.Claims.FirstOrDefault(x => x.Type == "sub")?.Value;
+            var response = await _basketService.DeleteItem(basketId!, itemId);
             return Ok(response);
         }
     }

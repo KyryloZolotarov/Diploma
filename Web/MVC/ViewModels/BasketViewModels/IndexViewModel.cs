@@ -5,6 +5,6 @@ namespace MVC.ViewModels.BasketViewModels
 {
     public class IndexViewModel
     {
-        public IEnumerable<BasketItem> BasketItems { get; set; }
+        public IEnumerable<BasketItemFromCatalog> BasketItems { get; set; }
     }
 }

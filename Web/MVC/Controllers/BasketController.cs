@@ -22,8 +22,8 @@ namespace MVC.Controllers
 
         public async Task<IActionResult> AddItemToBasket(int? itemId)
         {
-            var vm = await _basketService.AddItemToBasket(itemId);
-            return View(vm);
+            await _basketService.AddItemToBasket(itemId);
+            return View();
         }
 
         public async Task<IActionResult> DeleteItemFromBasket(int? itemId)
@@ -34,8 +34,8 @@ namespace MVC.Controllers
 
         public async Task<IActionResult> ClearBasket()
         {
-            var vm = await _basketService.ClearBasket();
-            return View(vm);
+            await _basketService.ClearBasket();
+            return View();
         }
     }
 }

@@ -1,6 +1,8 @@
 ﻿using Basket.Host.Configurations;
+using Basket.Host.Models;
 using Basket.Host.Services.Interfaces;
 using Infrastructure.Services.Interfaces;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Microsoft.Extensions.Options;
 using StackExchange.Redis;
 
@@ -64,5 +66,12 @@ namespace Basket.Host.Services
         }
 
         private IDatabase GetRedisDatabase() => _redisCacheConnectionService.Connection.GetDatabase();
+
+        public Task Delete(string basketId)
+        {
+            var redis = GetRedisDatabase();
+            var cacheKey = GetItemCacheKey(basketId);
+            return redis.KeyDeleteAsync(cacheKey);
+        }
     }
 }

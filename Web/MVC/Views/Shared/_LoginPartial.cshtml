@@ -23,12 +23,14 @@
                             <img class="esh-identity-image" src="~/images/logout.png">
                         </a>
                     </form>
+                    <form asp-area="" asp-controller="Basket" asp-action="Index" method="post" id="logoutForm">
 
-                    <a asp-area="" asp-controller="Basket" asp-action="Index" class="esh-identity-name esh-identity-name--upper">
+                        <a class="esh-identity-item" href="/Basket/index">
 
-                        <div class="esh-identity-name esh-identity-name--upper">Basket</div>
-                        <img class="esh-identity-image" src="~/images/cart.png">
-                    </a>
+                            <div class="esh-identity-name esh-identity-name--upper">Basket</div>
+                            <img class="esh-identity-image" src="~/images/cart.png">
+                        </a>
+                    </form>
 
                 </section>
             </form>

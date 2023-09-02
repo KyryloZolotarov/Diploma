@@ -1,5 +1,6 @@
 ﻿using MVC.Services.Interfaces;
 using MVC.ViewModels;
+using MVC.ViewModels.BasketViewModels;
 using MVC.ViewModels.CatalogViewModels;
 
 namespace MVC.Services
@@ -17,25 +18,33 @@ namespace MVC.Services
             _logger = logger;
         }
 
-        public async Task<IEnumerable<Basket>> GetBasket()
+        public async Task<IEnumerable<BasketItemFromCatalog>> GetBasket()
         {
-            var result = await _httpClient.SendAsync<IEnumerable<Basket>>($"{_settings.Value.BasketUrl}/GetBasket", HttpMethod.Get);
+            var itemsListId = await _httpClient.SendAsync<IEnumerable<BasketItemsResponse>>($"{_settings.Value.BasketUrl}/Get", HttpMethod.Get);
+            var result =
+                await _httpClient.SendAsync<IEnumerable<BasketItemFromCatalog>, IEnumerable<BasketItemsResponse>>(
+                    $"{_settings.Value.CatalogUrl}/ListItems", HttpMethod.Get, itemsListId);
             return result;
         }
 
-        public Task<Basket> AddItemToBasket(int? itemId)
+        public async Task AddItemToBasket(int? itemId)
         {
-            throw new NotImplementedException();
+            await _httpClient.SendAsync($"{_settings.Value.BasketUrl}/Add", HttpMethod.Post, itemId.ToString());
         }
 
-        public Task<Basket> DeleteItemFromBasket(int? itemId)
+        public async Task<IEnumerable<BasketItemFromCatalog>> DeleteItemFromBasket(int? itemId)
         {
-            throw new NotImplementedException();
+
+            var itemsListId = await _httpClient.SendAsync<IEnumerable<BasketItemsResponse>, string>($"{_settings.Value.BasketUrl}/Delete", HttpMethod.Delete, itemId.ToString());
+            var result =
+                await _httpClient.SendAsync<IEnumerable<BasketItemFromCatalog>, IEnumerable<BasketItemsResponse>>(
+                    $"{_settings.Value.CatalogUrl}/ListItems", HttpMethod.Get, itemsListId);
+            return result;
         }
 
-        public Task<Basket> ClearBasket()
+        public async Task ClearBasket()
         {
-            throw new NotImplementedException();
+            await _httpClient.SendAsync($"{_settings.Value.BasketUrl}/DeleteItem", HttpMethod.Delete);
         }
     }
 }

@@ -57,4 +57,31 @@ public class HttpClientService : IHttpClientService
 
         return default(TResponse)!;
     }
+
+    public async Task SendAsync<TRequest>(string url, HttpMethod method, TRequest? content)
+    {
+        var client = _clientFactory.CreateClient();
+
+        var httpMessage = new HttpRequestMessage();
+        httpMessage.RequestUri = new Uri(url);
+        httpMessage.Method = method;
+
+        if (content != null)
+        {
+            httpMessage.Content =
+                new StringContent(JsonConvert.SerializeObject(content), Encoding.UTF8, "application/json");
+        }
+
+        var result = await client.SendAsync(httpMessage);
+    }
+
+    public async Task SendAsync(string url, HttpMethod method)
+    {
+        var client = _clientFactory.CreateClient();
+
+        var httpMessage = new HttpRequestMessage();
+        httpMessage.RequestUri = new Uri(url);
+        httpMessage.Method = method;
+        await client.SendAsync(httpMessage);
+    }
 }

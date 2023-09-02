@@ -38,6 +38,14 @@ namespace IdentityServer
                         new Scope("catalog.catalogsubtype"),
                         new Scope("catalog.catalogmodel")
                     },
+                },
+
+                new ApiResource("basket")
+                {
+                    Scopes = new List<Scope>
+                    {
+                        new Scope("catalog.basketbff")
+                    },
                 }
             };
         }
@@ -53,7 +61,7 @@ namespace IdentityServer
                     AllowedGrantTypes = GrantTypes.Code,
                     ClientSecrets = {new Secret("secret".Sha256())},
                     RedirectUris = { $"{configuration["MvcUrl"]}/signin-oidc"},
-                    AllowedScopes = {"openid", "profile", "mvc"},
+                    AllowedScopes = {"openid", "profile", "mvc", "basket.basketbff", "catalog.catalogbff"},
                     RequirePkce = true,
                     RequireConsent = false
                 },
@@ -102,7 +110,7 @@ namespace IdentityServer
 
                     AllowedScopes =
                     {
-                        "mvc"
+                        "basket.basketbff",
                     }
                 },
             };

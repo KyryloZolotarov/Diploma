@@ -12,15 +12,30 @@ namespace Basket.Host.Services
             _cacheService = cacheService;
         }
 
-        public async Task TestAdd(string userId, string data)
+        public async Task Add(string basketId, string itemId)
         {
-            await _cacheService.AddOrUpdateAsync(userId, data);
+            await _cacheService.AddOrUpdateAsync(basketId, itemId);
         }
 
-        public async Task<GetResponse> TestGet(string userId)
+        public async Task<BasketItemsDb> Get(string basketId)
         {
-            var result = await _cacheService.GetAsync<string>(userId);
-            return new GetResponse() { Data = result };
+            var result = await _cacheService.GetAsync<BasketItemsDb>(basketId);
+            return result;
+        }
+
+        public Task Delete(string basketId)
+        {
+            return _cacheService.Delete(basketId);
+        }
+
+        public async Task<BasketItemsDb> DeleteItem(string basketId, string itemId)
+        {
+            var basketItems = await _cacheService.GetAsync<BasketItemsDb>(basketId);
+            BasketItem item = new BasketItem() { Id = itemId };
+            if (basketItems.Items != null) basketItems.Items.Remove(item);
+            await _cacheService.AddOrUpdateAsync(basketId, basketItems);
+            var basket = await _cacheService.GetAsync <BasketItemsDb> (basketId);
+            return basket;
         }
     }
 }
