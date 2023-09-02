@@ -20,11 +20,12 @@
                         <div class="esh-identity-name esh-identity-name--upper">Log Out</div>
                         <img class="esh-identity-image" src="~/images/logout.png">
                     </a>
-                    <a asp-area="" asp-controller="Basket" asp-action="SignOut" method="post" id="logoutForm" class="esh-identity-item"
-                       href="javascript:document.getElementById('logoutForm').submit()">
+                </section>
 
-                        <div class="esh-identity-name esh-identity-name--upper">Log Out</div>
-                        <img class="esh-identity-image" src="~/images/logout.png">
+                <section class="esh-identity-drop">
+                    <a asp-page="Basket/index">
+                        <div class="esh-identity-name esh-identity-name--upper">Basket</div>
+                        <img class="esh-identity-image" src="~/images/cart.png">
                     </a>
                 </section>
             </form>

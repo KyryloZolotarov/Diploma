@@ -1,5 +1,6 @@
 ﻿using MVC.Services.Interfaces;
 using MVC.ViewModels;
+using MVC.ViewModels.CatalogViewModels;
 
 namespace MVC.Services
 {
@@ -16,9 +17,25 @@ namespace MVC.Services
             _logger = logger;
         }
 
-        public async Task<Basket> GetBusket()
+        public async Task<Basket> GetBasket()
         {
-            return new Basket();
+            var result = await _httpClient.SendAsync<IEnumerable<CatalogBrand>>($"{_settings.Value.BasketUrl}/GetBasket", HttpMethod.Get);
+            return result;
+        }
+
+        public Task<Basket> AddItemToBasket(int? itemId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<Basket> DeleteItemFromBasket(int? itemId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<Basket> ClearBasket()
+        {
+            throw new NotImplementedException();
         }
     }
 }

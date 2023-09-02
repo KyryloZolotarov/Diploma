@@ -14,39 +14,43 @@
             </div>
         }
     </div>
-
-    @if (Model.CatalogItems.Count() > 0)
-    {
-
-        <div class="container-fluid">          
-            <table class="table">
-            <thead>
-            <tr>
-                <th>Part Name</th>
-                <th>Brand</th>
-                <th>Model</th>
-                <th>Price</th>
-            </tr>
-            </thead>
-            <tbody>
-
-            @foreach (var catalogItem in Model.CatalogItems)
+    <form asp-action="Index" asp-controller="Basket" method="post">
+        <div class="container-fluid">
+            @if (Model.BasketItems.Count() > 0)
             {
-                <tr>
-                    <td>@catalogItem.Name</td>
-                    <td>@catalogItem.CatalogModel.CatalogBrand.Brand</td>
-                    <td>@catalogItem.CatalogModel.Model</td>
-                    <td>@catalogItem.Price.ToString()$"</td>
-                </tr>
+
+                <div class="container-fluid">          
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th>Part Name</th>
+                            <th>Brand</th>
+                            <th>Model</th>
+                            <th>Price</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+
+                        @foreach (var basketItem in Model.BasketItems)
+                        {
+                            <tr>
+                                <td>@basketItem.Name</td>
+                                <td>@basketItem.CatalogModel.CatalogBrand.Brand</td>
+                                <td>@basketItem.CatalogModel.Model</td>
+                                <td>@basketItem.Price.ToString()$"</td>
+                            </tr>
+                        }
+                        </tbody>
+                    </table>
+                </div>
             }
-            </tbody>
-            </table>
+            else
+            {
+                <div class="esh-catalog-items row">
+                    Your basket is empty
+                </div>
+            }
         </div>
-    }
-    else
-    {
-        <div class="esh-catalog-items row">
-            Your basket is empty
-        </div>
-    }
+    </form>
+
 </div>

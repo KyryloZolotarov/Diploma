@@ -1,4 +1,4 @@
-﻿using MVC.ViewModels;
+﻿using MVC.ViewModels.CatalogViewModels;
 
 namespace MVC.Services.Interfaces;
 

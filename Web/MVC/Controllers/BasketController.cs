@@ -15,13 +15,28 @@ namespace MVC.Controllers
         {
             _basketService = basketService;
         }
-        public IActionResult GetBasket()
+
+        public Task<IActionResult> Index()
         {
-            var vm = _basketService.GetBusket();
+            var vm = _basketService.GetBasket();
             return View(vm);
         }
-        public IActionResult Index()
+
+        public Task AddItemToBasket(int? itemId)
         {
+            _basketService.AddItemToBasket(itemId);
+            return View();
+        }
+
+        public Task DeleteItemFromBasket(int? itemId)
+        {
+            _basketService.DeleteItemFromBasket(itemId);
+            return View();
+        }
+
+        public Task ClearBasket()
+        {
+            _basketService.ClearBasket();
             return View();
         }
     }

@@ -4,7 +4,7 @@ using MVC.Models.Enums;
 using MVC.Models.Requests;
 using MVC.Models.Responses;
 using MVC.Services.Interfaces;
-using MVC.ViewModels;
+using MVC.ViewModels.CatalogViewModels;
 
 namespace MVC.Services;
 
