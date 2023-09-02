@@ -17,9 +17,9 @@ namespace MVC.Services
             _logger = logger;
         }
 
-        public async Task<Basket> GetBasket()
+        public async Task<IEnumerable<Basket>> GetBasket()
         {
-            var result = await _httpClient.SendAsync<IEnumerable<CatalogBrand>>($"{_settings.Value.BasketUrl}/GetBasket", HttpMethod.Get);
+            var result = await _httpClient.SendAsync<IEnumerable<Basket>>($"{_settings.Value.BasketUrl}/GetBasket", HttpMethod.Get);
             return result;
         }
 

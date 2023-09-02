@@ -6,7 +6,7 @@
 {
     <section class="col-lg-4 col-md-5 col-xs-12">
         <div class="esh-identity">
-            <form  class="navbar-right">
+            <form class="navbar-right">
                 <section class="esh-identity-section">
 
                     <div class="esh-identity-name">@UserManager.Parse(User).Name</div>
@@ -14,19 +14,22 @@
                 </section>
 
                 <section class="esh-identity-drop">
-                    <a asp-area ="" asp-controller="Account" asp-action="SignOut" method="post" id="logoutForm" class="esh-identity-item"
-                       href="javascript:document.getElementById('logoutForm').submit()">
+                    <form asp-area="" asp-controller="Account" asp-action="SignOut" method="post" id="logoutForm">
 
-                        <div class="esh-identity-name esh-identity-name--upper">Log Out</div>
-                        <img class="esh-identity-image" src="~/images/logout.png">
-                    </a>
-                </section>
+                        <a class="esh-identity-item"
+                           href="javascript:document.getElementById('logoutForm').submit()">
 
-                <section class="esh-identity-drop">
-                    <a asp-page="Basket/index">
+                            <div class="esh-identity-name esh-identity-name--upper">Log Out</div>
+                            <img class="esh-identity-image" src="~/images/logout.png">
+                        </a>
+                    </form>
+
+                    <a asp-area="" asp-controller="Basket" asp-action="Index" class="esh-identity-name esh-identity-name--upper">
+
                         <div class="esh-identity-name esh-identity-name--upper">Basket</div>
                         <img class="esh-identity-image" src="~/images/cart.png">
                     </a>
+
                 </section>
             </form>
         </div>

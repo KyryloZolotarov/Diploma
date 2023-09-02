@@ -1,4 +1,6 @@
-﻿namespace MVC.ViewModels.BasketViewModels
+﻿using MVC.ViewModels.CatalogViewModels;
+
+namespace MVC.ViewModels.BasketViewModels
 {
     public record BasketItem
     {

@@ -1,4 +1,4 @@
-﻿@model CatalogItem
+﻿@model MVC.ViewModels.CatalogViewModels.CatalogItem
 
 
 
@@ -17,7 +17,7 @@
                 <div class="esh-catalog-price">
                     <span>@Model.Price.ToString("N2")</span>
                 </div>
-                <a asp-for="@Model.Id" asp-action="Index" asp-controller="Basket" method="post" class="btn btn-primary">Add to cart</a>
+                <a asp-for="@Model.Id" asp-action="AddItemToBasket" asp-controller="Basket" method="post" class="btn btn-primary">Add to cart</a>
             </div>
         </div>
     </form>
