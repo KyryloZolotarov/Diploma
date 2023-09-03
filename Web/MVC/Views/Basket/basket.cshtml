@@ -14,7 +14,7 @@
             </div>
         }
     </div>
-    <form asp-action="Index" asp-controller="Basket" method="post">
+    <form asp-action="GetBasket" asp-controller="Basket" method="post">
         <div class="container-fluid">
             @if (Model.BasketItems.Count() > 0)
             {

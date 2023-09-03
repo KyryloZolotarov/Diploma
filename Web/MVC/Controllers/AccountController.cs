@@ -41,5 +41,10 @@ namespace MVC.Controllers
             return new SignOutResult(OpenIdConnectDefaults.AuthenticationScheme,
                 new AuthenticationProperties { RedirectUri = homeUrl });
         }
+
+        public async Task<IActionResult> GoToBasket()
+        {
+            return Redirect("/Basket/index");
+        }
     }
 }

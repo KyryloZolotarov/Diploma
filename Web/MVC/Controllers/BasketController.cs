@@ -3,7 +3,7 @@ using MVC.Services.Interfaces;
 
 namespace MVC.Controllers
 {
-    [Authorize(Policy = AuthPolicy.AllowEndUserPolicy)]
+    [Route("basket")]
     public class BasketController : Controller
     {
         private readonly IBasketService _basketService;
@@ -15,7 +15,12 @@ namespace MVC.Controllers
 
         public async Task<IActionResult> Index()
         {
-            var vm =  await _basketService.GetBasket();
+            return View("basket");
+        }
+
+        public async Task<IActionResult> GetBasket()
+        {
+            var vm = await _basketService.GetBasket();
             return View(vm);
         }
 

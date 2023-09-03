@@ -6,7 +6,6 @@ using MVC.ViewModels.CatalogViewModels;
 using MVC.ViewModels.Pagination;
 
 namespace MVC.Controllers;
-
 public class CatalogController : Controller
 {
     private readonly ICatalogService _catalogService;
