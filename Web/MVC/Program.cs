@@ -58,6 +58,8 @@ builder.Services.AddHttpClient();
 builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 builder.Services.AddTransient<IHttpClientService, HttpClientService>();
 builder.Services.AddTransient<ICatalogService, CatalogService>();
+builder.Services.AddTransient<IBasketService, BasketService>();
+builder.Services.AddTransient<IOrderService, OrderService>();
 builder.Services.AddTransient<IIdentityParser<ApplicationUser>, IdentityParser>();
 
 var app = builder.Build();
@@ -80,6 +82,7 @@ app.UseAuthorization();
 app.UseEndpoints(endpoints =>
 {
     endpoints.MapControllerRoute("default", "{controller=Catalog}/{action=Index}/{id?}");
+    endpoints.MapControllerRoute("basket", "{controller=Basket}/{action=Index}/{id?}");
     endpoints.MapControllerRoute("defaultError", "{controller=Error}/{action=Error}");
     endpoints.MapControllers();
 });

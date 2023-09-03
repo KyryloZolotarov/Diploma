@@ -37,7 +37,7 @@ namespace Catalog.Host.Controllers
 
             [AllowAnonymous]
             [HttpGet]
-            [ProducesResponseType(typeof(ItemsForBasketResponse<CatalogItemDto>), (int)HttpStatusCode.OK)]
+            [ProducesResponseType(typeof(IEnumerable<CatalogItemDto>), (int)HttpStatusCode.OK)]
             public async Task<IActionResult> ListItems(ItemsForBasketRequest request)
             {
                 var result = await _catalogService.GetListCatalogItemsAsync(request.Items);

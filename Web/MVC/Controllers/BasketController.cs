@@ -4,7 +4,6 @@ using MVC.Services.Interfaces;
 namespace MVC.Controllers
 {
     [Authorize(Policy = AuthPolicy.AllowEndUserPolicy)]
-    [Scope("mvc.basket")]
     public class BasketController : Controller
     {
         private readonly IBasketService _basketService;
@@ -23,6 +22,18 @@ namespace MVC.Controllers
         public async Task<IActionResult> AddItemToBasket(int? itemId)
         {
             await _basketService.AddItemToBasket(itemId);
+            return View();
+        }
+
+        public async Task<IActionResult> ChangeItemsCountInBasket(int itemId, int itemsCount)
+        {
+            var vm = await _basketService.ChangeItemsCountInBasket(itemId, itemsCount);
+            return View(vm);
+        }
+
+        public async Task<IActionResult> AddItemsInBasket(int itemId, int itemsCount)
+        {
+            await _basketService.AddItemsInBasket(itemId, itemsCount);
             return View();
         }
 

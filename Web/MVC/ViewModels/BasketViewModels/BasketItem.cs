@@ -4,6 +4,7 @@ namespace MVC.ViewModels.BasketViewModels
 {
     public record BasketItem
     {
-        public string Id { get; set; }
+        public int Id { get; set; }
+        public int Count { get; set; }
     }
 }

@@ -2,6 +2,7 @@
 {
     public class BasketItem
     {
-        public string Id { get; set; } = string.Empty;
+        public int Id { get; set; }
+        public int Count { get; set; }
     }
 }

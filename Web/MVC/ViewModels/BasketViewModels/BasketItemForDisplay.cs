@@ -2,7 +2,7 @@
 
 namespace MVC.ViewModels.BasketViewModels
 {
-    public class BasketItemFromCatalog
+    public class BasketItemForDisplay
     {
         public int Id { get; set; }
 
@@ -13,5 +13,6 @@ namespace MVC.ViewModels.BasketViewModels
         public CatalogSubType CatalogSubType { get; set; }
 
         public CatalogModel CatalogModel { get; set; }
+        public int Count { get; set; }
     }
 }
