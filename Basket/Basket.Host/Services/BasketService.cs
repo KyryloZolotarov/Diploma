@@ -7,9 +7,9 @@ namespace Basket.Host.Services
     public class BasketService : IBasketService
     {
         private readonly ICacheService _cacheService;
-        private readonly ILogger<CacheService> _logger;
+        private readonly ILogger<BasketService> _logger;
 
-        public BasketService(ILogger<CacheService> logger, ICacheService cacheService)
+        public BasketService(ILogger<BasketService> logger, ICacheService cacheService)
         {
             _cacheService = cacheService;
             _logger = logger;

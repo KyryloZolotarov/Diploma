@@ -10,9 +10,9 @@ namespace MVC.Services
     {
         private readonly IOptions<AppSettings> _settings;
         private readonly IHttpClientService _httpClient;
-        private readonly ILogger<CatalogService> _logger;
+        private readonly ILogger<BasketService> _logger;
 
-        public BasketService(IHttpClientService httpClient, ILogger<CatalogService> logger, IOptions<AppSettings> settings)
+        public BasketService(IHttpClientService httpClient, ILogger<BasketService> logger, IOptions<AppSettings> settings)
         {
             _httpClient = httpClient;
             _settings = settings;
@@ -42,6 +42,7 @@ namespace MVC.Services
 
         public async Task AddItemToBasket(int? itemId)
         {
+            _logger.LogInformation($"Item id: {itemId}");
             await _httpClient.SendAsync($"{_settings.Value.BasketUrl}/AddItem", HttpMethod.Post, itemId);
         }
 

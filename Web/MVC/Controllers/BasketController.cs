@@ -21,9 +21,10 @@ namespace MVC.Controllers
             return View(vm);
         }
 
-        public async Task<IActionResult> AddItemToBasket(int? itemId)
+        public async Task<IActionResult> AddItemToBasket(int? Id)
         {
-            await _basketService.AddItemToBasket(itemId);
+            await _basketService.AddItemToBasket(Id);
+            _logger.LogInformation($"{id}");
             return NoContent();
         }
 
