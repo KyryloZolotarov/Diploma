@@ -10,7 +10,7 @@ using Basket.Host.Models;
 namespace Basket.Host.Controllers
 {
     [ApiController]
-    [Authorize(Policy = AuthPolicy.AllowEndUserPolicy)]
+    [AllowAnonymous]
     [Route(ComponentDefaults.DefaultRoute)]
     public class BasketBffController : ControllerBase
     {
@@ -68,7 +68,7 @@ namespace Basket.Host.Controllers
             var response = await _basketService.Get(basketId!);
             if(response ==null || response.Items==null)
             {
-                return BadRequest();
+                return Ok();
             }
             foreach (var basketitem in response.Items)
             {

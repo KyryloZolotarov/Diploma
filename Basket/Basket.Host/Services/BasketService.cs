@@ -17,7 +17,7 @@ namespace Basket.Host.Services
         public async Task Add(string basketId, int itemId)
         {
             BasketItemsDb curBasket = new ();
-                curBasket = await _cacheService.GetAsync<BasketItemsDb>(basketId);
+            curBasket = await _cacheService.GetAsync<BasketItemsDb>(basketId);
             curBasket ??= new BasketItemsDb();
             curBasket.Items ??= new List<BasketItem>();
             var foundedItem = curBasket.Items.FirstOrDefault(x => x.Id ==itemId);
@@ -32,9 +32,9 @@ namespace Basket.Host.Services
                 foundedItem.Count++;
                 await _cacheService.AddOrUpdateAsync(basketId, curBasket);
             }
-
-        }
             
+        }
+
         public async Task AddItems(string basketId, BasketItem item)
         {
             BasketItemsDb curBasket = new();
@@ -44,14 +44,14 @@ namespace Basket.Host.Services
             var foundedItem = curBasket.Items.FirstOrDefault(x => x.Id == item.Id);
             if (foundedItem == null)
             {
-            curBasket.Items.Add(item);
-            await _cacheService.AddOrUpdateAsync(basketId, curBasket);
-        }
+                curBasket.Items.Add(item);
+                await _cacheService.AddOrUpdateAsync(basketId, curBasket);
+            }
             else
-        {
+            {
                 foundedItem.Count+= item.Count;
                 await _cacheService.AddOrUpdateAsync(basketId, curBasket);
-        }
+            }
         }
 
         public async Task<BasketItemsDb> ChangeItemsCount(string basketId, BasketItem item)
