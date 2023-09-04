@@ -26,6 +26,7 @@ namespace Catalog.Host.Controllers
             }
 
             [HttpPost]
+            [AllowAnonymous]
             [ProducesResponseType(typeof(PaginatedItemsResponse<CatalogItemDto>), (int)HttpStatusCode.OK)]
             public async Task<IActionResult> Items(PaginatedItemsRequest<CatalogFilter> request)
             {
@@ -50,6 +51,7 @@ namespace Catalog.Host.Controllers
             }
 
             [HttpGet]
+            [AllowAnonymous]
             [ProducesResponseType(typeof(IEnumerable<CatalogTypeDto>), (int)HttpStatusCode.OK)]
             public async Task<IActionResult> GetTypes()
             {
@@ -58,6 +60,7 @@ namespace Catalog.Host.Controllers
             }
 
             [HttpGet]
+            [AllowAnonymous]
             [ProducesResponseType(typeof(IEnumerable<CatalogBrandDto>), (int)HttpStatusCode.OK)]
             public async Task<IActionResult> GetBrands()
             {
@@ -65,8 +68,8 @@ namespace Catalog.Host.Controllers
                 return Ok(result);
             }
 
-            [AllowAnonymous]
             [HttpGet("{id}")]
+            [AllowAnonymous]
             [ProducesResponseType(typeof(IEnumerable<CatalogSubTypeDto>), (int)HttpStatusCode.OK)]
             public async Task<IActionResult> GetSubTypes([FromRoute] int id)
             {
@@ -75,6 +78,7 @@ namespace Catalog.Host.Controllers
             }
 
             [HttpGet("{id}")]
+            [AllowAnonymous]
             [ProducesResponseType(typeof(IEnumerable<CatalogModelDto>), (int)HttpStatusCode.OK)]
             public async Task<IActionResult> GetModels([FromRoute] int id)
             {
