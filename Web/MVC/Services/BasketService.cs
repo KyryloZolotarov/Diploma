@@ -50,7 +50,7 @@ namespace MVC.Services
         {
             var itemsListId = (await _httpClient.SendAsync<IEnumerable<BasketItem>, BasketItem>(
                 $"{_settings.Value.BasketUrl}/ChangeItemsCount",
-                HttpMethod.Get,
+                HttpMethod.Post,
                 new BasketItem()
                 {
                     Id = itemId,
