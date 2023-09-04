@@ -5,7 +5,7 @@ namespace MVC.Services.Interfaces
 {
     public interface IBasketService
     {
-        Task<IEnumerable<BasketItemForDisplay>> GetBasket();
+        Task<BasketIndexViewModel> GetBasket();
         Task AddItemToBasket(int itemId);
         Task<IEnumerable<BasketItemForDisplay>> ChangeItemsCountInBasket(int itemId, int itemsCount);
         Task AddItemsInBasket(int itemId, int itemsCount);

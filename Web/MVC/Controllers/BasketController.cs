@@ -17,9 +17,7 @@ namespace MVC.Controllers
 
         public async Task<IActionResult> Index()
         {
-            var basket = await _basketService.GetBasket();
-            var vm = new IndexViewModel();
-            vm.BasketItems = basket;
+            var vm = await _basketService.GetBasket();
             return View(vm);
         }
 

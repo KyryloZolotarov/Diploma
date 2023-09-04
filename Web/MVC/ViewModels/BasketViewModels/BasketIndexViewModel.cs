@@ -3,7 +3,7 @@ using MVC.ViewModels.Pagination;
 
 namespace MVC.ViewModels.BasketViewModels
 {
-    public class IndexViewModel
+    public class BasketIndexViewModel
     {
         public IEnumerable<BasketItemForDisplay> BasketItems { get; set; }
     }
