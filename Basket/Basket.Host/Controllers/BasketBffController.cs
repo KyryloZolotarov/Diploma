@@ -27,10 +27,11 @@ namespace Basket.Host.Controllers
 
         [HttpPost]
         [ProducesResponseType((int)HttpStatusCode.OK)]
-        public async Task<IActionResult> AddItem(int itenId)
+        public async Task<IActionResult> AddItem(int itemId)
         {
             var basketId = User.Claims.FirstOrDefault(x => x.Type == "sub")?.Value;
-            await _basketService.Add(basketId!, itenId);
+            _logger.LogInformation($"Item id: {itemId}, basket id: {basketId}");
+            await _basketService.Add(basketId!, itemId);
             return Ok();
         }
 
@@ -39,6 +40,7 @@ namespace Basket.Host.Controllers
         public async Task<IActionResult> AddItems(BasketItem item)
         {
             var basketId = User.Claims.FirstOrDefault(x => x.Type == "sub")?.Value;
+            _logger.LogInformation($"Item id: {item.Id}, items count {item.Count} basket id: {basketId}");
             await _basketService.AddItems(basketId!, item);
             return Ok();
         }
@@ -48,7 +50,12 @@ namespace Basket.Host.Controllers
         public async Task<IActionResult> ChangeItemsCount(BasketItem item)
         {
             var basketId = User.Claims.FirstOrDefault(x => x.Type == "sub")?.Value;
+            _logger.LogInformation($"Item id: {item.Id}, items count {item.Count} basket id: {basketId}");
             var response = await _basketService.ChangeItemsCount(basketId!, item);
+            foreach (var basketitem in response.Items!)
+            {
+                _logger.LogInformation($"item in basket id: {basketitem.Id}, items count: {basketitem.Count}");
+            }
             return Ok(response);
         }
 
@@ -57,7 +64,12 @@ namespace Basket.Host.Controllers
         public async Task<IActionResult> Get()
         {
             var basketId = User.Claims.FirstOrDefault(x => x.Type == "sub")?.Value;
+            _logger.LogInformation($"basket id: {basketId}");
             var response = await _basketService.Get(basketId!);
+            foreach (var basketitem in response.Items!)
+            {
+                _logger.LogInformation($"item in basket id: {basketitem.Id}, items count: {basketitem.Count}");
+            }
             return Ok(response);
         }
 
@@ -66,6 +78,7 @@ namespace Basket.Host.Controllers
         public async Task<IActionResult> Delete()
         {
             var basketId = User.Claims.FirstOrDefault(x => x.Type == "sub")?.Value;
+            _logger.LogInformation($"basket id: {basketId}");
             await _basketService.Delete(basketId!);
             return NotFound();
         }
@@ -75,7 +88,12 @@ namespace Basket.Host.Controllers
         public async Task<IActionResult> DeleteItem(int itemId)
         {
             var basketId = User.Claims.FirstOrDefault(x => x.Type == "sub")?.Value;
+            _logger.LogInformation($"Item id: {itemId}, basket id: {basketId}");
             var response = await _basketService.DeleteItem(basketId!, itemId);
+            foreach (var basketitem in response.Items!)
+            {
+                _logger.LogInformation($"item in basket id: {basketitem.Id}, items count: {basketitem.Count}");
+            }
             return Ok(response);
         }
     }

@@ -1,15 +1,18 @@
 ﻿using Basket.Host.Models;
 using Basket.Host.Services.Interfaces;
+using Microsoft.Extensions.Logging;
 
 namespace Basket.Host.Services
 {
     public class BasketService : IBasketService
     {
         private readonly ICacheService _cacheService;
+        private readonly ILogger<CacheService> _logger;
 
-        public BasketService(ICacheService cacheService)
+        public BasketService(ILogger<CacheService> logger, ICacheService cacheService)
         {
             _cacheService = cacheService;
+            _logger = logger;
         }
 
         public async Task Add(string basketId, int itemId)

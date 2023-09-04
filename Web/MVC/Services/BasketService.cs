@@ -35,6 +35,7 @@ namespace MVC.Services
             foreach (var item in result)
             {
                 item.Count = itemsListId.First(x => x.Id == item.Id).Count;
+                _logger.LogInformation($"item id: {item.Id}, item name: {item.Name}, item price: {item.Price}, items count {item.Count}");
             }
             return result;
         }
