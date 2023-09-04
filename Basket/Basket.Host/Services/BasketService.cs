@@ -1,6 +1,5 @@
 ﻿using Basket.Host.Models;
 using Basket.Host.Services.Interfaces;
-using Microsoft.Extensions.Logging;
 
 namespace Basket.Host.Services
 {
@@ -17,41 +16,62 @@ namespace Basket.Host.Services
 
         public async Task Add(string basketId, int itemId)
         {
-            BasketItemsDb curBasket = new BasketItemsDb();
-            try
-            {
+            BasketItemsDb curBasket = new ();
                 curBasket = await _cacheService.GetAsync<BasketItemsDb>(basketId);
-            }
-            catch (Exception e)
+            curBasket ??= new BasketItemsDb();
+            curBasket.Items ??= new List<BasketItem>();
+            var foundedItem = curBasket.Items.FirstOrDefault(x => x.Id ==itemId);
+            if(foundedItem==null)
             {
-                Console.WriteLine(e);
+                var item = new BasketItem() { Id = itemId, Count = 1 };
+                curBasket.Items.Add(item);
+                await _cacheService.AddOrUpdateAsync(basketId, curBasket);
+            }
+            else
+            {
+                foundedItem.Count++;
+                await _cacheService.AddOrUpdateAsync(basketId, curBasket);
             }
 
-            curBasket.Items ??= new List<BasketItem>();;
+        }
             
-            var item = new BasketItem() { Id = itemId, Count = 1 };
+        public async Task AddItems(string basketId, BasketItem item)
+        {
+            BasketItemsDb curBasket = new();
+            curBasket = await _cacheService.GetAsync<BasketItemsDb>(basketId);
+            curBasket ??= new BasketItemsDb();
+            curBasket.Items ??= new List<BasketItem>();
+            var foundedItem = curBasket.Items.FirstOrDefault(x => x.Id == item.Id);
+            if (foundedItem == null)
+            {
             curBasket.Items.Add(item);
             await _cacheService.AddOrUpdateAsync(basketId, curBasket);
         }
-
-        public async  Task AddItems(string basketId, BasketItem item)
+            else
         {
-            await _cacheService.AddOrUpdateAsync(basketId, item);
+                foundedItem.Count+= item.Count;
+                await _cacheService.AddOrUpdateAsync(basketId, curBasket);
+        }
         }
 
         public async Task<BasketItemsDb> ChangeItemsCount(string basketId, BasketItem item)
         {
-            var basketItems = await _cacheService.GetAsync<BasketItemsDb>(basketId);
-            if (basketItems.Items != null)
+            var basket = await _cacheService.GetAsync<BasketItemsDb>(basketId);
+            if(basket== null)
             {
-                var deletingItem = basketItems.Items.Find(x => x.Id == item.Id);
-                if (deletingItem != null) basketItems.Items.Remove(deletingItem);
+                return new BasketItemsDb();
+            }
+            if (basket.Items != null)
+            {
+                var foundedItem = basket.Items.FirstOrDefault(x => x.Id == item.Id);
+                if(foundedItem!=null)
+                {
+                    foundedItem.Count = item.Count;
+                }
             }
 
-            if (basketItems.Items != null) basketItems.Items.Add(item);
-            await _cacheService.AddOrUpdateAsync(basketId, basketItems);
-            var basket = await _cacheService.GetAsync<BasketItemsDb>(basketId);
-            return basket;
+            await _cacheService.AddOrUpdateAsync(basketId, basket);
+            return await _cacheService.GetAsync<BasketItemsDb>(basketId);
         }
 
         public async Task<BasketItemsDb> Get(string basketId)
@@ -68,14 +88,17 @@ namespace Basket.Host.Services
         public async Task<BasketItemsDb> DeleteItem(string basketId, int itemId)
         {
             var basketItems = await _cacheService.GetAsync<BasketItemsDb>(basketId);
+            if (basketItems == null)
+            {
+                return new BasketItemsDb();
+            }
             if (basketItems.Items != null)
             {
-                var deletingItem = basketItems.Items.Find(x => x.Id == itemId);
+                var deletingItem = basketItems.Items.FirstOrDefault(x => x.Id == itemId);
                 if (deletingItem != null) basketItems.Items.Remove(deletingItem);
             }
             await _cacheService.AddOrUpdateAsync(basketId, basketItems);
-            var basket = await _cacheService.GetAsync<BasketItemsDb>(basketId);
-            return basket;
+            return await _cacheService.GetAsync<BasketItemsDb>(basketId);
         }
     }
 }

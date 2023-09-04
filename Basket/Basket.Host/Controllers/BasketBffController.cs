@@ -29,9 +29,9 @@ namespace Basket.Host.Controllers
         [ProducesResponseType((int)HttpStatusCode.OK)]
         public async Task<IActionResult> AddItem([FromBody]int itemId)
         {
-            var basketId = User.Claims.FirstOrDefault(x => x.Type == "sub")?.Value;
+            var basketId = User.Claims.FirstOrDefault(x => x.Type == "sub")?.Value ?? string.Empty;
             _logger.LogInformation($"Item id: {itemId}, basket id: {basketId}");
-            await _basketService.Add(basketId!, itemId);
+            await _basketService.Add(basketId, itemId);
             return Ok();
         }
 
@@ -45,7 +45,7 @@ namespace Basket.Host.Controllers
             return Ok();
         }
 
-        [HttpGet]
+        [HttpPost]
         [ProducesResponseType(typeof(IEnumerable<BasketItem>), (int)HttpStatusCode.OK)]
         public async Task<IActionResult> ChangeItemsCount(BasketItem item)
         {
@@ -64,15 +64,13 @@ namespace Basket.Host.Controllers
         public async Task<IActionResult> Get()
         {
             var basketId = User.Claims.FirstOrDefault(x => x.Type == "sub")?.Value;
-            if (basketId == null)
+            _logger.LogInformation($"basket id: {basketId}");
+            var response = await _basketService.Get(basketId!);
+            if(response ==null || response.Items==null)
             {
                 return BadRequest();
             }
-
-            string id = basketId;
-            _logger.LogInformation($"basket id: {basketId}");
-            var response = await _basketService.Get(id);
-            foreach (var basketitem in response.Items!)
+            foreach (var basketitem in response.Items)
             {
                 _logger.LogInformation($"item in basket id: {basketitem.Id}, items count: {basketitem.Count}");
             }

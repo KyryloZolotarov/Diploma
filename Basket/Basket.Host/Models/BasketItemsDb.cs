@@ -2,6 +2,6 @@
 {
     public class BasketItemsDb
     {
-        public List<BasketItem>? Items { get; set; } = null!;
+        public List<BasketItem> Items { get; set; } = null!;
     }
 }
