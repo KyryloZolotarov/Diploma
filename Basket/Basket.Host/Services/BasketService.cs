@@ -17,8 +17,21 @@ namespace Basket.Host.Services
 
         public async Task Add(string basketId, int itemId)
         {
+            BasketItemsDb curBasket = new BasketItemsDb();
+            try
+            {
+                curBasket = await _cacheService.GetAsync<BasketItemsDb>(basketId);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+            }
+
+            curBasket.Items ??= new List<BasketItem>();;
+            
             var item = new BasketItem() { Id = itemId, Count = 1 };
-            await _cacheService.AddOrUpdateAsync(basketId, item);
+            curBasket.Items.Add(item);
+            await _cacheService.AddOrUpdateAsync(basketId, curBasket);
         }
 
         public async  Task AddItems(string basketId, BasketItem item)

@@ -4,7 +4,7 @@
 
 @if (Context.User.Identity.IsAuthenticated)
 {
-    <form>
+    <div>
         <div class="card" style="width:100%">
             <div style="height:300px;  vertical-align: middle">
                 <img class="esh-catalog-thumbnail" src="@Model.PictureUrl" alt="Card image">
@@ -17,10 +17,14 @@
                 <div class="esh-catalog-price">
                     <span>@Model.Price.ToString("N2")</span>
                 </div>
-                <a asp-for="@Model.Id" asp-action="AddItemToBasket" asp-controller="Basket" method="post" class="btn btn-primary">Add to cart</a>
+                <form asp-controller="Basket" asp-action="AddItemToBasket" method="post">
+                    <input type="hidden" asp-for="@Model.Id" />
+                    <button class="btn btn-primary">Add to cart</button>
+                </form>
+                
             </div>
         </div>
-    </form>
+    </div>
 }
 else
 {
@@ -41,4 +45,21 @@ else
             </div>
         </div>
     </form>
+}
+
+@section Scripts {
+    <script>
+    $(document).ready(function () {
+        $("#sendData").click(function () {
+            var itemId = $(this).val()
+            var dataToSend = { id: itemId, count: 1 };
+
+            $.ajax({
+                type: "POST",
+                url: "/BasketController/AddItemToBasket",
+                data: dataToSend
+            });
+        });
+    });
+    </script>
 }

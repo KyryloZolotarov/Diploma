@@ -40,7 +40,7 @@ namespace MVC.Services
             return result;
         }
 
-        public async Task AddItemToBasket(int? itemId)
+        public async Task AddItemToBasket(int itemId)
         {
             _logger.LogInformation($"Item id: {itemId}");
             await _httpClient.SendAsync($"{_settings.Value.BasketUrl}/AddItem", HttpMethod.Post, itemId);

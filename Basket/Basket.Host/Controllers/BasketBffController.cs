@@ -27,7 +27,7 @@ namespace Basket.Host.Controllers
 
         [HttpPost]
         [ProducesResponseType((int)HttpStatusCode.OK)]
-        public async Task<IActionResult> AddItem(int itemId)
+        public async Task<IActionResult> AddItem([FromBody]int itemId)
         {
             var basketId = User.Claims.FirstOrDefault(x => x.Type == "sub")?.Value;
             _logger.LogInformation($"Item id: {itemId}, basket id: {basketId}");
@@ -64,8 +64,14 @@ namespace Basket.Host.Controllers
         public async Task<IActionResult> Get()
         {
             var basketId = User.Claims.FirstOrDefault(x => x.Type == "sub")?.Value;
+            if (basketId == null)
+            {
+                return BadRequest();
+            }
+
+            string id = basketId;
             _logger.LogInformation($"basket id: {basketId}");
-            var response = await _basketService.Get(basketId!);
+            var response = await _basketService.Get(id);
             foreach (var basketitem in response.Items!)
             {
                 _logger.LogInformation($"item in basket id: {basketitem.Id}, items count: {basketitem.Count}");
