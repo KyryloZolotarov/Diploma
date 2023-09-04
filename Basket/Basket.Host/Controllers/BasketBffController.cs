@@ -11,7 +11,6 @@ namespace Basket.Host.Controllers
 {
     [ApiController]
     [Authorize(Policy = AuthPolicy.AllowEndUserPolicy)]
-    [Scope("basket.basketbff")]
     [Route(ComponentDefaults.DefaultRoute)]
     public class BasketBffController : ControllerBase
     {

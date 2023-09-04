@@ -82,7 +82,6 @@ app.UseAuthorization();
 app.UseEndpoints(endpoints =>
 {
     endpoints.MapControllerRoute("default", "{controller=Catalog}/{action=Index}/{id?}");
-    endpoints.MapControllerRoute("basket", "{controller=Basket}/{action=Index}/{id?}");
     endpoints.MapControllerRoute("defaultError", "{controller=Error}/{action=Error}");
     endpoints.MapControllers();
 });

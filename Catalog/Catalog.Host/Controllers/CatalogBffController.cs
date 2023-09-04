@@ -11,7 +11,6 @@ namespace Catalog.Host.Controllers
 {
         [ApiController]
         [Authorize(Policy = AuthPolicy.AllowEndUserPolicy)]
-        [Scope("catalog.catalogbff")]
         [Route(ComponentDefaults.DefaultRoute)]
         public class CatalogBffController : ControllerBase
         {
@@ -26,7 +25,6 @@ namespace Catalog.Host.Controllers
                 _catalogService = catalogService;
             }
 
-            [AllowAnonymous]
             [HttpPost]
             [ProducesResponseType(typeof(PaginatedItemsResponse<CatalogItemDto>), (int)HttpStatusCode.OK)]
             public async Task<IActionResult> Items(PaginatedItemsRequest<CatalogFilter> request)
@@ -35,7 +33,6 @@ namespace Catalog.Host.Controllers
                 return Ok(result);
             }
 
-            [AllowAnonymous]
             [HttpGet]
             [ProducesResponseType(typeof(IEnumerable<CatalogItemDto>), (int)HttpStatusCode.OK)]
             public async Task<IActionResult> ListItems(ItemsForBasketRequest request)
@@ -52,7 +49,6 @@ namespace Catalog.Host.Controllers
                 return Ok(result);
             }
 
-            [AllowAnonymous]
             [HttpGet]
             [ProducesResponseType(typeof(IEnumerable<CatalogTypeDto>), (int)HttpStatusCode.OK)]
             public async Task<IActionResult> GetTypes()
@@ -61,7 +57,6 @@ namespace Catalog.Host.Controllers
                 return Ok(result);
             }
 
-            [AllowAnonymous]
             [HttpGet]
             [ProducesResponseType(typeof(IEnumerable<CatalogBrandDto>), (int)HttpStatusCode.OK)]
             public async Task<IActionResult> GetBrands()
@@ -79,7 +74,6 @@ namespace Catalog.Host.Controllers
             return Ok(result);
             }
 
-            [AllowAnonymous]
             [HttpGet("{id}")]
             [ProducesResponseType(typeof(IEnumerable<CatalogModelDto>), (int)HttpStatusCode.OK)]
             public async Task<IActionResult> GetModels([FromRoute] int id)

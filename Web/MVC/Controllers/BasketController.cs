@@ -1,9 +1,9 @@
 ﻿using Infrastructure.Identity;
 using MVC.Services.Interfaces;
+using MVC.ViewModels.BasketViewModels;
 
 namespace MVC.Controllers
 {
-    [Route("basket")]
     public class BasketController : Controller
     {
         private readonly IBasketService _basketService;
@@ -15,19 +15,16 @@ namespace MVC.Controllers
 
         public async Task<IActionResult> Index()
         {
-            return View("basket");
-        }
-
-        public async Task<IActionResult> GetBasket()
-        {
-            var vm = await _basketService.GetBasket();
+            var basket = await _basketService.GetBasket();
+            var vm = new IndexViewModel();
+            vm.BasketItems = basket;
             return View(vm);
         }
 
         public async Task<IActionResult> AddItemToBasket(int? itemId)
         {
             await _basketService.AddItemToBasket(itemId);
-            return View();
+            return NoContent();
         }
 
         public async Task<IActionResult> ChangeItemsCountInBasket(int itemId, int itemsCount)
@@ -39,7 +36,7 @@ namespace MVC.Controllers
         public async Task<IActionResult> AddItemsInBasket(int itemId, int itemsCount)
         {
             await _basketService.AddItemsInBasket(itemId, itemsCount);
-            return View();
+            return NoContent();
         }
 
         public async Task<IActionResult> DeleteItemFromBasket(int? itemId)
@@ -51,7 +48,7 @@ namespace MVC.Controllers
         public async Task<IActionResult> ClearBasket()
         {
             await _basketService.ClearBasket();
-            return View();
+            return NoContent();
         }
     }
 }

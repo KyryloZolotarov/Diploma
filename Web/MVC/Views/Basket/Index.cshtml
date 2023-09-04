@@ -1,0 +1,58 @@
+﻿@model MVC.ViewModels.BasketViewModels.IndexViewModel
+
+@{
+    ViewData["Title"] = "Basket";
+    ViewBag.Title = "title";
+    Layout = "_Layout";
+}
+<section class="esh-catalog-hero">
+    <div class="container-fluid">
+    </div>
+</section>
+
+<div class="container-fluid">
+    <div class="row">
+        <br />
+        @if (ViewBag.BasketInoperativeMsg != null)
+        {
+            <div class="alert alert-warning" role="alert">
+                &nbsp;@ViewBag.BasketInoperativeMsg
+            </div>
+        }
+    </div>
+    <div class="container-fluid">
+            @if (Model.BasketItems.Count() > 0)
+            {
+
+                <div class="container-fluid">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Part Name</th>
+                                <th>Brand</th>
+                                <th>Model</th>
+                                <th>Price</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                            @foreach (var basketItem in Model.BasketItems)
+                            {
+                                <tr>
+                                    <td>@basketItem.Name</td>
+                                    <td>@basketItem.CatalogModel.CatalogBrand.Brand</td>
+                                    <td>@basketItem.CatalogModel.Model</td>
+                                    <td>@basketItem.Price.ToString()$"</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            }
+            else
+            {
+                <p class="h1">Your basket is empty</p>
+            }
+      </div>
+
+</div>

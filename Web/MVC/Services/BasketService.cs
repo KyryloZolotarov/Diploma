@@ -21,10 +21,16 @@ namespace MVC.Services
 
         public async Task<IEnumerable<BasketItemForDisplay>> GetBasket()
         {
-            var itemsListId = (await _httpClient.SendAsync<IEnumerable<BasketItem>>($"{_settings.Value.BasketUrl}/Get", HttpMethod.Get)).ToList();
+            var itemsListId = await _httpClient.SendAsync<IEnumerable<BasketItem>>($"{_settings.Value.BasketUrl}/Get", HttpMethod.Get);
+            if (itemsListId == null)
+            {
+                return new List<BasketItemForDisplay>();
+
+            }
+
             var result =
-                (await _httpClient.SendAsync<IEnumerable<BasketItemForDisplay>, IEnumerable<BasketItem>>(
-                    $"{_settings.Value.CatalogUrl}/ListItems", HttpMethod.Get, itemsListId)).ToList();
+                await _httpClient.SendAsync<IEnumerable<BasketItemForDisplay>, IEnumerable<BasketItem>>(
+                    $"{_settings.Value.CatalogUrl}/ListItems", HttpMethod.Get, itemsListId);
 
             foreach (var item in result)
             {
