@@ -66,7 +66,7 @@ namespace Basket.Host.Controllers
             var basketId = User.Claims.FirstOrDefault(x => x.Type == "sub")?.Value;
             _logger.LogInformation($"basket id: {basketId}");
             var response = await _basketService.Get(basketId!);
-            if(response ==null || response.Items==null)
+            if (response ==null || response.Items==null)
             {
                 return BadRequest();
             }
