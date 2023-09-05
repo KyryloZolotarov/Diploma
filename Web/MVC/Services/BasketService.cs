@@ -41,21 +41,27 @@ namespace MVC.Services
                 BasketItems = itemsListId.Items
                     .Select(item => new BasketItemForDisplay() { Id = item.Id, Count = item.Count }).ToList()
             };
+            if (itemForDisplay == null || itemForDisplay.BasketItems == null)
+            {
+                return new BasketIndexViewModel();
+            }
             foreach (var item in itemForDisplay.BasketItems)
             {
                 _logger.LogInformation($"Basket item mapping id: {item.Id}");
-                BasketItemForDisplay temp = new();
-                if (item != null || item.Id != null)
+                if (item == null || item.Id == null)
                 {
-                    temp = result.BasketItems.FirstOrDefault(x => x.Id == item.Id);
+                    break;
                 }
-                if (temp != null)
+                var temp = result.BasketItems.FirstOrDefault(x => x.Id == item.Id);
+                if (temp == null || temp.Id == null)
                 {
-                    item.CatalogModel = temp.CatalogModel;
-                    item.CatalogSubType = temp.CatalogSubType;
-                    item.Name = temp.Name;
-                    item.Price = temp.Price;
+                    break;
                 }
+
+                item.CatalogModel = temp.CatalogModel;
+                item.CatalogSubType = temp.CatalogSubType;
+                item.Name = temp.Name;
+                item.Price = temp.Price;
             }
             return itemForDisplay;
         }
