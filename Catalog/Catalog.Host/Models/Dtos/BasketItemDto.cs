@@ -2,6 +2,7 @@
 {
     public class BasketItemDto
     {
-        public string Id { get; set; }
+        public int Id { get; set; }
+        public int Count { get; set; }
     }
 }

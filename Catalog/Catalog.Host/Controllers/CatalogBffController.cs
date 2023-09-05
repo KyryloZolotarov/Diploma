@@ -1,4 +1,5 @@
-﻿using Catalog.Host.Models.Dtos;
+﻿using Catalog.Host.Data;
+using Catalog.Host.Models.Dtos;
 using Catalog.Host.Models.Enums;
 using Catalog.Host.Models.Requests;
 using Catalog.Host.Models.Responses;
@@ -34,11 +35,17 @@ namespace Catalog.Host.Controllers
                 return Ok(result);
             }
 
-            [HttpGet]
-            [ProducesResponseType(typeof(IEnumerable<CatalogItemDto>), (int)HttpStatusCode.OK)]
-            public async Task<IActionResult> ListItems(ItemsForBasketRequest request)
+            [HttpPost]
+            [ProducesResponseType(typeof(BasketItems<CatalogItemDto>), (int)HttpStatusCode.OK)]
+            public async Task<IActionResult> ListItems([FromBody] ItemsForBasketRequest request)
             {
-                var result = await _catalogService.GetListCatalogItemsAsync(request.Items);
+                _logger.LogInformation($"items count {request.Items.Count}");
+                var result = await _catalogService.GetListCatalogItemsAsync(request);
+                foreach (var item in result.Items)
+                {
+                    _logger.LogInformation($"item id: {item.Id}");
+                }
+
                 return Ok(result);
             }
 

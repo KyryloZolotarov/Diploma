@@ -28,9 +28,14 @@ namespace MVC.Services
 
             }
 
+            foreach (var item in itemsListId.Items)
+            {
+                _logger.LogInformation($"Item id from basket {item.Id}");
+            }
+
             var result =
                 await _httpClient.SendAsync<BasketItemsFromCatalog, BasketItemsFromBasket>(
-                    $"{_settings.Value.CatalogUrl}/ListItems", HttpMethod.Get, itemsListId);
+                    $"{_settings.Value.CatalogUrl}/ListItems", HttpMethod.Post, itemsListId);
             var itemForDisplay = new BasketIndexViewModel()
             {
                 BasketItems = itemsListId.Items
@@ -66,7 +71,7 @@ namespace MVC.Services
                 })).ToList();
             var result =
                 (await _httpClient.SendAsync<IEnumerable<BasketItemForDisplay>, IEnumerable<BasketItem>>(
-                    $"{_settings.Value.CatalogUrl}/ChangeItemsCount", HttpMethod.Get, itemsListId)).ToList();
+                    $"{_settings.Value.CatalogUrl}/ChangeItemsCount", HttpMethod.Post, itemsListId)).ToList();
             foreach (var item in result)
             {
                 item.Count = itemsListId.First(x => x.Id == item.Id).Count;
@@ -85,7 +90,7 @@ namespace MVC.Services
             var itemsListId = (await _httpClient.SendAsync<IEnumerable<BasketItem>, string>($"{_settings.Value.BasketUrl}/Delete", HttpMethod.Delete, itemId.ToString())).ToList();
             var result =
                 (await _httpClient.SendAsync<IEnumerable<BasketItemForDisplay>, IEnumerable<BasketItem>>(
-                    $"{_settings.Value.CatalogUrl}/ListItems", HttpMethod.Get, itemsListId)).ToList();
+                    $"{_settings.Value.CatalogUrl}/ListItems", HttpMethod.Post, itemsListId)).ToList();
             foreach (var item in result)
             {
                 item.Count = itemsListId.First(x => x.Id == item.Id).Count;

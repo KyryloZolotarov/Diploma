@@ -1,5 +1,8 @@
-﻿using Catalog.Host.Models.Dtos;
+﻿using Catalog.Host.Data;
+using Catalog.Host.Data.Entities;
+using Catalog.Host.Models.Dtos;
 using Catalog.Host.Models.Enums;
+using Catalog.Host.Models.Requests;
 using Catalog.Host.Models.Responses;
 
 namespace Catalog.Host.Services.Interfaces
@@ -12,6 +15,6 @@ namespace Catalog.Host.Services.Interfaces
         Task<CatalogItemDto> GetCatalogItemByIdAsync(int id);
         Task<IEnumerable<CatalogModelDto>> GetCatalogModelsAsync(int id);
         Task<IEnumerable<CatalogSubTypeDto>> GetCatalogSubTypesAsync(int id);
-        Task<IEnumerable<CatalogItemDto>> GetListCatalogItemsAsync(List<BasketItemDto> items);
+        Task<BasketItems<BasketItemDto>> GetListCatalogItemsAsync(ItemsForBasketRequest items);
     }
 }

@@ -1,6 +1,7 @@
 ﻿using Catalog.Host.Data;
 using Catalog.Host.Models.Dtos;
 using Catalog.Host.Models.Enums;
+using Catalog.Host.Models.Requests;
 using Catalog.Host.Models.Responses;
 using Catalog.Host.Repositories.Interfaces;
 using Catalog.Host.Services.Interfaces;
@@ -80,14 +81,12 @@ namespace Catalog.Host.Services
             });
         }
 
-        public async Task<IEnumerable<CatalogItemDto>> GetListCatalogItemsAsync(List<BasketItemDto> items)
+        public async Task<BasketItems<BasketItemDto>> GetListCatalogItemsAsync(ItemsForBasketRequest items)
         {
-            var itemsId = items.Select(item => int.Parse(item.Id)).ToList();
-
             return await ExecuteSafeAsync(async () =>
             {
-                var result = await _catalogItemRepository.GetItemsListAsync(itemsId);
-                return _mapper.Map<List<CatalogItemDto>>(result);
+                var result = await _catalogItemRepository.GetItemsListAsync(items.Items);
+                return _mapper.Map<BasketItems<BasketItemDto>>(result);
             });
         }
 

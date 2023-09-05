@@ -1,5 +1,6 @@
 ﻿using Catalog.Host.Data.Entities;
 using Catalog.Host.Data;
+using Catalog.Host.Models.Dtos;
 using Catalog.Host.Repositories.Interfaces;
 using Infrastructure.Exceptions;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
@@ -67,18 +68,18 @@ namespace Catalog.Host.Repositories
                 .FirstAsync(h => h.Id == id);
         }
 
-        public async Task<List<CatalogItem>> GetItemsListAsync(List<int> itemsId)
+        public async Task<BasketItems<CatalogItem>> GetItemsListAsync(List<BasketItemDto> basketItem)
         {
-            List<CatalogItem> items = new List<CatalogItem>();
-            foreach (var id in itemsId)
+            BasketItems<CatalogItem> items = new ();
+            foreach (var temp in basketItem)
             {
                 var item = await _dbContext.CatalogItems
                     .Include(i => i.CatalogSubType)
                     .Include(i => i.CatalogSubType)
                     .Include(i => i.CatalogModel)
                     .Include(i => i.CatalogModel.CatalogBrand)
-                    .FirstAsync(h => h.Id == id);
-                items.Add(item);
+                    .FirstAsync(h => h.Id == temp.Id);
+                items.Items.Add(item);
             }
 
             return items;
