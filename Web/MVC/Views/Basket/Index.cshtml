@@ -21,39 +21,45 @@
         }
     </div>
     <div class="container-fluid">
-            @if (Model.BasketItems.Any())
+            @if (Model.BasketItems != null)
             {
 
                 <div class="container-fluid">
+                    <div class="row">
+                    <div class="col-*-*"><button type="button" class="btn btn-primary">Primary</button></div>
+                    <div class="col-*-*"><button type="button" class="btn btn-primary">Primary</button></div>
+                    </div>
                     <table class="table">
                         <thead>
-                            <tr>
-                                <th>Part Name</th>
-                                <th>Brand</th>
-                                <th>Model</th>
-                                <th>Price</th>
-                                <th>Count</th>
-                            </tr>
+                        <tr>
+                            <th>Part Name</th>
+                            <th>Brand</th>
+                            <th>Model</th>
+                            <th>Price</th>
+                            <th>Count</th>
+                        </tr>
                         </thead>
                         <tbody>
 
-                            @foreach (var basketItem in Model.BasketItems)
-                            {
-                                <tr>
-                                    <td>@basketItem.Name</td>
-                                    <td>@basketItem.CatalogModel.CatalogBrand.Brand</td>
-                                    <td>@basketItem.CatalogModel.Model</td>
-                                    <td>@basketItem.Price.ToString()$</td>
-                                    <td>@basketItem.Count.ToString()</td>
-                                </tr>
-                            }
+                        @foreach (var basketItem in Model.BasketItems)
+                        {
+                            <tr>
+                                <td>@basketItem.Name</td>
+                                <td>@basketItem.CatalogModel.CatalogBrand.Brand</td>
+                                <td>@basketItem.CatalogModel.Model</td>
+                                <td>@basketItem.Price.ToString()$</td>
+                                <td>@basketItem.Count.ToString()</td>
+                            </tr>
+                        }
                         </tbody>
                     </table>
                 </div>
             }
             else
             {
+            <div class="row justify-content-center">
                 <p class="h1">Your basket is empty</p>
+            </div>
             }
       </div>
 

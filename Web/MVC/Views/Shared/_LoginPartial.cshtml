@@ -6,7 +6,7 @@
 {
     <section class="col-lg-4 col-md-5 col-xs-12">
         <div class="esh-identity">
-            <form class="navbar-right">
+            <form asp-area="" asp-controller="Account" asp-action="SignOut" method="post" id="logoutForm" class="navbar-right">
                 <section class="esh-identity-section">
 
                     <div class="esh-identity-name">@UserManager.Parse(User).Name</div>
@@ -14,7 +14,7 @@
                 </section>
 
                 <section class="esh-identity-drop">
-                    <form asp-area="" asp-controller="Account" asp-action="SignOut" method="post" id="logoutForm">
+                    <form >
 
                         <a class="esh-identity-item"
                            href="javascript:document.getElementById('logoutForm').submit()">
