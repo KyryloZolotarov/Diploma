@@ -70,19 +70,26 @@ namespace Catalog.Host.Repositories
 
         public async Task<BasketItems<CatalogItem>> GetItemsListAsync(List<BasketItemDto> basketItem)
         {
-            BasketItems<CatalogItem> items = new ();
+            List<CatalogItem> items = new ();
             foreach (var temp in basketItem)
             {
+                if (temp.Id == null)
+                {
+                    break;
+                }
+
+                _logger.LogInformation($"basket item id to db {temp.Id}");
                 var item = await _dbContext.CatalogItems
                     .Include(i => i.CatalogSubType)
                     .Include(i => i.CatalogSubType)
                     .Include(i => i.CatalogModel)
                     .Include(i => i.CatalogModel.CatalogBrand)
-                    .FirstAsync(h => h.Id == temp.Id);
-                items.Items.Add(item);
+                    .FirstOrDefaultAsync(h => h.Id == temp.Id);
+                items.Add(item);
+                _logger.LogInformation($"catalog item name from db {item.Name}");
             }
 
-            return items;
+            return new BasketItems<CatalogItem>() { Items = items };
         }
 
         public async Task<int?> Add(string name, string description, decimal price, int availableStock, string pictureFileName, int catalogSubTypeId, int catalogModelId, string partNumber)

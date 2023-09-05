@@ -86,7 +86,8 @@ namespace Catalog.Host.Services
             return await ExecuteSafeAsync(async () =>
             {
                 var result = await _catalogItemRepository.GetItemsListAsync(items.Items);
-                return _mapper.Map<BasketItems<CatalogItemDto>>(result);
+                var mappedResult = new BasketItems<CatalogItemDto>() { Items = result.Items.Select(s => _mapper.Map<CatalogItemDto>(s)).ToList(), };
+                return mappedResult;
             });
         }
 

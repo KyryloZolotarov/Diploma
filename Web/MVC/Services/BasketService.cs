@@ -43,6 +43,10 @@ namespace MVC.Services
             };
             foreach (var item in itemForDisplay.BasketItems)
             {
+                if (item == null)
+                {
+                    break;
+                }  
                 var temp = result.BasketItems.FirstOrDefault(x => x.Id == item.Id);
                 item.CatalogModel = temp.CatalogModel;
                 item.CatalogSubType = temp.CatalogSubType;
