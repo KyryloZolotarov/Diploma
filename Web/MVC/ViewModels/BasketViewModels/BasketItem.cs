@@ -2,7 +2,7 @@
 
 namespace MVC.ViewModels.BasketViewModels
 {
-    public record BasketItem
+    public class BasketItem
     {
         public int Id { get; set; }
         public int Count { get; set; }

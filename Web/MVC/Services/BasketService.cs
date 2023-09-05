@@ -43,16 +43,19 @@ namespace MVC.Services
             };
             foreach (var item in itemForDisplay.BasketItems)
             {
-                if (item == null)
+                _logger.LogInformation($"Basket item mapping id: {item.Id}");
+                BasketItemForDisplay temp = new();
+                if (item != null || item.Id != null)
                 {
-                    break;
-                }  
-                var temp = result.BasketItems.FirstOrDefault(x => x.Id == item.Id);
-                item.CatalogModel = temp.CatalogModel;
-                item.CatalogSubType = temp.CatalogSubType;
-                item.Name = temp.Name;
-                item.Price = temp.Price;
-
+                    temp = result.BasketItems.FirstOrDefault(x => x.Id == item.Id);
+                }
+                if (temp != null)
+                {
+                    item.CatalogModel = temp.CatalogModel;
+                    item.CatalogSubType = temp.CatalogSubType;
+                    item.Name = temp.Name;
+                    item.Price = temp.Price;
+                }
             }
             return itemForDisplay;
         }
