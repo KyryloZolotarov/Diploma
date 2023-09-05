@@ -2,6 +2,6 @@
 {
     public class BasketItemsFromCatalog
     {
-        public List<BasketItemForDisplay> BasketItems { get; set; }
+        public List<BasketItemForDisplay> Items { get; set; }
     }
 }

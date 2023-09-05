@@ -32,6 +32,7 @@
                                 <th>Brand</th>
                                 <th>Model</th>
                                 <th>Price</th>
+                                <th>Count</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -42,7 +43,8 @@
                                     <td>@basketItem.Name</td>
                                     <td>@basketItem.CatalogModel.CatalogBrand.Brand</td>
                                     <td>@basketItem.CatalogModel.Model</td>
-                                    <td>@basketItem.Price.ToString()$"</td>
+                                    <td>@basketItem.Price.ToString()$</td>
+                                    <td>@basketItem.Count.ToString()</td>
                                 </tr>
                             }
                         </tbody>

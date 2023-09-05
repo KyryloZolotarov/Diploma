@@ -52,7 +52,7 @@ namespace MVC.Services
                 {
                     break;
                 }
-                var temp = result.BasketItems.FirstOrDefault(x => x.Id == item.Id);
+                var temp = result.Items.FirstOrDefault(x => x.Id == item.Id);
                 if (temp == null || temp.Id == null)
                 {
                     break;
