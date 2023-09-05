@@ -81,12 +81,12 @@ namespace Catalog.Host.Services
             });
         }
 
-        public async Task<BasketItems<BasketItemDto>> GetListCatalogItemsAsync(ItemsForBasketRequest items)
+        public async Task<BasketItems<CatalogItemDto>> GetListCatalogItemsAsync(ItemsForBasketRequest items)
         {
             return await ExecuteSafeAsync(async () =>
             {
                 var result = await _catalogItemRepository.GetItemsListAsync(items.Items);
-                return _mapper.Map<BasketItems<BasketItemDto>>(result);
+                return _mapper.Map<BasketItems<CatalogItemDto>>(result);
             });
         }
 
