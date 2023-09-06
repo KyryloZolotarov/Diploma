@@ -3,7 +3,6 @@ using Basket.Host.Services;
 using Basket.Host.Services.Interfaces;
 using Infrastructure.Extensions;
 using Infrastructure.Filters;
-using Infrastructure.Services.Interfaces;
 using Microsoft.OpenApi.Models;
 
 
