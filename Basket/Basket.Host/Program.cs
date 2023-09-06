@@ -6,6 +6,7 @@ using Infrastructure.Filters;
 using Infrastructure.Services.Interfaces;
 using Microsoft.OpenApi.Models;
 
+
 var configuration = GetConfiguration();
 
 var builder = WebApplication.CreateBuilder(args);
