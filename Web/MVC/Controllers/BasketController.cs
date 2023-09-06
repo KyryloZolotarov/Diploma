@@ -32,7 +32,7 @@ namespace MVC.Controllers
         public async Task<IActionResult> ChangeItemsCountInBasket(int itemId, int itemsCount)
         {
             var vm = await _basketService.ChangeItemsCountInBasket(itemId, itemsCount);
-            return new ObjectResult(vm);
+            return View("index", vm);
         }
 
         public async Task<IActionResult> AddItemsInBasket(int id, int count)
@@ -41,16 +41,17 @@ namespace MVC.Controllers
             return NoContent();
         }
 
-        public async Task<IActionResult> DeleteItemFromBasket(int? itemId)
+        public async Task<IActionResult> DeleteItemFromBasket(int id)
         {
-            var vm = await _basketService.DeleteItemFromBasket(itemId);
-            return NoContent();
+            var vm = await _basketService.DeleteItemFromBasket(id);
+            return View("index", vm);
         }
 
         public async Task<IActionResult> ClearBasket()
         {
             await _basketService.ClearBasket();
-            return NoContent();
+            var vm = new BasketIndexViewModel() {BasketItems = new List<BasketItemForDisplay>()};
+            return View("index", vm);
         }
     }
 }

@@ -7,9 +7,9 @@ namespace MVC.Services.Interfaces
     {
         Task<BasketIndexViewModel> GetBasket();
         Task AddItemToBasket(int itemId);
-        Task<IEnumerable<BasketItemForDisplay>> ChangeItemsCountInBasket(int itemId, int itemsCount);
+        Task<BasketIndexViewModel> ChangeItemsCountInBasket(int itemId, int itemsCount);
         Task AddItemsInBasket(int itemId, int itemsCount);
-        Task<IEnumerable<BasketItemForDisplay>> DeleteItemFromBasket(int? itemId);
+        Task<BasketIndexViewModel> DeleteItemFromBasket(int id);
         Task ClearBasket();
     }
 }

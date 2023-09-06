@@ -72,24 +72,58 @@ namespace MVC.Services
             await _httpClient.SendAsync($"{_settings.Value.BasketUrl}/AddItem", HttpMethod.Post, itemId);
         }
 
-        public async Task<IEnumerable<BasketItemForDisplay>> ChangeItemsCountInBasket(int itemId, int itemsCount)
+        public async Task<BasketIndexViewModel> ChangeItemsCountInBasket(int itemId, int itemsCount)
         {
-            var itemsListId = (await _httpClient.SendAsync<IEnumerable<BasketItem>, BasketItem>(
+            var itemsListId = (await _httpClient.SendAsync<BasketItemsFromBasket, BasketItem>(
                 $"{_settings.Value.BasketUrl}/ChangeItemsCount",
                 HttpMethod.Post,
                 new BasketItem()
                 {
                     Id = itemId,
                     Count = itemsCount
-                })).ToList();
-            var result =
-                (await _httpClient.SendAsync<IEnumerable<BasketItemForDisplay>, IEnumerable<BasketItem>>(
-                    $"{_settings.Value.CatalogUrl}/ChangeItemsCount", HttpMethod.Post, itemsListId)).ToList();
-            foreach (var item in result)
+                }));
+            if (itemsListId == null)
             {
-                item.Count = itemsListId.First(x => x.Id == item.Id).Count;
+                return new BasketIndexViewModel();
+
             }
-            return result;
+
+            foreach (var item in itemsListId.Items)
+            {
+                _logger.LogInformation($"Item id from basket {item.Id}");
+            }
+
+            var result =
+                await _httpClient.SendAsync<BasketItemsFromCatalog, BasketItemsFromBasket>(
+                    $"{_settings.Value.CatalogUrl}/ListItems", HttpMethod.Post, itemsListId);
+            var itemForDisplay = new BasketIndexViewModel()
+            {
+                BasketItems = itemsListId.Items
+                    .Select(item => new BasketItemForDisplay() { Id = item.Id, Count = item.Count }).ToList()
+            };
+            if (itemForDisplay == null || itemForDisplay.BasketItems == null)
+            {
+                return new BasketIndexViewModel();
+            }
+            foreach (var item in itemForDisplay.BasketItems)
+            {
+                _logger.LogInformation($"Basket item mapping id: {item.Id}");
+                if (item == null || item.Id == null)
+                {
+                    break;
+                }
+                var temp = result.Items.FirstOrDefault(x => x.Id == item.Id);
+                if (temp == null || temp.Id == null)
+                {
+                    break;
+                }
+
+                item.CatalogModel = temp.CatalogModel;
+                item.CatalogSubType = temp.CatalogSubType;
+                item.Name = temp.Name;
+                item.Price = temp.Price;
+            }
+            return itemForDisplay;
         }
 
         public async Task AddItemsInBasket(int itemId, int itemsCount)
@@ -97,23 +131,56 @@ namespace MVC.Services
             await _httpClient.SendAsync($"{_settings.Value.BasketUrl}/AddItems", HttpMethod.Post, new BasketItem() { Id = itemId, Count = itemsCount });
         }
 
-        public async Task<IEnumerable<BasketItemForDisplay>> DeleteItemFromBasket(int? itemId)
+        public async Task<BasketIndexViewModel> DeleteItemFromBasket(int id)
         {
-
-            var itemsListId = (await _httpClient.SendAsync<IEnumerable<BasketItem>, string>($"{_settings.Value.BasketUrl}/Delete", HttpMethod.Delete, itemId.ToString())).ToList();
-            var result =
-                (await _httpClient.SendAsync<IEnumerable<BasketItemForDisplay>, IEnumerable<BasketItem>>(
-                    $"{_settings.Value.CatalogUrl}/ListItems", HttpMethod.Post, itemsListId)).ToList();
-            foreach (var item in result)
+            var itemsListId = (await _httpClient.SendAsync<BasketItemsFromBasket, int>($"{_settings.Value.BasketUrl}/DeleteItem", HttpMethod.Post, id));
+            if (itemsListId == null)
             {
-                item.Count = itemsListId.First(x => x.Id == item.Id).Count;
+                return new BasketIndexViewModel();
+
             }
-            return result;
+
+            foreach (var item in itemsListId.Items)
+            {
+                _logger.LogInformation($"Item id from basket {item.Id}");
+            }
+
+            var result =
+                await _httpClient.SendAsync<BasketItemsFromCatalog, BasketItemsFromBasket>(
+                    $"{_settings.Value.CatalogUrl}/ListItems", HttpMethod.Post, itemsListId);
+            var itemForDisplay = new BasketIndexViewModel()
+            {
+                BasketItems = itemsListId.Items
+                    .Select(item => new BasketItemForDisplay() { Id = item.Id, Count = item.Count }).ToList()
+            };
+            if (itemForDisplay == null || itemForDisplay.BasketItems == null)
+            {
+                return new BasketIndexViewModel();
+            }
+            foreach (var item in itemForDisplay.BasketItems)
+            {
+                _logger.LogInformation($"Basket item mapping id: {item.Id}");
+                if (item == null || item.Id == null)
+                {
+                    break;
+                }
+                var temp = result.Items.FirstOrDefault(x => x.Id == item.Id);
+                if (temp == null || temp.Id == null)
+                {
+                    break;
+                }
+
+                item.CatalogModel = temp.CatalogModel;
+                item.CatalogSubType = temp.CatalogSubType;
+                item.Name = temp.Name;
+                item.Price = temp.Price;
+            }
+            return itemForDisplay;
         }
 
         public async Task ClearBasket()
         {
-            await _httpClient.SendAsync($"{_settings.Value.BasketUrl}/DeleteItem", HttpMethod.Delete);
+            await _httpClient.SendAsync($"{_settings.Value.BasketUrl}/Delete", HttpMethod.Delete);
         }
     }
 }

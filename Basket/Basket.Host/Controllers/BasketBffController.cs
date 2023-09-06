@@ -87,9 +87,9 @@ namespace Basket.Host.Controllers
             return NotFound();
         }
 
-        [HttpDelete]
+        [HttpPost]
         [ProducesResponseType(typeof(IEnumerable<BasketItem>), (int)HttpStatusCode.OK)]
-        public async Task<IActionResult> DeleteItem(int itemId)
+        public async Task<IActionResult> DeleteItem([FromBody]int itemId)
         {
             var basketId = User.Claims.FirstOrDefault(x => x.Type == "sub")?.Value;
             _logger.LogInformation($"Item id: {itemId}, basket id: {basketId}");
