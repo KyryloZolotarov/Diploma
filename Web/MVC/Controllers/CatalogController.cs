@@ -88,11 +88,29 @@ public class CatalogController : Controller
         return Json(modelItems);
     }
 
-    public async Task<IActionResult> GetItemById([FromBody] int id)
+    public async Task<IActionResult> GetItemById(int id)
     {
         var vm = await _catalogService.GetItemById(id);
-        CatalogItemForSingleItem item = new CatalogItemForSingleItem()
-            { catalogItem = vm, basketItem = new BasketItem() { Id = vm.Id, Count = 0 } };
+        var item = new CatalogItemForSingleItem()
+        {
+            basketItem = new BasketItem()
+            {
+                Id = id,
+                Count = 0,
+            },
+            catalogItem = new CatalogItem()
+            {
+                Id = vm.Id,
+                Name = vm.Name,
+                CatalogModel = vm.CatalogModel,
+                CatalogSubType = vm.CatalogSubType,
+                Description = vm.Description,
+                PictureUrl = vm.PictureUrl,
+                Price = vm.Price,
+                AvailableStock = vm.AvailableStock,
+            },
+        };
+        
         return View(item);
     }
 }

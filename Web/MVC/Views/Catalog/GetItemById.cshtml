@@ -5,45 +5,52 @@
     Layout = "_Layout";
 }
 
-<div class="container-fluid">
-    <div style="height:300px;  vertical-align: middle">
-        <img class="esh-catalog-thumbnail" src="@Model.catalogItem.PictureUrl" alt="Card image">
-    </div>
-    <div class="card-body">
-        <p class="card-text">@Model.catalogItem.Name</p>
-        <p class="card-text">@Model.catalogItem.CatalogModel.CatalogBrand.Brand @Model.catalogItem.CatalogModel.Model</p>
-        <p class="card-text">@Model.catalogItem.Description</p>
-        <div class="esh-catalog-price">
-            <span>@Model.catalogItem.Price.ToString("n1")$""</span>
-        </div>
-        <form asp-controller="Basket" asp-action="AddItemsInBasket" method="post">
-            <div class="esh-catalog-counter">
-                <button class="esh-catalog-button-decrement">-</button>
-                <input asp-for="@Model.basketItem.Count" class="esh-catalog-counter-value" min="0" id="valueInput">
-                <button class="esh-catalog-button-increment">+</button>
+@if (Context.User.Identity.IsAuthenticated)
+{
+    <div class="container-fluid">
+        <div class="card">
+            <div class="card-header" style="height:300px;  vertical-align: middle; justify-content-center">
+                <img class="esh-catalog-thumbnail" src="@Model.catalogItem.PictureUrl" alt="Card image">
             </div>
-            <input type="hidden" asp-for="@Model.catalogItem.Id" />
-            <button class="btn btn-primary">Add to cart</button>
-        </form>
-
+            <div class="card-body" style="justify-content-center">
+                <p class="card-text">@Model.catalogItem.Name</p>
+                <p class="card-text">@Model.catalogItem.CatalogModel.CatalogBrand.Brand @Model.catalogItem.CatalogModel.Model</p>
+                <p class="card-text">@Model.catalogItem.Description</p>
+                <div class="esh-catalog-price">
+                    <span>@Model.catalogItem.Price.ToString("N2")</span>
+                </div>
+            </div>
+            <div class="card-footer" style="justify-content-center">
+                <form asp-controller="Basket" asp-action="AddItemsInBasket" method="post">
+                    <div class="esh-catalog-counter">
+                        <input asp-for="@Model.basketItem.Count" class="esh-catalog-counter-value" min="0" id="valueInput">
+                    </div>
+                    <input type="hidden" asp-for="@Model.catalogItem.Id" />
+                    <button class="btn btn-primary">Add to cart</button>
+                </form>
+            </div>
+        </div>
+        
     </div>
-</div>
-@section Scripts {
-    <script>
-        $(document).ready(function () {
-            var valueInput = $("#esh-catalog-counter-valueInput");
-            var incrementButton = $("#esh-catalog-button-incrementButton");
-            var decrementButton = $("#esh-catalog-button-decrementButton");
-
-            incrementButton.on("click", function () {
-                var currentValue = parseInt(valueInput.val(), 10);
-                valueInput.val(currentValue + 1);
-            });
-
-            decrementButton.on("click", function () {
-                var currentValue = parseInt(valueInput.val(), 10);
-                valueInput.val(currentValue - 1);
-            });
-        });
-    </script>
+}
+else
+{
+    <div class="container-fluid">
+    <div class="card">
+            <div class="card-header" style="height:300px;  vertical-align: middle; justify-content-center">
+            <img class="esh-catalog-thumbnail" src="@Model.catalogItem.PictureUrl" alt="Card image">
+        </div>
+            <div class="card-body" style="justify-content-center">
+            <p class="card-text">@Model.catalogItem.Name</p>
+            <p class="card-text">@Model.catalogItem.CatalogModel.CatalogBrand.Brand @Model.catalogItem.CatalogModel.Model</p>
+            <p class="card-text">@Model.catalogItem.Description</p>
+            <div class="esh-catalog-price">
+                <span>@Model.catalogItem.Price.ToString("N2")</span>
+            </div>
+        </div>
+            <div class="card-footer" style="justify-content-center">
+            <p>To order please sign in</p>
+        </div>
+    </div>
+    </div>
 }

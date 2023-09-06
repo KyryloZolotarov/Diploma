@@ -49,11 +49,14 @@ namespace Catalog.Host.Controllers
                 return Ok(result);
             }
 
-            [HttpGet("id={id}")]
+            [HttpPost]
+            [AllowAnonymous]
             [ProducesResponseType(typeof(CatalogItemDto), (int)HttpStatusCode.OK)]
-            public async Task<IActionResult> GetItemById([FromRoute] int id)
+            public async Task<IActionResult> GetItemById([FromBody] int id)
             {
+                _logger.LogInformation($"item id {id}");
                 var result = await _catalogService.GetCatalogItemByIdAsync(id);
+                _logger.LogInformation($"item id {result.Id}, item name {result.Name}");
                 return Ok(result);
             }
 
