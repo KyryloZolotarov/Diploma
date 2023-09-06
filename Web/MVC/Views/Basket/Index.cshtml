@@ -32,6 +32,7 @@
                             <th>Model</th>
                             <th>Price</th>
                             <th>Count</th>
+                            <th></th>
                         </tr>
                         </thead>
                         <tbody>
@@ -41,11 +42,11 @@
                                 <td>@basketItem.Name</td>
                                 <td>@basketItem.CatalogModel.CatalogBrand.Brand</td>
                                 <td>@basketItem.CatalogModel.Model</td>
-                                <td>@basketItem.Price.ToString("C")</td>
+                                <td>@basketItem.Price.ToString("N2")</td>
                                 <td>
                                     <form asp-controller="Basket" asp-action="ChangeItemsCountInBasket">
                                         <div class="d-flex mb-3">
-                                            <input asp-for="@basketItem" class="esh-catalog-counter-value mr-2" min="1" id="valueInput">
+                                            <input asp-for="@basketItem.Count" class="esh-catalog-counter-value mr-2 flex-grow-0 flex-shrink-0" style="width: 100px;" min="1">
                                             <button type="button" class="btn btn-primary">Change</button>
                                         </div>
                                     </form>
@@ -53,7 +54,7 @@
                                 <td>
                                     <form asp-controller="Basket" asp-action="DeleteItemFromBasket">
                                         <input type="hidden" asp-for="@basketItem.Id">
-                                        <a>Delete</a>
+                                        <button class="btn btn-link">Delete</button>
                                     </form>
                                 </td>
                             </tr>

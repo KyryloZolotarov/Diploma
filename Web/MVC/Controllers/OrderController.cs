@@ -20,7 +20,7 @@ namespace MVC.Controllers
 
         public IActionResult CreateOrder()
         {
-            return NoContent();
+            return View();
         }
     }
 }

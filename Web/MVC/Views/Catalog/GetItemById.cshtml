@@ -29,7 +29,7 @@
                     <div class="card-footer">
                         <form asp-controller="Basket" asp-action="AddItemsInBasket" method="post">
                             <div class="esh-catalog-counter">
-                                <input asp-for="@Model.basketItem.Count" class="esh-catalog-counter-value mb-2" min="1" id="valueInput">
+                                <input asp-for="@Model.basketItem.Count" class="esh-catalog-counter-value mb-2 form-control-sm" min="1" id="valueInput">
                             </div>
                             <input type="hidden" asp-for="@Model.catalogItem.Id" />
                             <button class="btn btn-primary">Add to cart</button>

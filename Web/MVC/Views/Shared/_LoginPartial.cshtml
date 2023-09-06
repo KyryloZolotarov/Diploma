@@ -15,23 +15,24 @@
 
                 <section class="esh-identity-drop">
                     <form >
-
                         <a class="esh-identity-item"
                            href="javascript:document.getElementById('logoutForm').submit()">
-
                             <div class="esh-identity-name esh-identity-name--upper">Log Out</div>
                             <img class="esh-identity-image" src="~/images/logout.png">
                         </a>
                     </form>
                     <form >
-
                         <a asp-area="" asp-controller="Basket" asp-action="Index" class="esh-identity-item">
-
                             <div class="esh-identity-name esh-identity-name--upper">Basket</div>
                             <img class="esh-identity-image" src="~/images/cart.png">
                         </a>
                     </form>
-
+                    <form>
+                        <a asp-area="" asp-controller="Order" asp-action="Index" class="esh-identity-item">
+                            <div class="esh-identity-name esh-identity-name--upper">Orders</div>
+                            <img class="esh-identity-image" src="~/images/my_orders.png">
+                        </a>
+                    </form>
                 </section>
             </form>
         </div>
