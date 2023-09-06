@@ -10,18 +10,8 @@
     </div>
 </section>
 
-<div class="container-fluid">
-    <div class="row">
-        <br />
-        @if (ViewBag.BasketInoperativeMsg != null)
-        {
-            <div class="alert alert-warning" role="alert">
-                &nbsp;@ViewBag.BasketInoperativeMsg
-            </div>
-        }
-    </div>
     <div class="container-fluid">
-            @if (Model.BasketItems != null)
+            @if (Model.BasketItems.Count>0)
             {
 
                 <div class="container-fluid">
@@ -62,5 +52,3 @@
             </div>
             }
       </div>
-
-</div>

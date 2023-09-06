@@ -88,7 +88,6 @@ public class CatalogController : Controller
         return Json(modelItems);
     }
 
-    [HttpPost]
     public async Task<IActionResult> GetItemById([FromBody] int id)
     {
         var vm = await _catalogService.GetItemById(id);
