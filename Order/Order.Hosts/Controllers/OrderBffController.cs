@@ -1,13 +1,17 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using Infrastructure.Identity;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Order.Hosts.Controllers
 {
-    //[ApiController]
-    //[Authorize(Policy = AuthPolicy.AllowEndUserPolicy)]
-    //[Route(ComponentDefaults.DefaultRoute)]
+    [ApiController]
+    [Authorize(Policy = AuthPolicy.AllowEndUserPolicy)]
+    [Route(ComponentDefaults.DefaultRoute)]
     public class OrderBffController : ControllerBase
     {
-        
+        public async Task AddOrder()
+        {
+            
+        }
     }
 }

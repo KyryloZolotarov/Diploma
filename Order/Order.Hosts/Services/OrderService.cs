@@ -1,6 +1,8 @@
-﻿namespace Order.Hosts.Services
+﻿using Order.Hosts.Services.Interfaces;
+
+namespace Order.Hosts.Services
 {
-    public class OrderService
+    public class OrderService : IOrderService
     {
     }
 }
