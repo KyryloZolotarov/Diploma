@@ -19,7 +19,7 @@ namespace IdentityServer
         {
             return new ApiResource[]
             {
-                new ApiResource("alevelwebsite.com")
+                new ApiResource("localhost")
                 {
                     Scopes = new List<Scope>
                     {
