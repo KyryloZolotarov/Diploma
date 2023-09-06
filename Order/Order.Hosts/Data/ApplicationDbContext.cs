@@ -1,3 +1,6 @@
+using Order.Hosts.Data.Entities;
+using Order.Hosts.Data.EntityConfigurations;
+
 namespace Order.Host.Data;
 
 public class ApplicationDbContext : DbContext
@@ -7,18 +10,14 @@ public class ApplicationDbContext : DbContext
     {
     }
 
-    public DbSet<CatalogItem> CatalogItems { get; set; } = null!;
-    public DbSet<CatalogBrand> CatalogBrands { get; set; } = null!;
-    public DbSet<CatalogType> CatalogTypes { get; set; } = null!;
-    public DbSet<CatalogSubType> CatalogSubTypes { get; set; } = null!;
-    public DbSet<CatalogModel> CatalogModels { get; set; } = null!;
+    public DbSet<OrderItemEntity> OrderItems { get; set; } = null!;
+    public DbSet<OrderOrderEntity> OrderOrders { get; set; } = null!;
+    public DbSet<OrderUserEntity> OrderUsers { get; set; } = null!;
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
-        builder.ApplyConfiguration(new CatalogBrandEntityTypeConfiguration());
-        builder.ApplyConfiguration(new CatalogTypeEntityTypeConfiguration());
-        builder.ApplyConfiguration(new CatalogItemEntityTypeConfiguration());
-        builder.ApplyConfiguration(new CatalogSubTypeEntityTypeConfiguration());
-        builder.ApplyConfiguration(new CatalogModelEntityTypeConfiguration());
+        builder.ApplyConfiguration(new OrderItemEntityTypeConfiguration());
+        builder.ApplyConfiguration(new OrderOrderEntityTypeConfiguration());
+        builder.ApplyConfiguration(new OrderUserEntityTypeConfiguration());
     }
 }

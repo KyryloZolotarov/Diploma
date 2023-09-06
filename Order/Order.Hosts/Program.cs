@@ -64,10 +64,10 @@ namespace Order.Host
 
             builder.Services.AddAutoMapper(typeof(Program));
 
-            builder.Services.AddTransient<IOrderRepository, OrderRepository>();
-            builder.Services.AddTransient<IUserRepository, UserRepository>();
+            builder.Services.AddTransient<IOrderOrderRepository, OrderOrderRepository>();
+            builder.Services.AddTransient<IOrderUserRepository, OrderUserRepository>();
             builder.Services.AddTransient<IOrderService, OrderService>();
-            builder.Services.AddTransient<IUserService, UserService>();
+            builder.Services.AddTransient<IOrderUserService, OrderUserService>();
 
             builder.Services.AddDbContextFactory<ApplicationDbContext>(opts => opts.UseNpgsql(configuration["ConnectionString"]));
             builder.Services.AddScoped<IDbContextWrapper<ApplicationDbContext>, DbContextWrapper<ApplicationDbContext>>();

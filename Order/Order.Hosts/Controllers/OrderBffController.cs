@@ -11,7 +11,6 @@ namespace Order.Hosts.Controllers
     {
         public async Task AddOrder()
         {
-            
         }
     }
 }
