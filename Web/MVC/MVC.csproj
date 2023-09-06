@@ -29,4 +29,8 @@
 	  <UpToDateCheckInput Remove="Views\Basket\Index.cshtml" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <Folder Include="Views\Order\" />
+	</ItemGroup>
+
 </Project>

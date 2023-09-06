@@ -96,7 +96,7 @@ public class CatalogController : Controller
             basketItem = new BasketItem()
             {
                 Id = id,
-                Count = 0,
+                Count = 1,
             },
             catalogItem = new CatalogItem()
             {

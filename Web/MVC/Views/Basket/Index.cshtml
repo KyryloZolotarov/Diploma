@@ -15,9 +15,14 @@
             {
 
                 <div class="container-fluid">
-                    <div class="row">
-                    <div class="col-*-*"><button type="button" class="btn btn-primary">Primary</button></div>
-                    <div class="col-*-*"><button type="button" class="btn btn-primary">Primary</button></div>
+                    <div class="d-flex justify-content-end mb-3">
+                        <form asp-controller="Basket" asp-action="ClearBasket">
+                            <button type="button" class="btn btn-primary mr-2">Clear Basket</button>
+                        </form>
+                        <form asp-controller="Order" asp-action="CreateOrder">
+                            <input type="hidden" value="@Model">
+                            <button type="button" class="btn btn-primary">Create Order</button>
+                        </form>
                     </div>
                     <table class="table">
                         <thead>
@@ -30,15 +35,27 @@
                         </tr>
                         </thead>
                         <tbody>
-
                         @foreach (var basketItem in Model.BasketItems)
                         {
                             <tr>
                                 <td>@basketItem.Name</td>
                                 <td>@basketItem.CatalogModel.CatalogBrand.Brand</td>
                                 <td>@basketItem.CatalogModel.Model</td>
-                                <td>@basketItem.Price.ToString()$</td>
-                                <td>@basketItem.Count.ToString()</td>
+                                <td>@basketItem.Price.ToString("C")</td>
+                                <td>
+                                    <form asp-controller="Basket" asp-action="ChangeItemsCountInBasket">
+                                        <div class="d-flex mb-3">
+                                            <input asp-for="@basketItem" class="esh-catalog-counter-value mr-2" min="1" id="valueInput">
+                                            <button type="button" class="btn btn-primary">Change</button>
+                                        </div>
+                                    </form>
+                                </td>
+                                <td>
+                                    <form asp-controller="Basket" asp-action="DeleteItemFromBasket">
+                                        <input type="hidden" asp-for="@basketItem.Id">
+                                        <a>Delete</a>
+                                    </form>
+                                </td>
                             </tr>
                         }
                         </tbody>
