@@ -27,13 +27,12 @@
                         </div>
                     </div>
                     <div class="card-footer">
-                        <form asp-controller="Basket" asp-action="AddItemsInBasket" method="post">
+                        <div id="sendData">
                             <div class="esh-catalog-counter">
-                                <input asp-for="@Model.basketItem.Count" class="esh-catalog-counter-value mb-2 form-control-sm" min="1" id="valueInput">
+                                <input value="1" class="esh-catalog-counter-value mb-2 form-control-sm" min="1" id="valueInput">
                             </div>
-                            <input type="hidden" asp-for="@Model.catalogItem.Id" />
                             <button class="btn btn-primary">Add to cart</button>
-                        </form>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -64,4 +63,21 @@ else
             </div>
         </div>
     </div>
+}
+@section Scripts {
+    <script>
+    $(document).ready(function () {
+        $("#sendData").submit(function () {
+            var itemId = @Model.basketItem.Id
+            var itemCount = $(this).Val()
+            var dataToSend = { id: itemId, count: itemCount };
+
+            $.ajax({
+                type: "POST",
+                    url: "/Basket/AddItemsInBasket",
+                data: dataToSend
+            });
+        });
+    });
+    </script>
 }

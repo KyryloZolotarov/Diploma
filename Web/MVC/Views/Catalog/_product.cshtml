@@ -55,20 +55,3 @@ else
         </div>
     </div>
 }
-
-@section Scripts {
-    <script>
-    $(document).ready(function () {
-        $("#sendData").click(function () {
-            var itemId = $(this).val()
-            var dataToSend = { id: itemId, count: 1 };
-
-            $.ajax({
-                type: "POST",
-                url: "/BasketController/AddItemToBasket",
-                data: dataToSend
-            });
-        });
-    });
-    </script>
-}
