@@ -148,3 +148,25 @@
   content: '$';
 }
 
+.esh-catalog-counter {
+    display: flex;
+    align-items: center;
+}
+
+.esh-catalog-button-decrement {
+    padding: 5px 10px;
+    font-size: 18px;
+    cursor: pointer;
+}
+
+.esh-catalog-button-increment {
+    padding: 5px 10px;
+    font-size: 18px;
+    cursor: pointer;
+}
+
+.esh-catalog-counter-value {
+    width: 40px;
+    text-align: center;
+}
+

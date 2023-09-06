@@ -12,7 +12,9 @@
     <div class="container-fluid">
         <form asp-action="Index" asp-controller="Catalog" method="post">
             <label class="esh-catalog-label" data-title="brand">
-                <select id="brandDropdown" asp-for="@Model.BrandFilterApplied" asp-items="@Model.Brands" class="esh-catalog-filter"></select>
+                <select id="brandDropdown" asp-for="@Model.BrandFilterApplied" asp-items="@Model.Brands" class="esh-catalog-filter">
+                    <option value="">All</option>
+                </select>
             </label>
             <label class="esh-catalog-label" data-title="model">
                 <select id="modelDropdown" asp-for="@Model.ModelFilterApplied" class="esh-catalog-filter">
@@ -20,7 +22,9 @@
                 </select>
             </label>
             <label class="esh-catalog-label" data-title="type">
-                <select id="typeDropdown" asp-for="@Model.TypesFilterApplied" asp-items="@Model.Types" class="esh-catalog-filter"></select>
+                <select id="typeDropdown" asp-for="@Model.TypesFilterApplied" asp-items="@Model.Types" class="esh-catalog-filter">
+                    <option value="">All</option>
+                </select>
             </label>
             <label class="esh-catalog-label" data-title="subtype">
                 <select id="subTypeDropdown" asp-for="@Model.SubTypeFilterApplied" class="esh-catalog-filter">

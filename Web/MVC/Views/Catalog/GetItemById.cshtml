@@ -1,0 +1,50 @@
+﻿@model MVC.ViewModels.CatalogViewModels.CatalogItemForSingleItem
+
+@{
+    ViewBag.Title = "title";
+    Layout = "_Layout";
+}
+
+<div class="container-fluid">
+    <div style="height:300px;  vertical-align: middle">
+        <img class="esh-catalog-thumbnail" src="@Model.catalogItem.PictureUrl" alt="Card image">
+    </div>
+    <div class="card-body">
+        <p class="card-text">@Model.catalogItem.Name</p>
+        <p class="card-text">@Model.catalogItem.CatalogModel.CatalogBrand.Brand @Model.catalogItem.CatalogModel.Model</p>
+        <p class="card-text">@Model.catalogItem.Description</p>
+        <div class="esh-catalog-price">
+            <span>@Model.catalogItem.Price.ToString("n1")$""</span>
+        </div>
+        <form asp-controller="Basket" asp-action="AddItemsInBasket" method="post">
+            <div class="esh-catalog-counter">
+                <button class="esh-catalog-button-decrement">-</button>
+                <input asp-for="@Model.basketItem.Count" class="esh-catalog-counter-value" min="0" id="valueInput">
+                <button class="esh-catalog-button-increment">+</button>
+            </div>
+            <input type="hidden" asp-for="@Model.catalogItem.Id" />
+            <button class="btn btn-primary">Add to cart</button>
+        </form>
+
+    </div>
+</div>
+@section Scripts {
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            var valueInput = $("#esh-catalog-counter-valueInput");
+            var incrementButton = $("#esh-catalog-button-incrementButton");
+            var decrementButton = $("#esh-catalog-button-decrementButton");
+
+            incrementButton.on("click", function () {
+                var currentValue = parseInt(valueInput.val(), 10);
+                valueInput.val(currentValue + 1);
+            });
+
+            decrementButton.on("click", function () {
+                var currentValue = parseInt(valueInput.val(), 10);
+                valueInput.val(currentValue - 1);
+            });
+        });
+    </script>
+}

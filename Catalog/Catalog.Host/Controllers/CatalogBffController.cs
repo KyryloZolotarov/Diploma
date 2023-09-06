@@ -49,7 +49,7 @@ namespace Catalog.Host.Controllers
                 return Ok(result);
             }
 
-            [HttpGet("{id}")]
+            [HttpGet("id={id}")]
             [ProducesResponseType(typeof(CatalogItemDto), (int)HttpStatusCode.OK)]
             public async Task<IActionResult> GetItemById([FromRoute] int id)
             {

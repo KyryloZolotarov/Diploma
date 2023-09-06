@@ -2,6 +2,7 @@
 using MVC.Services;
 using MVC.Services.Interfaces;
 using MVC.ViewModels;
+using MVC.ViewModels.BasketViewModels;
 using MVC.ViewModels.CatalogViewModels;
 using MVC.ViewModels.Pagination;
 
@@ -85,5 +86,14 @@ public class CatalogController : Controller
         var modelItems = models.Select(x => new SelectListItem { Value = x.Id.ToString(), Text = x.SubType }).ToList();
         modelItems.Append(new SelectListItem { Value = "", Text = "All" });
         return Json(modelItems);
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> GetItemById([FromBody] int id)
+    {
+        var vm = await _catalogService.GetItemById(id);
+        CatalogItemForSingleItem item = new CatalogItemForSingleItem()
+            { catalogItem = vm, basketItem = new BasketItem() { Id = vm.Id, Count = 0 } };
+        return View(item);
     }
 }

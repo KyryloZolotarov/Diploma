@@ -32,19 +32,19 @@ namespace MVC.Controllers
         public async Task<IActionResult> ChangeItemsCountInBasket(int itemId, int itemsCount)
         {
             var vm = await _basketService.ChangeItemsCountInBasket(itemId, itemsCount);
-            return View(vm);
+            return new ObjectResult(vm);
         }
 
-        public async Task<IActionResult> AddItemsInBasket(int itemId, int itemsCount)
+        public async Task<IActionResult> AddItemsInBasket(int id, int count)
         {
-            await _basketService.AddItemsInBasket(itemId, itemsCount);
+            await _basketService.AddItemsInBasket(id, count);
             return NoContent();
         }
 
         public async Task<IActionResult> DeleteItemFromBasket(int? itemId)
         {
             var vm = await _basketService.DeleteItemFromBasket(itemId);
-            return View(vm);
+            return NoContent();
         }
 
         public async Task<IActionResult> ClearBasket()

@@ -57,6 +57,11 @@ public class CatalogService : ICatalogService
         return result;
     }
 
+    public async Task<CatalogItem> GetItemById(int id)
+    {
+        return await _httpClient.SendAsync<CatalogItem>($"{_settings.Value.CatalogUrl}/GetBrands/id={id}", HttpMethod.Get);
+    }
+
     public async Task<IEnumerable<CatalogBrand>> GetBrands()
     {
         var result = await _httpClient.SendAsync<IEnumerable<CatalogBrand>>($"{_settings.Value.CatalogUrl}/GetBrands", HttpMethod.Get);
