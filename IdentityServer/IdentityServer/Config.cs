@@ -38,6 +38,15 @@ namespace IdentityServer
                         new Scope("catalog.catalogmodel")
                     },
                 },
+
+                new ApiResource("order")
+                {
+                    Scopes = new List<Scope>
+                    {
+                        new Scope("order.order"),
+                        new Scope("order.orderuser"),
+                    },
+                },
             };
         }
 
@@ -101,6 +110,23 @@ namespace IdentityServer
                     AllowedScopes =
                     {
                         "mvc",
+                    }
+                },
+                new Client
+                {
+                    ClientId = "orderswaggerui",
+                    ClientName = "Order Swagger UI",
+                    AllowedGrantTypes = GrantTypes.Implicit,
+                    AllowAccessTokensViaBrowser = true,
+
+                    RedirectUris = { $"{configuration["OrderApi"]}/swagger/oauth2-redirect.html" },
+                    PostLogoutRedirectUris = { $"{configuration["OrderApi"]}/swagger/" },
+
+                    AllowedScopes =
+                    {
+                        "mvc",
+                        "order.order",
+                        "order.orderuser",
                     }
                 },
             };
