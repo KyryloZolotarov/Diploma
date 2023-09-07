@@ -12,7 +12,7 @@ namespace Order.Hosts.Data.EntityConfigurations
             builder.HasKey(ci => ci.Id);
 
             builder.Property(ci => ci.Id)
-                .UseHiLo("catalog_subtype_hilo")
+                .UseHiLo("order_order_hilo")
                 .IsRequired();
 
             builder.Property(ci => ci.DateTime)

@@ -109,7 +109,7 @@ namespace Order.Hosts.Repositories
                 });
             }
 
-            await _dbContext.OrderItems.AddRangeAsync();
+            await _dbContext.OrderItems.AddRangeAsync(items);
             await _dbContext.SaveChangesAsync();
 
             _logger.LogInformation($"Order id {orderAdding.Entity.Id} added");
@@ -123,7 +123,10 @@ namespace Order.Hosts.Repositories
             {
                 var items = _dbContext.OrderItems.Where(x => x.OrderId == id).ToList();
                 var order = await _dbContext.OrderOrders.FirstOrDefaultAsync(y => y.Id == id);
-                var itemsList = new OrderOrderResponse();
+                var itemsList = new OrderOrderResponse
+                {
+                    Items = new ()
+                };
                 itemsList.Items.AddRange(items);
                 itemsList.Order.Id = order.Id;
                 itemsList.Order.DateTime = order.DateTime;
