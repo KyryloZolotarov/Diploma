@@ -11,21 +11,21 @@
 </section>
 
     <div class="container-fluid">
-            @if (Model.BasketItems.Count>0)
+    @if (Model.BasketItems != null && Model.BasketItems.Any())
             {
 
-                <div class="container-fluid">
-                    <div class="d-flex justify-content-end mb-3">
-                        <form asp-controller="Basket" asp-action="ClearBasket">
-                            <button type="button" class="btn btn-primary mr-2">Clear Basket</button>
-                        </form>
-                        <form asp-controller="Order" asp-action="CreateOrder">
-                            <input type="hidden" value="@Model">
-                            <button type="button" class="btn btn-primary">Create Order</button>
-                        </form>
-                    </div>
-                    <table class="table">
-                        <thead>
+            <div class="container-fluid">
+                <div class="d-flex justify-content-end mb-3">
+                    <form asp-controller="Basket" asp-action="ClearBasket">
+                        <button type="submit" class="btn btn-primary mr-2">Clear Basket</button>
+                    </form>
+                    <form asp-controller="Order" asp-action="CreateOrder">
+                        <input type="hidden" value="@Model">
+                    <button type="submit" class="btn btn-primary">Create Order</button>
+                    </form>
+                </div>
+                <table class="table">
+                    <thead>
                         <tr>
                             <th>Part Name</th>
                             <th>Brand</th>
@@ -34,8 +34,8 @@
                             <th>Count</th>
                             <th></th>
                         </tr>
-                        </thead>
-                        <tbody>
+                    </thead>
+                    <tbody>
                         @foreach (var basketItem in Model.BasketItems)
                         {
                             <tr>
@@ -44,22 +44,22 @@
                                 <td>@basketItem.CatalogModel.Model</td>
                                 <td>@basketItem.Price.ToString("N2")</td>
                                 <td>
-                                    <form asp-controller="Basket" asp-action="ChangeItemsCountInBasket">
-                                        <div class="d-flex mb-3">
-                                            <input asp-for="@basketItem.Count" class="esh-catalog-counter-value mr-2 flex-grow-0 flex-shrink-0" style="width: 100px;" min="1">
-                                            <button type="button" class="btn btn-primary">Change</button>
-                                        </div>
-                                    </form>
+
+                                    <div class="d-flex mb-3">
+                                        <input id="itemId" value="@basketItem.Id" type="hidden"> <!-- Добавьте поле для ID -->
+                                        <input id="itemCount" asp-for="@basketItem.Count" class="esh-catalog-counter-value mr-2 flex-grow-0 flex-shrink-0" style="width: 100px;" min="1">
+                                        <button type="button" class="btn btn-primary" onclick="sendBasketChangeRequest()">Change</button>
+                                    </div>
                                 </td>
                                 <td>
                                     <form asp-controller="Basket" asp-action="DeleteItemFromBasket">
-                                        <input type="hidden" asp-for="@basketItem.Id">
+                                        <input type="hidden" name="id" value="@basketItem.Id" />
                                         <button class="btn btn-link">Delete</button>
                                     </form>
                                 </td>
                             </tr>
                         }
-                        </tbody>
+                    </tbody>
                     </table>
                 </div>
             }
@@ -70,3 +70,30 @@
             </div>
             }
       </div>
+      <script>
+          function getBasketChangeRequest() {
+    return {
+        Id: parseInt($("#itemId").val(), 10),
+        Count: parseInt($("#itemCount").val(), 10)
+    };
+}
+
+    function sendBasketChangeRequest() {
+        var data = getBasketChangeRequest();
+
+        $.ajax({
+            type: "POST",
+            url: "/Basket/ChangeItemsCountInBasket",
+            data: JSON.stringify(data),
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function (response) {
+                // Обработка успешного ответа (например, обновление UI)
+            },
+            error: function (error) {
+                // Обработка ошибок
+            }
+        });
+    }
+      </script>
+         

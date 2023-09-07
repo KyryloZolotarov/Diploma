@@ -1,4 +1,5 @@
 ﻿using Infrastructure.Identity;
+using MVC.Models.Requests;
 using MVC.Services.Interfaces;
 using MVC.ViewModels.BasketViewModels;
 
@@ -28,25 +29,25 @@ namespace MVC.Controllers
             _logger.LogInformation($"{id}");
             return NoContent();
         }
-
-        public async Task<IActionResult> ChangeItemsCountInBasket(int itemId, int itemsCount)
+        [HttpPost]
+        public async Task<IActionResult> ChangeItemsCountInBasket([FromBody] BasketChangeRequest request)
         {
-            var vm = await _basketService.ChangeItemsCountInBasket(itemId, itemsCount);
+            var vm = await _basketService.ChangeItemsCountInBasket(request.Id, request.Count);
             return View("index", vm);
         }
-
-        public async Task<IActionResult> AddItemsInBasket(int id, int count)
+        [HttpPost]
+        public async Task<IActionResult> AddItemsInBasket([FromBody] BasketChangeRequest request)
         {
-            await _basketService.AddItemsInBasket(id, count);
+            await _basketService.AddItemsInBasket(request.Id, request.Count);
             return NoContent();
         }
-
+        [HttpPost]
         public async Task<IActionResult> DeleteItemFromBasket(int id)
         {
             var vm = await _basketService.DeleteItemFromBasket(id);
             return View("index", vm);
         }
-
+        [HttpPost]
         public async Task<IActionResult> ClearBasket()
         {
             await _basketService.ClearBasket();
