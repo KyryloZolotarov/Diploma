@@ -1,22 +1,42 @@
-﻿using Order.Hosts.Models.Requests;
+﻿using Order.Host.Data;
+using Order.Hosts.Models.Dtos;
 using Order.Hosts.Models.Responses;
+using Order.Hosts.Repositories.Interfaces;
 using Order.Hosts.Services.Interfaces;
 
 namespace Order.Hosts.Services
 {
-    public class OrderService : IOrderService
+    public class OrderService : BaseDataService<ApplicationDbContext>, IOrderService
     {
-        public Task<bool> AddOrder(OrderOrderUserFromMVC order)
+        private readonly IOrderOrderRepository _orderOrderRepository;
+        private readonly IMapper _mapper;
+
+        public OrderService(
+            IDbContextWrapper<ApplicationDbContext> dbContextWrapper,
+            ILogger<BaseDataService<ApplicationDbContext>> logger,
+            IOrderOrderRepository orderOrderRepository,
+            IMapper mapper)
+            : base(dbContextWrapper, logger)
         {
-            throw new NotImplementedException();
+            _orderOrderRepository = orderOrderRepository;
+            _mapper = mapper;
         }
 
-        public Task<OrderOrderResponse> GetOrder(int id)
+        public async Task<bool> AddOrder(OrderUserDto user, OrderItemDto orderAdding)
         {
-            throw new NotImplementedException();
+            return await ExecuteSafeAsync(() => _orderOrderRepository.AddOrder(user, orderAdding));
         }
 
-        public Task<ListOrdersResponse> GetOrderList(string userId)
+        public async Task<OrderItemDto> GetOrder(int id)
+        {
+            return await ExecuteSafeAsync(async () =>
+            {
+                var result = await _orderOrderRepository.GetOrder(id);
+                return _mapper.Map<OrderItemDto>(result);
+            });
+        }
+
+        public async Task<ListOrdersResponse> GetOrderList(string userId)
         {
             throw new NotImplementedException();
         }

@@ -1,4 +1,6 @@
-﻿using Order.Hosts.Models.Requests;
+﻿using Order.Hosts.Data.Entities;
+using Order.Hosts.Models.Dtos;
+using Order.Hosts.Models.Responses;
 
 namespace Order.Hosts.Repositories.Interfaces
 {
@@ -7,8 +9,8 @@ namespace Order.Hosts.Repositories.Interfaces
         Task<int?> Add(string userId, DateTime dateTime);
         Task<int?> Update(string userId, DateTime dateTime);
         Task<int?> Delete(int id);
-        Task<IActionResult> AddOrder(OrderOrderUserFromMVC order);
-        Task<IActionResult> GetOrder(int id);
-        Task<IActionResult> GetOrderList();
+        Task<bool> AddOrder(OrderUserDto user, OrderItemDto orderAdding);
+        Task<OrderItemEntity> GetOrder(int id);
+        Task<OrderOrderResponse> GetOrderList(string userId);
     }
 }

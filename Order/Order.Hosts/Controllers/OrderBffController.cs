@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Order.Hosts.Models.Dtos;
 using Order.Hosts.Models.Requests;
+using Order.Hosts.Models.Responses;
 using Order.Hosts.Services.Interfaces;
 
 namespace Order.Hosts.Controllers
@@ -23,7 +24,7 @@ namespace Order.Hosts.Controllers
         }
 
         [HttpPost]
-        [ProducesResponseType(typeof(IEnumerable<int>), (int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(bool), (int)HttpStatusCode.OK)]
         public async Task<IActionResult> AddOrder(AddOrderFromMVCRequest order)
         {
             var user = new OrderUserDto();
@@ -33,22 +34,33 @@ namespace Order.Hosts.Controllers
             user.FamilyName = User.Claims.FirstOrDefault(x => x.Type == "familyname")?.Value;
             user.Email = User.Claims.FirstOrDefault(x => x.Type == "email")?.Value;
             user.Address = User.Claims.FirstOrDefault(x => x.Type == "adress")?.Value;
-            return Ok();
+            var orderAdding = new OrderItemDto()
+            {
+                Id = order.Id,
+                Name = order.Name,
+                CatalogModelId = order.CatalogModelId,
+                CatalogSubTypeId = order.CatalogSubTypeId,
+                Count = order.Count,
+            };
+            var result = await _orderService.AddOrder(user, orderAdding);
+            return Ok(result);
         }
 
         [HttpPost]
-        [ProducesResponseType(typeof(IEnumerable<int>), (int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(OrderOrderResponse), (int)HttpStatusCode.OK)]
         public async Task<IActionResult> GetOrder(int id)
         {
-            return Ok();
+            var result = await _orderService.GetOrder(id);
+            return Ok(result);
         }
 
         [HttpPost]
-        [ProducesResponseType(typeof(IEnumerable<int>), (int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(ListOrdersResponse), (int)HttpStatusCode.OK)]
         public async Task<IActionResult> GetOrderList()
         {
             var userId = User.Claims.FirstOrDefault(x => x.Type == "sub")?.Value;
-            return Ok();
+            var result = await _orderService.GetOrderList(userId);
+            return Ok(result);
         }
     }
 }

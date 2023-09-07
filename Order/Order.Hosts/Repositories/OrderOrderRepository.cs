@@ -1,7 +1,8 @@
 ﻿using Infrastructure.Exceptions;
 using Order.Host.Data;
 using Order.Hosts.Data.Entities;
-using Order.Hosts.Models.Requests;
+using Order.Hosts.Models.Dtos;
+using Order.Hosts.Models.Responses;
 using Order.Hosts.Repositories.Interfaces;
 
 namespace Order.Hosts.Repositories
@@ -69,17 +70,17 @@ namespace Order.Hosts.Repositories
             }
         }
 
-        public Task<IActionResult> AddOrder(OrderOrderUserFromMVC order)
+        public Task<bool> AddOrder(OrderUserDto user, OrderItemDto orderAdding)
         {
             throw new NotImplementedException();
         }
 
-        public Task<IActionResult> GetOrder(int id)
+        public Task<OrderItemEntity> GetOrder(int id)
         {
             throw new NotImplementedException();
         }
 
-        public Task<IActionResult> GetOrderList()
+        public Task<OrderOrderResponse> GetOrderList(string userId)
         {
             throw new NotImplementedException();
         }
