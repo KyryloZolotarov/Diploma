@@ -30,7 +30,7 @@ namespace Order.Hosts.Controllers
         public async Task<IActionResult> AddOrder(ListItemsForFrontRequest order)
         {
             var user = new OrderUserDto();
-            var claims = _userClaims;
+            var claims = User.Claims;
             foreach (var claim in claims)
             {
                 switch (claim.Type)
