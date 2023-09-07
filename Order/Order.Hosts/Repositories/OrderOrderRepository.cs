@@ -1,8 +1,9 @@
 ﻿using Infrastructure.Exceptions;
 using Order.Host.Data;
 using Order.Hosts.Data.Entities;
+using Order.Hosts.Models.BaseResponses;
 using Order.Hosts.Models.Dtos;
-using Order.Hosts.Models.Responses;
+using Order.Hosts.Models.Requests;
 using Order.Hosts.Repositories.Interfaces;
 
 namespace Order.Hosts.Repositories
@@ -22,7 +23,7 @@ namespace Order.Hosts.Repositories
 
         public async Task<int?> Add(string userId, DateTime dateTime)
         {
-            var order = await _dbContext.AddAsync(new OrderOrderEntity()
+            var order = await _dbContext.OrderOrders.AddAsync(new OrderOrderEntity()
             {
                 UserId = userId,
                 DateTime = dateTime
@@ -38,7 +39,7 @@ namespace Order.Hosts.Repositories
             var orderExists = await _dbContext.OrderOrders.AnyAsync(x => x.UserId == userId);
             if (orderExists == true)
             {
-                var order = _dbContext.Update(new OrderOrderEntity()
+                var order = _dbContext.OrderOrders.Update(new OrderOrderEntity()
                 {
                     UserId = userId,
                     DateTime = dateTime
@@ -59,7 +60,7 @@ namespace Order.Hosts.Repositories
             if (orderExists == true)
             {
                 var orderDelete = await _dbContext.OrderOrders.FirstAsync(h => h.Id == id);
-                _dbContext.Remove(orderDelete);
+                _dbContext.OrderOrders.Remove(orderDelete);
                 await _dbContext.SaveChangesAsync();
                 _logger.LogInformation($"Order Id Deleted {orderDelete.Id}");
                 return orderDelete.Id;
@@ -70,19 +71,84 @@ namespace Order.Hosts.Repositories
             }
         }
 
-        public Task<bool> AddOrder(OrderUserDto user, OrderItemDto orderAdding)
+        public async Task<bool> AddOrder(OrderUserDto user, ListItemsForFrontRequest order)
         {
-            throw new NotImplementedException();
+            var userExists = await _dbContext.OrderUsers.AnyAsync(x => x.Id == user.Id);
+            if (userExists != true)
+            {
+                var user1 = new OrderUserEntity()
+                {
+                    Id = user.Id,
+                    Name = user.Name,
+                    GivenName = user.GivenName,
+                    FamilyName = user.FamilyName,
+                    Email = user.Email,
+                    Address = user.Address
+                };
+                await _dbContext.OrderUsers.AddAsync(user1);
+            }
+
+            var orderAdding = await _dbContext.OrderOrders.AddAsync(new OrderOrderEntity()
+            {
+                UserId = user.Id,
+                DateTime = order.DateTime
+            });
+
+            var items = new List<OrderItemEntity>();
+
+            foreach (var item in order.Items)
+            {
+                items.Add(new OrderItemEntity()
+                {
+                    Id = item.Id,
+                    Name = item.Name,
+                    Price = item.Price,
+                    CatalogModelId = item.CatalogModelId,
+                    CatalogSubTypeId = item.CatalogSubTypeId,
+                    OrderId = orderAdding.Entity.Id,
+                });
+            }
+
+            await _dbContext.OrderItems.AddRangeAsync();
+            await _dbContext.SaveChangesAsync();
+
+            _logger.LogInformation($"Order id {orderAdding.Entity.Id} added");
+            return true;
         }
 
-        public Task<OrderItemEntity> GetOrder(int id)
+        public async Task<OrderOrderResponse> GetOrder(int id)
         {
-            throw new NotImplementedException();
+            var orderExists = await _dbContext.OrderOrders.AnyAsync(x => x.Id == id);
+            if (orderExists)
+            {
+                var items = _dbContext.OrderItems.Where(x => x.OrderId == id).ToList();
+                var order = await _dbContext.OrderOrders.FirstOrDefaultAsync(y => y.Id == id);
+                var itemsList = new OrderOrderResponse();
+                itemsList.Items.AddRange(items);
+                itemsList.Order.Id = order.Id;
+                itemsList.Order.DateTime = order.DateTime;
+                itemsList.Order.UserId = order.UserId;
+                itemsList.Order.User = order.User;
+                return itemsList;
+            }
+            else
+            {
+                throw new BusinessException($"Order with id: {id} not found");
+            }
         }
 
-        public Task<OrderOrderResponse> GetOrderList(string userId)
+        public async Task<ListOrdersResponse> GetOrderList(string userId)
         {
-            throw new NotImplementedException();
+            var userExists = await _dbContext.OrderUsers.AnyAsync(x => x.Id == userId);
+            if (userExists)
+            {
+                var orders = _dbContext.OrderOrders.Where(x => x.UserId == userId).ToList();
+                return new ListOrdersResponse() { Orders = orders };
+            }
+            else
+            {
+                throw new BusinessException($"User with id: {userId} not found");
+            }
         }
     }
 }

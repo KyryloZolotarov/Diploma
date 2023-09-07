@@ -33,7 +33,7 @@ namespace Order.Hosts.Repositories
                     Count = count,
                     OrderId = orderId
                 };
-                var item = await _dbContext.AddAsync(item1);
+                var item = await _dbContext.OrderItems.AddAsync(item1);
 
                 await _dbContext.SaveChangesAsync();
                 _logger.LogInformation($"Item {item.Entity.Name} id: {item.Entity.Id} added");
@@ -61,7 +61,7 @@ namespace Order.Hosts.Repositories
                     Count = count,
                     OrderId = orderId
                 };
-                var item = _dbContext.Update(item1);
+                var item = _dbContext.OrderItems.Update(item1);
 
                 await _dbContext.SaveChangesAsync();
                 _logger.LogInformation($"Item {item.Entity.Name} id: {item.Entity.Id} updated");
@@ -87,7 +87,7 @@ namespace Order.Hosts.Repositories
             if (itemExists == true)
             {
                 var itemDelete = await _dbContext.OrderItems.FirstAsync(h => h.Id == id);
-                _dbContext.Remove(itemDelete);
+                _dbContext.OrderItems.Remove(itemDelete);
                 await _dbContext.SaveChangesAsync();
                 _logger.LogInformation($"Item Id Deleted {itemDelete.Id}");
                 return itemDelete.Id;

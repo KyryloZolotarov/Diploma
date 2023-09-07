@@ -1,6 +1,8 @@
 ﻿using Order.Host.Data;
+using Order.Hosts.Models.BaseResponses;
 using Order.Hosts.Models.Dtos;
-using Order.Hosts.Models.Responses;
+using Order.Hosts.Models.Requests;
+using Order.Hosts.Models.ToFrontResponses;
 using Order.Hosts.Repositories.Interfaces;
 using Order.Hosts.Services.Interfaces;
 
@@ -22,23 +24,32 @@ namespace Order.Hosts.Services
             _mapper = mapper;
         }
 
-        public async Task<bool> AddOrder(OrderUserDto user, OrderItemDto orderAdding)
+        public async Task<bool> AddOrder(OrderUserDto user, ListItemsForFrontRequest order)
         {
-            return await ExecuteSafeAsync(() => _orderOrderRepository.AddOrder(user, orderAdding));
+            return await ExecuteSafeAsync(() => _orderOrderRepository.AddOrder(user, order));
         }
 
-        public async Task<OrderItemDto> GetOrder(int id)
+        public async Task<OrderOrderForFrontResponse> GetOrder(int id)
         {
             return await ExecuteSafeAsync(async () =>
             {
                 var result = await _orderOrderRepository.GetOrder(id);
-                return _mapper.Map<OrderItemDto>(result);
+                var resultMapped = new OrderOrderForFrontResponse();
+                resultMapped.Order = _mapper.Map<OrderOrderDto>(result.Order);
+                resultMapped.Items = result.Items.Select(s => _mapper.Map<OrderItemDto>(s)).ToList();
+                return resultMapped;
             });
         }
 
-        public async Task<ListOrdersResponse> GetOrderList(string userId)
+        public async Task<ListOrderForFrontResponse> GetOrderList(string userId)
         {
-            throw new NotImplementedException();
+            return await ExecuteSafeAsync(async () =>
+            {
+                var result = await _orderOrderRepository.GetOrderList(userId);
+                var resultMapped = new ListOrderForFrontResponse();
+                resultMapped.Orders = result.Orders.Select(s => _mapper.Map<OrderOrderDto>(s)).ToList();
+                return resultMapped;
+            });
         }
     }
 }

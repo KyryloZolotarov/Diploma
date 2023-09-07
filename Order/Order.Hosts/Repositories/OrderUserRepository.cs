@@ -29,7 +29,7 @@ namespace Order.Hosts.Repositories
                     Email = email,
                     Address = address
                 };
-            var user = await _dbContext.AddAsync(user1);
+            var user = await _dbContext.OrderUsers.AddAsync(user1);
 
             await _dbContext.SaveChangesAsync();
             _logger.LogInformation($"User {user.Entity.Name} id: {user.Entity.Id} added");
@@ -41,7 +41,7 @@ namespace Order.Hosts.Repositories
             var userExists = await _dbContext.OrderUsers.AnyAsync(x => x.Id == id);
             if (userExists == true)
             {
-                var user = _dbContext.Update(new OrderUserEntity()
+                var user = _dbContext.OrderUsers.Update(new OrderUserEntity()
                 {
                     Id = id,
                     Name = name,
@@ -66,7 +66,7 @@ namespace Order.Hosts.Repositories
             if (userExists == true)
             {
                 var userDelete = await _dbContext.OrderUsers.FirstAsync(h => h.Id == id);
-                _dbContext.Remove(userDelete);
+                _dbContext.OrderUsers.Remove(userDelete);
                 await _dbContext.SaveChangesAsync();
                 _logger.LogInformation($"User Id Deleted {userDelete.Id}");
                 return userDelete.Id;

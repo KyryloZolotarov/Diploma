@@ -1,8 +1,9 @@
 ﻿using Infrastructure.Identity;
 using Microsoft.AspNetCore.Authorization;
+using Order.Hosts.Models.BaseResponses;
 using Order.Hosts.Models.Dtos;
 using Order.Hosts.Models.Requests;
-using Order.Hosts.Models.Responses;
+using Order.Hosts.Models.ToFrontResponses;
 using Order.Hosts.Services.Interfaces;
 
 namespace Order.Hosts.Controllers
@@ -25,7 +26,7 @@ namespace Order.Hosts.Controllers
 
         [HttpPost]
         [ProducesResponseType(typeof(bool), (int)HttpStatusCode.OK)]
-        public async Task<IActionResult> AddOrder(AddOrderFromMVCRequest order)
+        public async Task<IActionResult> AddOrder(ListItemsForFrontRequest order)
         {
             var user = new OrderUserDto();
             user.Id = User.Claims.FirstOrDefault(x => x.Type == "sub")?.Value;
@@ -34,20 +35,12 @@ namespace Order.Hosts.Controllers
             user.FamilyName = User.Claims.FirstOrDefault(x => x.Type == "familyname")?.Value;
             user.Email = User.Claims.FirstOrDefault(x => x.Type == "email")?.Value;
             user.Address = User.Claims.FirstOrDefault(x => x.Type == "adress")?.Value;
-            var orderAdding = new OrderItemDto()
-            {
-                Id = order.Id,
-                Name = order.Name,
-                CatalogModelId = order.CatalogModelId,
-                CatalogSubTypeId = order.CatalogSubTypeId,
-                Count = order.Count,
-            };
-            var result = await _orderService.AddOrder(user, orderAdding);
+            var result = await _orderService.AddOrder(user, order);
             return Ok(result);
         }
 
         [HttpPost]
-        [ProducesResponseType(typeof(OrderOrderResponse), (int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(OrderOrderForFrontResponse), (int)HttpStatusCode.OK)]
         public async Task<IActionResult> GetOrder(int id)
         {
             var result = await _orderService.GetOrder(id);
@@ -55,7 +48,7 @@ namespace Order.Hosts.Controllers
         }
 
         [HttpPost]
-        [ProducesResponseType(typeof(ListOrdersResponse), (int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(ListOrderForFrontResponse), (int)HttpStatusCode.OK)]
         public async Task<IActionResult> GetOrderList()
         {
             var userId = User.Claims.FirstOrDefault(x => x.Type == "sub")?.Value;
