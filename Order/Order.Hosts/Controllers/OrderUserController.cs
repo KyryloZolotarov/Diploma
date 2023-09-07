@@ -9,8 +9,6 @@ using Order.Hosts.Services.Interfaces;
 namespace Order.Hosts.Controllers
 {
     [ApiController]
-    [Authorize(Policy = AuthPolicy.AllowClientPolicy)]
-    [Scope("order.orderuser")]
     [Route(ComponentDefaults.DefaultRoute)]
     public class OrderUserController : ControllerBase
     {

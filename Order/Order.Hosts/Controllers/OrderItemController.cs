@@ -11,8 +11,6 @@ using Order.Hosts.Data.Entities;
 namespace Order.Hosts.Controllers
 {
     [ApiController]
-    [Authorize(Policy = AuthPolicy.AllowClientPolicy)]
-    [Scope("order.orderitem")]
     [Route(ComponentDefaults.DefaultRoute)]
     public class OrderItemController : ControllerBase
     {

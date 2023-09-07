@@ -10,8 +10,6 @@ using Order.Hosts.Services.Interfaces;
 namespace Order.Hosts.Controllers
 {
     [ApiController]
-    [Authorize(Policy = AuthPolicy.AllowClientPolicy)]
-    [Scope("order.order")]
     [Route(ComponentDefaults.DefaultRoute)]
     public class OrderController : ControllerBase
     {
@@ -25,10 +23,6 @@ namespace Order.Hosts.Controllers
             _logger = logger;
             _orderOrderService = orderOrderService;
         }
-
-        public int Id { get; set; }
-        public int UserId { get; set; }
-        public OrderUserEntity User { get; set; }
 
         [HttpPost]
         [ProducesResponseType(typeof(BaseResponse<int?>), (int)HttpStatusCode.OK)]
