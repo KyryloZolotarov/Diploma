@@ -15,6 +15,9 @@ namespace Order.Hosts.Data.EntityConfigurations
                 .UseHiLo("catalog_subtype_hilo")
                 .IsRequired();
 
+            builder.Property(ci => ci.DateTime)
+                .IsRequired();
+
             builder.Property(cb => cb.UserId)
                 .IsRequired();
 

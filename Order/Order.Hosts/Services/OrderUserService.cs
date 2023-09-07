@@ -18,19 +18,19 @@ namespace Order.Hosts.Services
             _orderUserRepository = orderUserRepository;
         }
 
-        public Task<int?> Add(int id, string name, string givenName, string familyName, string email, string address)
+        public async Task<string> Add(string id, string name, string givenName, string familyName, string email, string address)
         {
-            return ExecuteSafeAsync(() => _orderUserRepository.Add(id, name, givenName,  familyName,  email,  address));
+            return await ExecuteSafeAsync(() => _orderUserRepository.Add(id, name, givenName,  familyName,  email,  address));
         }
 
-        public Task<int?> Update(int id, string name, string givenName, string familyName, string email, string address)
+        public async Task<string> Update(string id, string name, string givenName, string familyName, string email, string address)
         {
-            return ExecuteSafeAsync(() => _orderUserRepository.Update(id, name, givenName, familyName, email, address));
+            return await ExecuteSafeAsync(() => _orderUserRepository.Update(id, name, givenName, familyName, email, address));
         }
 
-        public Task<int?> Delete(int id)
+        public async Task<string> Delete(string id)
         {
-            return ExecuteSafeAsync(() => _orderUserRepository.Delete(id));
+            return await ExecuteSafeAsync(() => _orderUserRepository.Delete(id));
         }
     }
 }

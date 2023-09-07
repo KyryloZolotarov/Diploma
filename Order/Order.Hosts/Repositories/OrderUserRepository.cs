@@ -18,7 +18,7 @@ namespace Order.Hosts.Repositories
             _logger = logger;
         }
 
-        public async Task<int?> Add(int id, string name, string givenName, string familyName, string email, string address)
+        public async Task<string> Add(string id, string name, string givenName, string familyName, string email, string address)
         {
             var user1 = new OrderUserEntity()
                 {
@@ -36,7 +36,7 @@ namespace Order.Hosts.Repositories
             return user.Entity.Id;
         }
 
-        public async Task<int?> Update(int id, string name, string givenName, string familyName, string email, string address)
+        public async Task<string> Update(string id, string name, string givenName, string familyName, string email, string address)
         {
             var userExists = await _dbContext.OrderUsers.AnyAsync(x => x.Id == id);
             if (userExists == true)
@@ -60,7 +60,7 @@ namespace Order.Hosts.Repositories
             }
         }
 
-        public async Task<int?> Delete(int id)
+        public async Task<string> Delete(string id)
         {
             var userExists = await _dbContext.OrderUsers.AnyAsync(x => x.Id == id);
             if (userExists == true)

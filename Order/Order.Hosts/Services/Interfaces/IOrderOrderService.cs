@@ -2,8 +2,8 @@
 {
     public interface IOrderOrderService
     {
-        Task<int?> Add(int userId);
-        Task<int?> Update(int userId);
+        Task<int?> Add(string userId, DateTime dateTime);
+        Task<int?> Update(string userId, DateTime dateTime);
         Task<int?> Delete(int id);
     }
 }

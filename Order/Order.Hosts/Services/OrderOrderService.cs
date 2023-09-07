@@ -18,19 +18,19 @@ namespace Order.Hosts.Services
             _orderOrderRepository = orderOrderRepository;
         }
 
-        public Task<int?> Add(int userId)
+        public async Task<int?> Add(string userId, DateTime dateTime)
         {
-            return ExecuteSafeAsync(() => _orderOrderRepository.Add(userId));
+            return await ExecuteSafeAsync(() => _orderOrderRepository.Add(userId, dateTime));
         }
 
-        public Task<int?> Update(int userId)
+        public async Task<int?> Update(string userId, DateTime dateTime)
         {
-            return ExecuteSafeAsync(() => _orderOrderRepository.Update(userId));
+            return await ExecuteSafeAsync(() => _orderOrderRepository.Update(userId, dateTime));
         }
 
-        public Task<int?> Delete(int id)
+        public async Task<int?> Delete(int id)
         {
-            return ExecuteSafeAsync(() => _orderOrderRepository.Delete(id));
+            return await ExecuteSafeAsync(() => _orderOrderRepository.Delete(id));
         }
     }
 }

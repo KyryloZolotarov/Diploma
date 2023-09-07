@@ -34,7 +34,7 @@ namespace Order.Hosts.Controllers
         [ProducesResponseType(typeof(BaseResponse<int?>), (int)HttpStatusCode.OK)]
         public async Task<IActionResult> Add(AddOrderRequest request)
         {
-            var result = await _orderOrderService.Add(request.UserId);
+            var result = await _orderOrderService.Add(request.UserId, request.DateTime);
             return Ok(new BaseResponse<int?>() { Id = result });
         }
 
@@ -42,7 +42,7 @@ namespace Order.Hosts.Controllers
         [ProducesResponseType(typeof(BaseResponse<int?>), (int)HttpStatusCode.OK)]
         public async Task<IActionResult> Update(UpdateOrderRequest request)
         {
-            var result = await _orderOrderService.Update(request.UserId);
+            var result = await _orderOrderService.Update(request.UserId, request.DateTime);
             return Ok(new BaseResponse<int?>() { Id = result });
         }
 

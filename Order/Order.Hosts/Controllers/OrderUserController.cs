@@ -26,24 +26,24 @@ namespace Order.Hosts.Controllers
         }
 
         [HttpPost]
-        [ProducesResponseType(typeof(BaseResponse<int?>), (int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(BaseResponse<string>), (int)HttpStatusCode.OK)]
         public async Task<IActionResult> Add(AddUserRequest request)
         {
             var result = await _orderUserService.Add(request.Id, request.Name, request.GivenName, request.FamilyName, request.Email, request.Address);
-            return Ok(new BaseResponse<int?>() { Id = result });
+            return Ok(new BaseResponse<string>() { Id = result });
         }
 
         [HttpPut]
-        [ProducesResponseType(typeof(BaseResponse<int?>), (int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(BaseResponse<string>), (int)HttpStatusCode.OK)]
         public async Task<IActionResult> Update(UpdateUserRequest request)
         {
             var result = await _orderUserService.Update(request.Id, request.Name, request.GivenName, request.FamilyName, request.Email, request.Address);
-            return Ok(new BaseResponse<int?>() { Id = result });
+            return Ok(new BaseResponse<string>() { Id = result });
         }
 
         [HttpDelete]
         [ProducesResponseType((int)HttpStatusCode.NoContent)]
-        public async Task<IActionResult> Delete(int id)
+        public async Task<IActionResult> Delete(string id)
         {
             await _orderUserService.Delete(id);
             return NoContent();

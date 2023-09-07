@@ -1,6 +1,7 @@
 ﻿using Infrastructure.Exceptions;
 using Order.Host.Data;
 using Order.Hosts.Data.Entities;
+using Order.Hosts.Models.Requests;
 using Order.Hosts.Repositories.Interfaces;
 
 namespace Order.Hosts.Repositories
@@ -18,11 +19,12 @@ namespace Order.Hosts.Repositories
             _logger = logger;
         }
 
-        public async Task<int?> Add(int userId)
+        public async Task<int?> Add(string userId, DateTime dateTime)
         {
             var order = await _dbContext.AddAsync(new OrderOrderEntity()
             {
-                UserId = userId
+                UserId = userId,
+                DateTime = dateTime
             });
 
             await _dbContext.SaveChangesAsync();
@@ -30,14 +32,15 @@ namespace Order.Hosts.Repositories
             return order.Entity.Id;
         }
 
-        public async Task<int?> Update(int userId)
+        public async Task<int?> Update(string userId, DateTime dateTime)
         {
             var orderExists = await _dbContext.OrderOrders.AnyAsync(x => x.UserId == userId);
             if (orderExists == true)
             {
                 var order = _dbContext.Update(new OrderOrderEntity()
                 {
-                    Id = userId
+                    UserId = userId,
+                    DateTime = dateTime
                 });
                 await _dbContext.SaveChangesAsync();
                 _logger.LogInformation($"Brand {order.Entity.Id}");
@@ -64,6 +67,21 @@ namespace Order.Hosts.Repositories
             {
                 throw new BusinessException($"Order Id {id} was not founded");
             }
+        }
+
+        public Task<IActionResult> AddOrder(OrderOrderUserFromMVC order)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<IActionResult> GetOrder(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<IActionResult> GetOrderList()
+        {
+            throw new NotImplementedException();
         }
     }
 }
