@@ -45,11 +45,11 @@
                                 <td>@basketItem.Price.ToString("N2")</td>
                                 <td>
 
-                                    <div class="d-flex mb-3">
-                                        <input id="itemId" value="@basketItem.Id" type="hidden"> <!-- Добавьте поле для ID -->
-                                        <input id="itemCount" asp-for="@basketItem.Count" class="esh-catalog-counter-value mr-2 flex-grow-0 flex-shrink-0" style="width: 100px;" min="1">
-                                        <button type="button" class="btn btn-primary" onclick="sendBasketChangeRequest()">Change</button>
-                                    </div>
+                                <div class="d-flex mb-3">
+                                    <input id="itemId-@basketItem.Id" value="@basketItem.Id" type="hidden">
+                                    <input id="itemCount-@basketItem.Id" asp-for="@basketItem.Count" class="esh-catalog-counter-value mr-2 flex-grow-0 flex-shrink-0" style="width: 100px;" min="1">
+                                    <button type="button" class="btn btn-primary" onclick="sendBasketChangeRequest(@basketItem.Id)">Change</button>
+                                </div>
                                 </td>
                                 <td>
                                     <form asp-controller="Basket" asp-action="DeleteItemFromBasket">
@@ -71,27 +71,25 @@
             }
       </div>
       <script>
-          function getBasketChangeRequest() {
-    return {
-        Id: parseInt($("#itemId").val(), 10),
-        Count: parseInt($("#itemCount").val(), 10)
-    };
-}
+    function sendBasketChangeRequest(itemId) {
+        var itemCount = document.getElementById("itemCount-" + itemId).value;
 
-    function sendBasketChangeRequest() {
-        var data = getBasketChangeRequest();
+        var dataToSend = {
+            id: itemId,
+            count: itemCount
+        };
 
         $.ajax({
             type: "POST",
             url: "/Basket/ChangeItemsCountInBasket",
-            data: JSON.stringify(data),
+            data: JSON.stringify(dataToSend),
             contentType: "application/json; charset=utf-8",
             dataType: "json",
             success: function (response) {
-                // Обработка успешного ответа (например, обновление UI)
+                console.log(response);
             },
             error: function (error) {
-                // Обработка ошибок
+                console.error(error);
             }
         });
     }
