@@ -69,7 +69,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "images", "images", "{6D8993
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Order", "Order", "{C4CD4519-E235-4F44-94C9-61174CDF6CB1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Order.Hosts", "Order\Order.Hosts\Order.Hosts.csproj", "{1AFD0133-2EE0-4346-A711-2CF78155C834}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Order.Host", "Order\Order.Hosts\Order.Host.csproj", "{1AFD0133-2EE0-4346-A711-2CF78155C834}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
