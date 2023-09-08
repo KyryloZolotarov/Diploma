@@ -3,6 +3,7 @@ using Catalog.Host.Data.Entities;
 using Catalog.Host.Models.Dtos;
 using Catalog.Host.Models.Enums;
 using Catalog.Host.Models.Requests;
+using Catalog.Host.Models.Requests.UpdateRequsts;
 using Catalog.Host.Models.Responses;
 
 namespace Catalog.Host.Services.Interfaces
@@ -16,5 +17,6 @@ namespace Catalog.Host.Services.Interfaces
         Task<IEnumerable<CatalogModelDto>> GetCatalogModelsAsync(int id);
         Task<IEnumerable<CatalogSubTypeDto>> GetCatalogSubTypesAsync(int id);
         Task<BasketItems<CatalogItemDto>> GetListCatalogItemsAsync(ItemsForBasketRequest items);
+        Task<bool> ChangeAvailableItems(UpdateAvailableItemsRequest item);
     }
 }

@@ -19,7 +19,6 @@
 		<_ContentIncludedByDefault Remove="Views\Basket\Index.cshtml" />
 		<_ContentIncludedByDefault Remove="Views\Home\Index.cshtml" />
 		<_ContentIncludedByDefault Remove="Views\Home\Privacy.cshtml" />
-		<_ContentIncludedByDefault Remove="Views\Order\CreateOrder.cshtml" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -28,10 +27,6 @@
 
 	<ItemGroup>
 	  <UpToDateCheckInput Remove="Views\Basket\Index.cshtml" />
-	</ItemGroup>
-
-	<ItemGroup>
-	  <UpToDateCheckInput Remove="Views\Order\CreateOrder.cshtml" />
 	</ItemGroup>
 
 </Project>

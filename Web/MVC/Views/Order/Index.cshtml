@@ -1,8 +1,73 @@
-﻿@model dynamic
+﻿@model MVC.ViewModels.OrderViewModels.ListOrdersForDisplay
 
 @{
     ViewBag.Title = "Order";
     Layout = "_Layout";
 }
+<section class="esh-catalog-hero">
+    <div class="container-fluid">
+    </div>
+</section>
 
-<h2>title</h2>
+<div class="container-fluid">
+    @if (Model.Orders != null && Model.Orders.Any())
+    {
+
+        <div class="container-fluid">
+            <table class="table">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Order Id</th>
+                        <th>Date</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var order in Model.Orders)
+                    {
+                        <tr>
+                            <td>@order.Id</td>
+                            <td>@order.DateTime.Date</td>
+                            <td>
+                                <form asp-controller="Order" asp-action="SingleOrder">
+                                    <input type="hidden" name="id" value="@order.Id" />
+                                    <button type="submit" class="btn btn-link">View Details</button>
+                                </form>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+    else
+    {
+        <div class="row justify-content-center">
+            <p class="h1">You have no orders</p>
+        </div>
+    }
+</div>
+<script>
+    function sendBasketChangeRequest(itemId) {
+        var itemCount = document.getElementById("itemCount-" + itemId).value;
+
+        var dataToSend = {
+            id: itemId,
+            count: itemCount
+        };
+
+        $.ajax({
+            type: "POST",
+            url: "/Basket/ChangeItemsCountInBasket",
+            data: JSON.stringify(dataToSend),
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function (response) {
+                console.log(response);
+            },
+            error: function (error) {
+                console.error(error);
+            }
+        });
+    }
+</script>

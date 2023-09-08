@@ -2,6 +2,7 @@
 using Catalog.Host.Models.Dtos;
 using Catalog.Host.Models.Enums;
 using Catalog.Host.Models.Requests;
+using Catalog.Host.Models.Requests.UpdateRequsts;
 using Catalog.Host.Models.Responses;
 using Catalog.Host.Repositories.Interfaces;
 using Catalog.Host.Services.Interfaces;
@@ -88,6 +89,15 @@ namespace Catalog.Host.Services
                 var result = await _catalogItemRepository.GetItemsListAsync(items.Items);
                 var mappedResult = new BasketItems<CatalogItemDto>() { Items = result.Items.Select(s => _mapper.Map<CatalogItemDto>(s)).ToList(), };
                 return mappedResult;
+            });
+        }
+
+        public async Task<bool> ChangeAvailableItems(UpdateAvailableItemsRequest item)
+        {
+            return await ExecuteSafeAsync(async () =>
+            {
+                var result = await _catalogItemRepository.ChangeAvailableItems(item.Id, item.ChangeAvailable);
+                return result;
             });
         }
 

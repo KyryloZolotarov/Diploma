@@ -2,6 +2,7 @@
 using Catalog.Host.Models.Dtos;
 using Catalog.Host.Models.Enums;
 using Catalog.Host.Models.Requests;
+using Catalog.Host.Models.Requests.UpdateRequsts;
 using Catalog.Host.Models.Responses;
 using Catalog.Host.Services.Interfaces;
 using Infrastructure.Identity;
@@ -57,6 +58,15 @@ namespace Catalog.Host.Controllers
                 _logger.LogInformation($"item id {id}");
                 var result = await _catalogService.GetCatalogItemByIdAsync(id);
                 _logger.LogInformation($"item id {result.Id}, item name {result.Name}");
+                return Ok(result);
+            }
+
+            [HttpPost]
+            [ProducesResponseType(typeof(bool), (int)HttpStatusCode.OK)]
+            public async Task<IActionResult> ChangeAvailableItems([FromBody] UpdateAvailableItemsRequest item)
+            {
+                _logger.LogInformation($"item id {item.Id}, count {item.ChangeAvailable}");
+                var result = await _catalogService.ChangeAvailableItems(item);
                 return Ok(result);
             }
 

@@ -1,0 +1,40 @@
+﻿@model MVC.ViewModels.OrderViewModels.ListOrderItemsFordDisplay
+
+@{
+    ViewBag.Title = "title";
+    Layout = "_Layout";
+}
+<section class="esh-catalog-hero">
+    <div class="container-fluid">
+    </div>
+</section>
+
+<div class="container-fluid">
+
+    <div class="container-fluid">
+        <table class="table table-bordered">
+            <thead>
+            <tr>
+                <th>Part Name</th>
+                <th>Brand</th>
+                <th>Model</th>
+                <th>Price</th>
+                <th>Count</th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                @foreach (var item in Model.Items)
+                {
+                    <tr>
+                        <td>@item.Id</td>
+                        <td>@item.Name</td>
+                    </tr>
+                }
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+</div>
