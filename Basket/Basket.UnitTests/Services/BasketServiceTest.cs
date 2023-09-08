@@ -54,10 +54,9 @@ namespace Basket.UnitTests.Services
         {
             var basketId = "testBasketId";
             var item = new BasketItem() { Id = 1, Count = 2 };
-            var result = new BasketItemsDb();
 
             var cacheServiceMock = new Mock<ICacheService>();
-            cacheServiceMock.Setup(x => x.GetAsync<BasketItemsDb>(basketId)).ReturnsAsync(result); // Simulate an empty basket
+            cacheServiceMock.Setup(x => x.GetAsync<BasketItemsDb>(basketId)).ReturnsAsync(null); // Simulate an empty basket
 
             var loggerMock = new Mock<ILogger<BasketService>>();
 
@@ -73,7 +72,7 @@ namespace Basket.UnitTests.Services
         [Fact]
         public async Task AddItems_ThrowArgumentNullException_Failed()
         {
-            string basketId = string.Empty;
+            string basketId = null;
             var item = new BasketItem() { Id = 1, Count = 2 };
 
             var cacheServiceMock = new Mock<ICacheService>();
@@ -116,10 +115,9 @@ namespace Basket.UnitTests.Services
             // Arrange
             var basketId = "nonExistentBasketId";
             var item = new BasketItem() { Id = 1, Count = 2 };
-            var result = new BasketItemsDb();
 
             var cacheServiceMock = new Mock<ICacheService>();
-            cacheServiceMock.Setup(x => x.GetAsync<BasketItemsDb>(basketId)).ReturnsAsync(result);
+            cacheServiceMock.Setup(x => x.GetAsync<BasketItemsDb>(basketId)).ReturnsAsync(null);
 
             var loggerMock = new Mock<ILogger<BasketService>>();
 
@@ -160,10 +158,9 @@ namespace Basket.UnitTests.Services
         {
             // Arrange
             var basketId = "nonExistentBasketId";
-            var emptyResult = new BasketItemsDb();
 
             var cacheServiceMock = new Mock<ICacheService>();
-            cacheServiceMock.Setup(x => x.GetAsync<BasketItemsDb>(basketId)).ReturnsAsync(emptyResult);
+            cacheServiceMock.Setup(x => x.GetAsync<BasketItemsDb>(basketId)).ReturnsAsync(null);
 
             var loggerMock = new Mock<ILogger<BasketService>>();
 
@@ -243,10 +240,9 @@ namespace Basket.UnitTests.Services
             // Arrange
             var basketId = "testBasketId";
             var itemId = 1;
-            var emptyResult = new BasketItemsDb();
 
             var cacheServiceMock = new Mock<ICacheService>();
-            cacheServiceMock.Setup(x => x.GetAsync<BasketItemsDb>(basketId)).ReturnsAsync(emptyResult); // Simulate a non-existent basket
+            cacheServiceMock.Setup(x => x.GetAsync<BasketItemsDb>(basketId)).ReturnsAsync(null); // Simulate a non-existent basket
 
             var loggerMock = new Mock<ILogger<BasketService>>();
 
