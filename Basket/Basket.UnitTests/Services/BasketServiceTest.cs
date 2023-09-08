@@ -165,7 +165,7 @@ namespace Basket.UnitTests.Services
             var resultBasket = new BasketItemsDb();
 
             var cacheServiceMock = new Mock<ICacheService>();
-            cacheServiceMock.Setup(x => x.GetAsync<BasketItemsDb>(basketId)).Returns();
+            cacheServiceMock.Setup(x => x.GetAsync<BasketItemsDb>(basketId)).ReturnsAsync(new BasketItemsDb());
 
             var loggerMock = new Mock<ILogger<BasketService>>();
 
