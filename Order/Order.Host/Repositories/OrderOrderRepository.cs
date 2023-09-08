@@ -74,24 +74,33 @@ namespace Order.Hosts.Repositories
         public async Task<bool> AddOrder(OrderUserDto user, ListItemsForFrontRequest order)
         {
             var userExists = await _dbContext.OrderUsers.AnyAsync(x => x.Id == user.Id);
+            var user1 = new OrderUserEntity()
+            {
+                Id = user.Id,
+                Name = user.Name,
+                GivenName = user.GivenName,
+                FamilyName = user.FamilyName,
+                Email = user.Email,
+                Address = user.Address
+            };
             if (userExists != true)
             {
-                var user1 = new OrderUserEntity()
-                {
-                    Id = user.Id,
-                    Name = user.Name,
-                    GivenName = user.GivenName,
-                    FamilyName = user.FamilyName,
-                    Email = user.Email,
-                    Address = user.Address
-                };
                 await _dbContext.OrderUsers.AddAsync(user1);
             }
 
             var orderAdding = await _dbContext.OrderOrders.AddAsync(new OrderOrderEntity()
             {
                 UserId = user.Id,
-                DateTime = order.DateTime
+                DateTime = order.DateTime,
+                User = new OrderUserEntity()
+                {
+                    Id = user1.Id,
+                    Address = user1.Address,
+                    Email = user1.Email,
+                    FamilyName = user1.FamilyName,
+                    GivenName = user1.GivenName,
+                    Name = user1.Name
+                }
             });
 
             var items = new List<OrderItemEntity>();
@@ -106,6 +115,20 @@ namespace Order.Hosts.Repositories
                     CatalogModelId = item.CatalogModelId,
                     CatalogSubTypeId = item.CatalogSubTypeId,
                     OrderId = orderAdding.Entity.Id,
+                    Order = new OrderOrderEntity()
+                    {
+                        DateTime = orderAdding.Entity.DateTime,
+                        UserId = orderAdding.Entity.UserId,
+                        User = new OrderUserEntity()
+                        {
+                            Id = user1.Id,
+                            Address = user1.Address,
+                            Email = user1.Email,
+                            FamilyName = user1.FamilyName,
+                            GivenName = user1.GivenName,
+                            Name = user1.Name
+                        }
+                    }
                 });
             }
 
