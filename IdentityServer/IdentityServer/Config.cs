@@ -45,6 +45,7 @@ namespace IdentityServer
                     {
                         new Scope("order.order"),
                         new Scope("order.orderuser"),
+                        new Scope("order.orderitem")
                     },
                 },
             };
@@ -127,6 +128,7 @@ namespace IdentityServer
                         "mvc",
                         "order.order",
                         "order.orderuser",
+                        "order.orderitem",
                     }
                 },
             };
