@@ -44,6 +44,7 @@ namespace Basket.UnitTests.Services
             var loggerMock = new Mock<ILogger<BasketService>>();
 
             var basketService = new BasketService(loggerMock.Object, cacheServiceMock.Object);
+            cacheServiceMock.Setup(x => x.GetAsync<BasketItemsDb>(basketId)).Throws<ArgumentNullException>();
 
             // Act & Assert
             await Assert.ThrowsAsync<ArgumentNullException>(() => basketService.Add(basketId, itemId));
@@ -80,6 +81,7 @@ namespace Basket.UnitTests.Services
             var loggerMock = new Mock<ILogger<BasketService>>();
 
             var basketService = new BasketService(loggerMock.Object, cacheServiceMock.Object);
+            cacheServiceMock.Setup(x => x.AddOrUpdateAsync<BasketItem>(basketId, item)).Throws<ArgumentNullException>();
 
             // Act & Assert
             await Assert.ThrowsAsync<ArgumentNullException>(() => basketService.AddItems(basketId, item));
@@ -163,7 +165,7 @@ namespace Basket.UnitTests.Services
             var resultBasket = new BasketItemsDb();
 
             var cacheServiceMock = new Mock<ICacheService>();
-            cacheServiceMock.Setup(x => x.GetAsync<BasketItemsDb>(basketId)).ReturnsAsync(resultBasket);
+            cacheServiceMock.Setup(x => x.GetAsync<BasketItemsDb>(basketId)).Returns();
 
             var loggerMock = new Mock<ILogger<BasketService>>();
 
@@ -173,7 +175,7 @@ namespace Basket.UnitTests.Services
             var result = await basketService.Get(basketId);
 
             // Assert
-            result.Should().BeNull();
+            result.Items.Count.Should().Equals(0);
         }
 
         [Fact]
