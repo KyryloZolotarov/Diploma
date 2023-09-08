@@ -11,6 +11,6 @@ namespace Order.Hosts.Models.Dtos
         public int CatalogModelId { get; set; }
         public int Count { get; set; }
         public int OrderId { get; set; }
-        public OrderOrderEntity Order { get; set; }
+        public OrderOrderEntity? Order { get; set; }
     }
 }

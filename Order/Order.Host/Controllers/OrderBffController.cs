@@ -1,8 +1,6 @@
-﻿using System.Security.Claims;
-using IdentityModel;
+﻿using IdentityModel;
 using Infrastructure.Identity;
 using Microsoft.AspNetCore.Authorization;
-using Order.Hosts.Models.BaseResponses;
 using Order.Hosts.Models.Dtos;
 using Order.Hosts.Models.Requests;
 using Order.Hosts.Models.ToFrontResponses;
@@ -11,21 +9,10 @@ using Order.Hosts.Services.Interfaces;
 namespace Order.Hosts.Controllers
 {
     [ApiController]
-
+    [Authorize(Policy = AuthPolicy.AllowEndUserPolicy)]
     [Route(ComponentDefaults.DefaultRoute)]
     public class OrderBffController : ControllerBase
     {
-        private readonly List<Claim> _userClaims = new ()
-                {
-                    new Claim(JwtClaimTypes.Subject, "1"),
-                    new Claim(JwtClaimTypes.Name, "pirozok"),
-                    new Claim(JwtClaimTypes.GivenName, "Alice"),
-                    new Claim(JwtClaimTypes.FamilyName, "Smith"),
-                    new Claim(JwtClaimTypes.Email, "AliceSmith@email.com"),
-                    new Claim(JwtClaimTypes.EmailVerified, "true", ClaimValueTypes.Boolean),
-                    new Claim(JwtClaimTypes.WebSite, "http://alice.com"),
-                    new Claim(JwtClaimTypes.Address, @"{ 'street_address': 'One Hacker Way', 'locality': 'Heidelberg', 'postal_code': 69118, 'country': 'Germany' }")
-                };
         private readonly ILogger<OrderBffController> _logger;
         private readonly IOrderService _orderService;
         public OrderBffController(
@@ -41,7 +28,7 @@ namespace Order.Hosts.Controllers
         public async Task<IActionResult> AddOrder([FromBody] ListItemsForFrontRequest order)
         {
             var user = new OrderUserDto();
-            var claims = User.Claims;
+            var claims = User.Claims.ToList();
             foreach (var claim in claims)
             {
                 switch (claim.Type)
@@ -83,7 +70,7 @@ namespace Order.Hosts.Controllers
         [ProducesResponseType(typeof(ListOrderForFrontResponse), (int)HttpStatusCode.OK)]
         public async Task<IActionResult> GetOrderList()
         {
-            var userId = _userClaims.FirstOrDefault(x => x.Type == "sub")?.Value;
+            var userId = User.Claims.FirstOrDefault(x => x.Type == "sub")?.Value;
             var result = await _orderService.GetOrderList(userId);
             return Ok(result);
         }

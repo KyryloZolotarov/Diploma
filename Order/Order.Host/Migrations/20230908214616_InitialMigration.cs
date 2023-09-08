@@ -1,6 +1,5 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
-using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
@@ -10,6 +9,10 @@ namespace Order.Host.Migrations
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.CreateSequence(
+                name: "order_item_hilo",
+                incrementBy: 10);
+
             migrationBuilder.CreateSequence(
                 name: "order_order_hilo",
                 incrementBy: 10);
@@ -53,8 +56,8 @@ namespace Order.Host.Migrations
                 name: "Item",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Id = table.Column<int>(type: "integer", nullable: false),
+                    ItemId = table.Column<int>(type: "integer", nullable: false),
                     Name = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
                     Price = table.Column<decimal>(type: "numeric", nullable: false),
                     CatalogSubTypeId = table.Column<int>(type: "integer", nullable: false),
@@ -94,6 +97,9 @@ namespace Order.Host.Migrations
 
             migrationBuilder.DropTable(
                 name: "User");
+
+            migrationBuilder.DropSequence(
+                name: "order_item_hilo");
 
             migrationBuilder.DropSequence(
                 name: "order_order_hilo");

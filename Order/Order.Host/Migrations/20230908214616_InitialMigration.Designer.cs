@@ -12,7 +12,7 @@ using Order.Host.Data;
 namespace Order.Host.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230907220437_InitialMigration")]
+    [Migration("20230908214616_InitialMigration")]
     partial class InitialMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -24,6 +24,9 @@ namespace Order.Host.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
+            modelBuilder.HasSequence("order_item_hilo")
+                .IncrementsBy(10);
+
             modelBuilder.HasSequence("order_order_hilo")
                 .IncrementsBy(10);
 
@@ -33,7 +36,7 @@ namespace Order.Host.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer");
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+                    NpgsqlPropertyBuilderExtensions.UseHiLo(b.Property<int>("Id"), "order_item_hilo");
 
                     b.Property<int>("CatalogModelId")
                         .HasColumnType("integer");
@@ -42,6 +45,9 @@ namespace Order.Host.Migrations
                         .HasColumnType("integer");
 
                     b.Property<int>("Count")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("ItemId")
                         .HasColumnType("integer");
 
                     b.Property<string>("Name")

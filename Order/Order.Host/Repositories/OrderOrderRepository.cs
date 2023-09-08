@@ -73,10 +73,12 @@ namespace Order.Hosts.Repositories
 
         public async Task<bool> AddOrder(OrderUserDto user, ListItemsForFrontRequest order)
         {
-            var userExists = await _dbContext.OrderUsers.AnyAsync(x => x.Id == user.Id);
-            if (userExists != true)
+            var isUserExist = true;
+            var userDb = await _dbContext.OrderUsers.FirstOrDefaultAsync(x => x.Id == user.Id);
+            if (userDb == null)
             {
-                var user1 = new OrderUserEntity()
+                isUserExist = false;
+                userDb = new OrderUserEntity()
                 {
                     Id = user.Id,
                     Name = user.Name,
@@ -85,14 +87,16 @@ namespace Order.Hosts.Repositories
                     Email = user.Email,
                     Address = user.Address
                 };
-                await _dbContext.OrderUsers.AddAsync(user1);
+
+               // await _dbContext.OrderUsers.AddAsync(userDb);
             }
 
-            var orderAdding = await _dbContext.OrderOrders.AddAsync(new OrderOrderEntity()
+            var orderAdding = new OrderOrderEntity()
             {
                 UserId = user.Id,
-                DateTime = order.DateTime
-            });
+                DateTime = order.DateTime.ToUniversalTime(),
+                User = isUserExist ? null : userDb,
+            };
 
             var items = new List<OrderItemEntity>();
 
@@ -100,19 +104,20 @@ namespace Order.Hosts.Repositories
             {
                 items.Add(new OrderItemEntity()
                 {
-                    Id = item.Id,
+                    ItemId = item.Id,
                     Name = item.Name,
                     Price = item.Price,
                     CatalogModelId = item.CatalogModelId,
                     CatalogSubTypeId = item.CatalogSubTypeId,
-                    OrderId = orderAdding.Entity.Id,
+                    OrderId = orderAdding.Id,
+                    Order = orderAdding
                 });
             }
 
             await _dbContext.OrderItems.AddRangeAsync(items);
             await _dbContext.SaveChangesAsync();
 
-            _logger.LogInformation($"Order id {orderAdding.Entity.Id} added");
+            _logger.LogInformation($"Order id {orderAdding.Id} added");
             return true;
         }
 

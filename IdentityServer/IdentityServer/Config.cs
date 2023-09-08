@@ -64,7 +64,9 @@ namespace IdentityServer
                     RedirectUris = { $"{configuration["MvcUrl"]}/signin-oidc"},
                     AllowedScopes = {"openid", "profile", "mvc"},
                     RequirePkce = true,
-                    RequireConsent = false
+                    RequireConsent = false,
+                    AlwaysIncludeUserClaimsInIdToken =  true,
+                    AlwaysSendClientClaims = true,
                 },
                 new Client
                 {

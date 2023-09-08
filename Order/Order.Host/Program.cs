@@ -69,7 +69,7 @@ namespace Order.Host
             builder.Services.AddTransient<IOrderUserRepository, OrderUserRepository>();
             builder.Services.AddTransient<IOrderService, OrderService>();
             builder.Services.AddTransient<IOrderUserService, OrderUserService>();
-
+            builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             builder.Services.AddDbContextFactory<ApplicationDbContext>(opts => opts.UseNpgsql(configuration["ConnectionString"]));
             builder.Services.AddScoped<IDbContextWrapper<ApplicationDbContext>, DbContextWrapper<ApplicationDbContext>>();
 
@@ -115,7 +115,6 @@ namespace Order.Host
                     .SetBasePath(Directory.GetCurrentDirectory())
                     .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
                     .AddEnvironmentVariables();
-
                 return builder.Build();
             }
 

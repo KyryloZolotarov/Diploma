@@ -21,12 +21,13 @@ namespace IdentityServer
             services.Configure<AppSettings>(configuration);
 
             services.AddMvc().SetCompatibilityVersion(Microsoft.AspNetCore.Mvc.CompatibilityVersion.Version_2_1);
-
-            services.AddIdentityServer()
+            services.AddTransient<IProfileService, ProfileService>();
+            services.AddIdentityServer().AddProfileService<ProfileService>()
                 .AddInMemoryIdentityResources(Config.GetIdentityResources())
                 .AddInMemoryApiResources(Config.GetApis())
                 .AddInMemoryClients(Config.GetClients(configuration))
                 .AddTestUsers(TestUsers.Users)
+                .AddProfileService<ProfileService>()
                 .AddDeveloperSigningCredential();
         }
 

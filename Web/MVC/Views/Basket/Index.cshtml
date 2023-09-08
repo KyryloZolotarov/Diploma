@@ -4,6 +4,7 @@
     ViewData["Title"] = "Basket";
     ViewBag.Title = "title";
     Layout = "_Layout";
+    int index = 0;
 }
 <section class="esh-catalog-hero">
     <div class="container-fluid">
@@ -19,10 +20,19 @@
                     <form asp-controller="Basket" asp-action="ClearBasket">
                         <button type="submit" class="btn btn-primary mr-2">Clear Basket</button>
                     </form>
-                    <form asp-controller="Order" asp-action="CreateOrder">
-                        <input type="hidden" value="@Model">
+                <form asp-controller="Order" asp-action="CreateOrder" method="post">
+                    @foreach (var item in Model.BasketItems)
+                    {
+                        <input type="hidden" name="BasketItems[@index].Id" value="@item.Id" />
+                        <input type="hidden" name="BasketItems[@index].Name" value="@item.Name" />
+                        <input type="hidden" name="BasketItems[@index].CatalogModel.Id" value="@item.CatalogModel.Id" />
+                        <input type="hidden" name="BasketItems[@index].CatalogSubType.Id" value="@item.CatalogSubType.Id" />
+                        <input type="hidden" name="BasketItems[@index].Count" value="@item.Count" />
+                        <input type="hidden" name="BasketItems[@index].Price" value="@item.Price" />
+                        index++;
+                    }
                     <button type="submit" class="btn btn-primary">Create Order</button>
-                    </form>
+                </form>
                 </div>
             <table class="table table-bordered">
                 <thead class="table-dark">
