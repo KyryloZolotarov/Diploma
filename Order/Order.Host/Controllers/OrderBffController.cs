@@ -1,8 +1,6 @@
-﻿using System.Security.Claims;
-using IdentityModel;
+﻿using IdentityModel;
 using Infrastructure.Identity;
 using Microsoft.AspNetCore.Authorization;
-using Order.Hosts.Models.BaseResponses;
 using Order.Hosts.Models.Dtos;
 using Order.Hosts.Models.Requests;
 using Order.Hosts.Models.ToFrontResponses;
@@ -30,7 +28,7 @@ namespace Order.Hosts.Controllers
         public async Task<IActionResult> AddOrder([FromBody] ListItemsForFrontRequest order)
         {
             var user = new OrderUserDto();
-            var claims = User.Claims;
+            var claims = User.Claims.ToList();
             foreach (var claim in claims)
             {
                 switch (claim.Type)

@@ -10,6 +10,10 @@ namespace Order.Hosts.Data.EntityConfigurations
             builder.ToTable("Item");
 
             builder.Property(ci => ci.Id)
+                .UseHiLo("order_item_hilo")
+                .IsRequired(true);
+
+            builder.Property(ci => ci.ItemId)
                 .IsRequired(true);
 
             builder.Property(ci => ci.Name)

@@ -7,7 +7,8 @@ namespace Order.Hosts.Mapping
     {
         public MappingProfile()
         {
-            CreateMap<OrderItemEntity, OrderItemDto>();
+            CreateMap<OrderItemEntity, OrderItemDto>().ForMember(nameof(OrderItemDto.Id), opt
+            => opt.MapFrom(x => x.ItemId));
             CreateMap<OrderOrderEntity, OrderOrderDto>();
             CreateMap<OrderUserEntity, OrderUserDto>();
         }

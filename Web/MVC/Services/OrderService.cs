@@ -39,7 +39,7 @@ namespace MVC.Services
                     Price = item.Price,
                     Order = new OrderToDb()
                     {
-                        DateTime = item.Order.DateTime
+                        DateTime = order.DateTime
                     }
                 });
             }
@@ -82,8 +82,12 @@ namespace MVC.Services
         {
             var result =
                 await _httpClient.SendAsync<ListOrderResponse>(
-                    $"{_settings.Value.OrderUrl}/GetOrder", HttpMethod.Get);
+                    $"{_settings.Value.OrderUrl}/GetOrderList", HttpMethod.Get);
             var ordersForDisplay = new ListOrdersForDisplay() { Orders = new List<OrderForDisplay>() };
+            if(result == null)
+            {
+                return ordersForDisplay;
+            }    
             foreach (var item in result.Orders)
             {
                 ordersForDisplay.Orders.Add(new OrderForDisplay()

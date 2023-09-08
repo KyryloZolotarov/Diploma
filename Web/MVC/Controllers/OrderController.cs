@@ -20,6 +20,7 @@ namespace MVC.Controllers
             var response = await _orderService.GetOrderList();
             return View(response);
         }
+        [HttpPost]
         public async Task<IActionResult> CreateOrder(BasketIndexViewModel items)
         {
             var order = new ListOrderItemsFordDisplay() { Items = new List<OrderItemFordDisplay>() , DateTime = DateTime.Now};

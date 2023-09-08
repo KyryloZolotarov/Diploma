@@ -73,35 +73,30 @@ namespace Order.Hosts.Repositories
 
         public async Task<bool> AddOrder(OrderUserDto user, ListItemsForFrontRequest order)
         {
-            var userExists = await _dbContext.OrderUsers.AnyAsync(x => x.Id == user.Id);
-            var user1 = new OrderUserEntity()
+            var isUserExist = true;
+            var userDb = await _dbContext.OrderUsers.FirstOrDefaultAsync(x => x.Id == user.Id);
+            if (userDb == null)
             {
-                Id = user.Id,
-                Name = user.Name,
-                GivenName = user.GivenName,
-                FamilyName = user.FamilyName,
-                Email = user.Email,
-                Address = user.Address
-            };
-            if (userExists != true)
-            {
-                await _dbContext.OrderUsers.AddAsync(user1);
+                isUserExist = false;
+                userDb = new OrderUserEntity()
+                {
+                    Id = user.Id,
+                    Name = user.Name,
+                    GivenName = user.GivenName,
+                    FamilyName = user.FamilyName,
+                    Email = user.Email,
+                    Address = user.Address
+                };
+
+               // await _dbContext.OrderUsers.AddAsync(userDb);
             }
 
-            var orderAdding = await _dbContext.OrderOrders.AddAsync(new OrderOrderEntity()
+            var orderAdding = new OrderOrderEntity()
             {
                 UserId = user.Id,
-                DateTime = order.DateTime,
-                User = new OrderUserEntity()
-                {
-                    Id = user1.Id,
-                    Address = user1.Address,
-                    Email = user1.Email,
-                    FamilyName = user1.FamilyName,
-                    GivenName = user1.GivenName,
-                    Name = user1.Name
-                }
-            });
+                DateTime = order.DateTime.ToUniversalTime(),
+                User = isUserExist ? null : userDb,
+            };
 
             var items = new List<OrderItemEntity>();
 
@@ -109,33 +104,20 @@ namespace Order.Hosts.Repositories
             {
                 items.Add(new OrderItemEntity()
                 {
-                    Id = item.Id,
+                    ItemId = item.Id,
                     Name = item.Name,
                     Price = item.Price,
                     CatalogModelId = item.CatalogModelId,
                     CatalogSubTypeId = item.CatalogSubTypeId,
-                    OrderId = orderAdding.Entity.Id,
-                    Order = new OrderOrderEntity()
-                    {
-                        DateTime = orderAdding.Entity.DateTime,
-                        UserId = orderAdding.Entity.UserId,
-                        User = new OrderUserEntity()
-                        {
-                            Id = user1.Id,
-                            Address = user1.Address,
-                            Email = user1.Email,
-                            FamilyName = user1.FamilyName,
-                            GivenName = user1.GivenName,
-                            Name = user1.Name
-                        }
-                    }
+                    OrderId = orderAdding.Id,
+                    Order = orderAdding
                 });
             }
 
             await _dbContext.OrderItems.AddRangeAsync(items);
             await _dbContext.SaveChangesAsync();
 
-            _logger.LogInformation($"Order id {orderAdding.Entity.Id} added");
+            _logger.LogInformation($"Order id {orderAdding.Id} added");
             return true;
         }
 
