@@ -48,7 +48,8 @@ namespace Order.Host
                             {
                                 { "mvc", "website" },
                                 { "order.order", "order.order" },
-                                { "order.orderuser", "order.orderuser" }
+                                { "order.orderuser", "order.orderuser" },
+                                { "order.orderitem", "order.orderitem" }
                             }
                         }
                     }

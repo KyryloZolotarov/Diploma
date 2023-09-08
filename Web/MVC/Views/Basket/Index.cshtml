@@ -24,8 +24,8 @@
                     <button type="submit" class="btn btn-primary">Create Order</button>
                     </form>
                 </div>
-                <table class="table">
-                    <thead>
+            <table class="table table-bordered">
+                <thead class="table-dark">
                         <tr>
                             <th>Part Name</th>
                             <th>Brand</th>
@@ -45,11 +45,11 @@
                                 <td>@basketItem.Price.ToString("N2")</td>
                                 <td>
 
-                                <div class="d-flex mb-3">
+                                    <div class="d-flex mb-3">
                                     <input id="itemId-@basketItem.Id" value="@basketItem.Id" type="hidden">
                                     <input id="itemCount-@basketItem.Id" asp-for="@basketItem.Count" class="esh-catalog-counter-value mr-2 flex-grow-0 flex-shrink-0" style="width: 100px;" min="1">
                                     <button type="button" class="btn btn-primary" onclick="sendBasketChangeRequest(@basketItem.Id)">Change</button>
-                                </div>
+                                    </div>
                                 </td>
                                 <td>
                                     <form asp-controller="Basket" asp-action="DeleteItemFromBasket">
@@ -77,7 +77,7 @@
         var dataToSend = {
             id: itemId,
             count: itemCount
-        };
+    };
 
         $.ajax({
             type: "POST",

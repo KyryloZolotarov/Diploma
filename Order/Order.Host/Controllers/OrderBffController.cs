@@ -38,10 +38,10 @@ namespace Order.Hosts.Controllers
 
         [HttpPost]
         [ProducesResponseType(typeof(bool), (int)HttpStatusCode.OK)]
-        public async Task<IActionResult> AddOrder(ListItemsForFrontRequest order)
+        public async Task<IActionResult> AddOrder([FromBody] ListItemsForFrontRequest order)
         {
             var user = new OrderUserDto();
-            var claims = _userClaims;
+            var claims = User.Claims;
             foreach (var claim in claims)
             {
                 switch (claim.Type)
@@ -73,13 +73,13 @@ namespace Order.Hosts.Controllers
 
         [HttpPost]
         [ProducesResponseType(typeof(OrderOrderForFrontResponse), (int)HttpStatusCode.OK)]
-        public async Task<IActionResult> GetOrder(int id)
+        public async Task<IActionResult> GetOrder([FromBody]int id)
         {
             var result = await _orderService.GetOrder(id);
             return Ok(result);
         }
 
-        [HttpPost]
+        [HttpGet]
         [ProducesResponseType(typeof(ListOrderForFrontResponse), (int)HttpStatusCode.OK)]
         public async Task<IActionResult> GetOrderList()
         {

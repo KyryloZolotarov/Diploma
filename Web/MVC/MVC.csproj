@@ -19,7 +19,6 @@
 		<_ContentIncludedByDefault Remove="Views\Basket\Index.cshtml" />
 		<_ContentIncludedByDefault Remove="Views\Home\Index.cshtml" />
 		<_ContentIncludedByDefault Remove="Views\Home\Privacy.cshtml" />
-		<_ContentIncludedByDefault Remove="Views\Order\CreateOrder.cshtml" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -28,49 +27,6 @@
 
 	<ItemGroup>
 	  <UpToDateCheckInput Remove="Views\Basket\Index.cshtml" />
-	</ItemGroup>
-
-	<ItemGroup>
-	  <UpToDateCheckInput Remove="Views\Order\CreateOrder.cshtml" />
-	</ItemGroup>
-
-	<ItemGroup>
-	  <Content Update="wwwroot\images\1.png">
-	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-	  </Content>
-	  <Content Update="wwwroot\images\10.png">
-	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-	  </Content>
-	  <Content Update="wwwroot\images\11.png">
-	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-	  </Content>
-	  <Content Update="wwwroot\images\12.png">
-	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-	  </Content>
-	  <Content Update="wwwroot\images\2.png">
-	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-	  </Content>
-	  <Content Update="wwwroot\images\3.png">
-	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-	  </Content>
-	  <Content Update="wwwroot\images\4.png">
-	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-	  </Content>
-	  <Content Update="wwwroot\images\5.png">
-	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-	  </Content>
-	  <Content Update="wwwroot\images\6.png">
-	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-	  </Content>
-	  <Content Update="wwwroot\images\7.png">
-	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-	  </Content>
-	  <Content Update="wwwroot\images\8.png">
-	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-	  </Content>
-	  <Content Update="wwwroot\images\9.png">
-	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-	  </Content>
 	</ItemGroup>
 
 </Project>

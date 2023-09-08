@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using MVC.Services.Interfaces;
+using MVC.ViewModels.BasketViewModels;
+using MVC.ViewModels.OrderViewModels;
 
 namespace MVC.Controllers
 {
@@ -13,14 +15,34 @@ namespace MVC.Controllers
             _orderService = orderService;
             _logger = logger;
         }
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return View();
+            var response = await _orderService.GetOrderList();
+            return View(response);
+        }
+        public async Task<IActionResult> CreateOrder(BasketIndexViewModel items)
+        {
+            var order = new ListOrderItemsFordDisplay() { Items = new List<OrderItemFordDisplay>() , DateTime = DateTime.Now};
+            foreach (var item in items.BasketItems)
+            {
+                order.Items.Add(new OrderItemFordDisplay()
+                {
+                    Id = item.Id,
+                    Name = item.Name,
+                    CatalogModelId = item.CatalogModel.Id,
+                    CatalogSubTypeId = item.CatalogSubType.Id,
+                    Count = item.Count,
+                    Price = item.Price
+                });
+            }
+            var response = await _orderService.AddOrder(order);
+            return Ok(response);
         }
 
-        public IActionResult CreateOrder()
+        public async Task<IActionResult> SingleOrder(int id)
         {
-            return View();
+            var response = await _orderService.GetOrder(id);
+            return View(response);
         }
     }
 }

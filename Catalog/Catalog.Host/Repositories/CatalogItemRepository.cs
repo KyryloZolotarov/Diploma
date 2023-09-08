@@ -223,5 +223,20 @@ namespace Catalog.Host.Repositories
                 .Distinct()
                 .ToListAsync();
         }
+
+        public async Task<bool> ChangeAvailableItems(int id, int count)
+        {
+            var itemStatus = await _dbContext.CatalogItems.AnyAsync(h => h.Id == id);
+            if (itemStatus)
+            {
+                var item = await _dbContext.CatalogItems.FirstOrDefaultAsync(x => x.Id == id);
+                item.AvailableStock -= count;
+                _dbContext.CatalogItems.Update(item);
+                await _dbContext.SaveChangesAsync();
+                return true;
+            }
+
+            return false;
+        }
     }
 }
