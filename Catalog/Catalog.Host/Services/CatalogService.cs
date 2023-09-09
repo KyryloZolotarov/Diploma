@@ -101,6 +101,17 @@ namespace Catalog.Host.Services
             });
         }
 
+        public async Task<CatalogModelsForOrderResponse> GetCatalogModelForOrder(CatalogModelsForOrderRequest modelIds)
+        {
+            return await ExecuteSafeAsync(async () =>
+            {
+                var result = await _catalogItemRepository.GetModelsForOrderAsync(modelIds);
+                var mappedResult = new CatalogModelsForOrderResponse()
+                    { Models = result.Select(s => _mapper.Map<CatalogModelDto>(s)).ToList() };
+                return mappedResult;
+            });
+        }
+
         public async Task<IEnumerable<CatalogTypeDto>> GetCatalogTypesAsync()
         {
             return await ExecuteSafeAsync(async () =>

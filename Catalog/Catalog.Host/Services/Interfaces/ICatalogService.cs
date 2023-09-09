@@ -18,5 +18,6 @@ namespace Catalog.Host.Services.Interfaces
         Task<IEnumerable<CatalogSubTypeDto>> GetCatalogSubTypesAsync(int id);
         Task<BasketItems<CatalogItemDto>> GetListCatalogItemsAsync(ItemsForBasketRequest items);
         Task<bool> ChangeAvailableItems(UpdateAvailableItemsRequest item);
+        Task<CatalogModelsForOrderResponse> GetCatalogModelForOrder(CatalogModelsForOrderRequest modelIds);
     }
 }

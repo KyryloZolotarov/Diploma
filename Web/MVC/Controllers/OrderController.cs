@@ -72,12 +72,13 @@ namespace MVC.Controllers
                 });
             }
             var response = await _orderService.AddOrder(order);
-            return View();
+            return View(items);
         }
 
         public async Task<IActionResult> SingleOrder(int id)
         {
             var response = await _orderService.GetOrder(id);
+
             return View(response);
         }
     }

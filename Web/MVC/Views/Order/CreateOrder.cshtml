@@ -1,4 +1,4 @@
-﻿@model MVC.ViewModels.OrderViewModels.ListOrderItemsFordDisplay
+﻿@model MVC.ViewModels.BasketViewModels.BasketIndexViewModel
 
 @{
     ViewBag.Title = "Order Cteated";
@@ -22,12 +22,11 @@
                     <th>Model</th>
                     <th>Price</th>
                     <th>Count</th>
-                    <th></th>
                 </tr>
             </thead>
             <tbody>
                 <tr>
-                    @foreach (var item in Model.Items)
+                    @foreach (var item in Model.BasketItems)
                     {
                     <tr>
                         <td>@item.Name</td>

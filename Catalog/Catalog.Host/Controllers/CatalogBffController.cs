@@ -105,5 +105,14 @@ namespace Catalog.Host.Controllers
             var result = await _catalogService.GetCatalogModelsAsync(id);
             return Ok(result);
             }
-        }
+
+            [HttpPost]
+            [AllowAnonymous]
+            [ProducesResponseType(typeof(CatalogModelsForOrderResponse), (int)HttpStatusCode.OK)]
+            public async Task<IActionResult> GetModelsForOrder([FromBody] CatalogModelsForOrderRequest modelIds)
+            {
+                var result = await _catalogService.GetCatalogModelForOrder(modelIds);
+                return Ok(result);
+            }
+    }
 }

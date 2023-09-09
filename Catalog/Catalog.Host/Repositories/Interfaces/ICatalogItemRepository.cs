@@ -1,6 +1,7 @@
 ﻿using Catalog.Host.Data;
 using Catalog.Host.Data.Entities;
 using Catalog.Host.Models.Dtos;
+using Catalog.Host.Models.Requests;
 using Catalog.Host.Models.Requests.UpdateRequsts;
 
 namespace Catalog.Host.Repositories.Interfaces
@@ -18,5 +19,6 @@ namespace Catalog.Host.Repositories.Interfaces
         Task<IEnumerable<CatalogSubType>> GetSubTypesAsync(int id);
         Task<IEnumerable<CatalogModel>> GetModelsAsync(int id);
         Task<bool> ChangeAvailableItems(int id, int count);
+        Task<IEnumerable<CatalogModel>> GetModelsForOrderAsync(CatalogModelsForOrderRequest modelIds);
     }
 }

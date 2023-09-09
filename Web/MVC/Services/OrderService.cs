@@ -2,6 +2,7 @@
 using MVC.Models.Responses;
 using MVC.Services.Interfaces;
 using MVC.ViewModels.BasketViewModels;
+using MVC.ViewModels.CatalogViewModels;
 using MVC.ViewModels.OrderViewModels;
 
 namespace MVC.Services
@@ -61,8 +62,11 @@ namespace MVC.Services
                     $"{_settings.Value.OrderUrl}/GetOrder", HttpMethod.Post, id);
 
             var orderFordDisplay = new ListOrderItemsFordDisplay() { Items = new List<OrderItemFordDisplay>(), DateTime = result.Order.DateTime};
+            var modelIds = new CatalogModelForOrderRequest() { Id = new List<int>() };
+
             foreach (var item in result.Items)
             {
+                modelIds.Id.Add(item.CatalogModelId);
                 orderFordDisplay.Items.Add(new OrderItemFordDisplay()
                 {
                     Id = item.Id,
@@ -79,6 +83,22 @@ namespace MVC.Services
                     }
                 });
             }
+
+            var modelsResult = await _httpClient.SendAsync<CatalogModelsForOrderResponse, CatalogModelForOrderRequest>(
+                $"{_settings.Value.CatalogUrl}/GetModelsForOrder", HttpMethod.Post, modelIds);
+
+            foreach (var item in orderFordDisplay.Items)
+            {
+                var tempModel = modelsResult.Models.FirstOrDefault(x => x.Id == item.CatalogModelId);
+                if (tempModel != null)
+                {
+                    item.CatalogModel = tempModel;
+                    break;
+                }
+
+                item.CatalogModel = new CatalogModel();
+            }
+
             return orderFordDisplay;
         }
 

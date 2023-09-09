@@ -1,6 +1,7 @@
 ﻿using Catalog.Host.Data.Entities;
 using Catalog.Host.Data;
 using Catalog.Host.Models.Dtos;
+using Catalog.Host.Models.Requests;
 using Catalog.Host.Repositories.Interfaces;
 using Infrastructure.Exceptions;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
@@ -237,6 +238,26 @@ namespace Catalog.Host.Repositories
             }
 
             return false;
+        }
+
+        public async Task<IEnumerable<CatalogModel>> GetModelsForOrderAsync(CatalogModelsForOrderRequest modelIds)
+        {
+            List<CatalogModel> models = new ();
+            foreach (var temp in modelIds.Id)
+            {
+                if (temp == null)
+                {
+                    break;
+                }
+
+                _logger.LogInformation($"model id to front {temp}");
+                var item = await _dbContext.CatalogModels.Include(i => i.CatalogBrand)
+                    .FirstOrDefaultAsync(h => h.Id == temp);
+                models.Add(item);
+                _logger.LogInformation($"catalog model name from db {item.Model}");
+            }
+
+            return models;
         }
     }
 }
