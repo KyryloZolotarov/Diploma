@@ -93,7 +93,7 @@ namespace MVC.Services
                 if (tempModel != null)
                 {
                     item.CatalogModel = tempModel;
-                    break;
+                    continue;
                 }
 
                 item.CatalogModel = new CatalogModel();
