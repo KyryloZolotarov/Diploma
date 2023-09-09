@@ -45,6 +45,7 @@ namespace MVC.Controllers
                         break;
                 }
             }
+            response.User = user;
             return View(response);
         }
         [HttpPost]
