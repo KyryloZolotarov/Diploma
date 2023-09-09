@@ -46,6 +46,10 @@ namespace MVC.Services
             var result =
                 await _httpClient.SendAsync<bool, ListOrderItemsRequest>(
                     $"{_settings.Value.OrderUrl}/AddOrder", HttpMethod.Post, orderForDb);
+            if (result == true)
+            {
+                await _httpClient.SendAsync($"{_settings.Value.BasketUrl}/Delete", HttpMethod.Delete);
+            }
             return result;
 
         }

@@ -77,6 +77,7 @@ namespace Basket.Host.Services
         public async Task<BasketItemsDb> Get(string basketId)
         {
             var result = await _cacheService.GetAsync<BasketItemsDb>(basketId);
+            _logger.LogInformation($"items in basket service {result.Items.Count}");
             return result;
         }
 
