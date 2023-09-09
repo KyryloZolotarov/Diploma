@@ -7,6 +7,8 @@ using Catalog.Host.Repositories.Interfaces;
 using Catalog.Host.Services;
 using Infrastructure.Services;
 using Catalog.Host.Models.Enums;
+using Catalog.Host.Models.Requests;
+using Catalog.Host.Models.Requests.UpdateRequsts;
 
 namespace Catalog.Tests.Services
 {
@@ -372,6 +374,148 @@ namespace Catalog.Tests.Services
             var catalogService = new CatalogService(dbContextWrapperMock.Object, loggerMock.Object, catalogItemRepositoryMock.Object, mapperMock.Object);
             var result = await catalogService.GetCatalogBrandsAsync();
             result.Should().BeNull();
+        }
+
+        [Fact]
+        public async Task GetListCatalogItemsAsync_Successfully()
+        {
+            var dbContextWrapperMock = new Mock<IDbContextWrapper<ApplicationDbContext>>();
+            var loggerMock = new Mock<ILogger<BaseDataService<ApplicationDbContext>>>();
+            var catalogItemRepositoryMock = new Mock<ICatalogItemRepository>();
+            var mapperMock = new Mock<IMapper>();
+
+            var basketItemsMock = new List<BasketItemDto>() { new BasketItemDto() { Id = 1, Count = 1 } };
+
+            var itemsForBasket = new ItemsForBasketRequest()
+                { Items = new List<BasketItemDto>() { new BasketItemDto() { Id = 1, Count = 1 } } };
+
+            var catalogItemSuccess = new CatalogItem()
+            {
+                Name = "TestName",
+                Id = 1,
+            };
+
+            var catalogItemDtoSuccess = new CatalogItemDto()
+            {
+                Name = "TestName",
+                Id = 1,
+            };
+
+            var listItemsToFront = new BasketItems<CatalogItemDto>() { Items = new List<CatalogItemDto>() { catalogItemDtoSuccess } };
+            var listItemsFromBase = new BasketItems<CatalogItem>() { Items = new List<CatalogItem>() { catalogItemSuccess } };
+
+            mapperMock.Setup(s => s.Map<CatalogItemDto>(
+                It.Is<CatalogItem>(i => i.Equals(catalogItemSuccess)))).Returns(catalogItemDtoSuccess);
+
+            var dbContextTransactionMock = new Mock<IDbContextTransaction>();
+            dbContextWrapperMock.Setup(s => s.BeginTransactionAsync(CancellationToken.None)).ReturnsAsync(dbContextTransactionMock.Object);
+
+            catalogItemRepositoryMock.Setup(h => h.GetItemsListAsync(It.IsAny<List<BasketItemDto>>())).ReturnsAsync(listItemsFromBase);
+
+            var catalogService = new CatalogService(dbContextWrapperMock.Object, loggerMock.Object, catalogItemRepositoryMock.Object, mapperMock.Object);
+
+            var result = await catalogService.GetListCatalogItemsAsync(itemsForBasket);
+            Assert.NotNull(result);
+            catalogItemRepositoryMock.Verify(x => x.GetItemsListAsync(It.IsAny<List<BasketItemDto>>()), Times.Once());
+        }
+
+        [Fact]
+        public async Task GetListCatalogItemsAsync_Failed()
+        {
+            var dbContextWrapperMock = new Mock<IDbContextWrapper<ApplicationDbContext>>();
+            var loggerMock = new Mock<ILogger<BaseDataService<ApplicationDbContext>>>();
+            var catalogItemRepositoryMock = new Mock<ICatalogItemRepository>();
+            var mapperMock = new Mock<IMapper>();
+
+            var basketItemsMock = new List<BasketItemDto>();
+
+            var itemsForBasket = new ItemsForBasketRequest();
+
+            var catalogItemFailed = new CatalogItem();
+
+            var catalogItemDtoFailed = new CatalogItemDto();
+
+            var listItemsToFront = new BasketItems<CatalogItemDto>();
+            var listItemsFromBase = new BasketItems<CatalogItem>();
+
+            mapperMock.Setup(s => s.Map<CatalogItemDto>(
+                It.Is<CatalogItem>(i => i.Equals(catalogItemFailed)))).Returns(catalogItemDtoFailed);
+
+            var dbContextTransactionMock = new Mock<IDbContextTransaction>();
+            dbContextWrapperMock.Setup(s => s.BeginTransactionAsync(CancellationToken.None)).ReturnsAsync(dbContextTransactionMock.Object);
+
+            catalogItemRepositoryMock.Setup(h => h.GetItemsListAsync(basketItemsMock)).ReturnsAsync(listItemsFromBase);
+
+            var catalogService = new CatalogService(dbContextWrapperMock.Object, loggerMock.Object, catalogItemRepositoryMock.Object, mapperMock.Object);
+            var result = await catalogService.GetListCatalogItemsAsync(itemsForBasket);
+            result.Should().BeNull();
+        }
+
+        [Fact]
+        public async Task ChangeAvailableItems_Successfully()
+        {
+            var dbContextWrapperMock = new Mock<IDbContextWrapper<ApplicationDbContext>>();
+            var loggerMock = new Mock<ILogger<BaseDataService<ApplicationDbContext>>>();
+            var catalogItemRepositoryMock = new Mock<ICatalogItemRepository>();
+            var mapperMock = new Mock<IMapper>();
+
+            var resultSucces = true;
+
+            var catalogItemSuccess = new CatalogItem()
+            {
+                Name = "TestName",
+                Id = 1,
+            };
+
+            var catalogItemDtoSuccess = new CatalogItemDto()
+            {
+                Name = "TestName",
+                Id = 1,
+            };
+
+            var updateSucces = new UpdateAvailableItemsRequest() { ChangeAvailable = 1, Id = 1 };
+
+            mapperMock.Setup(s => s.Map<CatalogItemDto>(
+                It.Is<CatalogItem>(i => i.Equals(catalogItemSuccess)))).Returns(catalogItemDtoSuccess);
+
+            var dbContextTransactionMock = new Mock<IDbContextTransaction>();
+            dbContextWrapperMock.Setup(s => s.BeginTransactionAsync(CancellationToken.None)).ReturnsAsync(dbContextTransactionMock.Object);
+
+            catalogItemRepositoryMock.Setup(h => h.ChangeAvailableItems(It.IsAny<int>(), It.IsAny<int>())).ReturnsAsync(resultSucces);
+
+            var catalogService = new CatalogService(dbContextWrapperMock.Object, loggerMock.Object, catalogItemRepositoryMock.Object, mapperMock.Object);
+
+            var result = await catalogService.ChangeAvailableItems(updateSucces);
+            Assert.True(result);
+            catalogItemRepositoryMock.Verify(x => x.ChangeAvailableItems(It.IsAny<int>(), It.IsAny<int>()), Times.Once());
+        }
+
+        [Fact]
+        public async Task ChangeAvailableItems_Failed()
+        {
+            var dbContextWrapperMock = new Mock<IDbContextWrapper<ApplicationDbContext>>();
+            var loggerMock = new Mock<ILogger<BaseDataService<ApplicationDbContext>>>();
+            var catalogItemRepositoryMock = new Mock<ICatalogItemRepository>();
+            var mapperMock = new Mock<IMapper>();
+
+            var resultFailed = false;
+
+            var catalogItemFailed = new CatalogItem();
+            var catalogItemDtoFailed = new CatalogItemDto();
+
+            var updateFailed = new UpdateAvailableItemsRequest();
+
+            mapperMock.Setup(s => s.Map<CatalogItemDto>(
+                It.Is<CatalogItem>(i => i.Equals(catalogItemFailed)))).Returns(catalogItemDtoFailed);
+
+            var dbContextTransactionMock = new Mock<IDbContextTransaction>();
+            dbContextWrapperMock.Setup(s => s.BeginTransactionAsync(CancellationToken.None)).ReturnsAsync(dbContextTransactionMock.Object);
+
+            catalogItemRepositoryMock.Setup(h => h.ChangeAvailableItems(It.IsAny<int>(), It.IsAny<int>())).ReturnsAsync(resultFailed);
+
+            var catalogService = new CatalogService(dbContextWrapperMock.Object, loggerMock.Object, catalogItemRepositoryMock.Object, mapperMock.Object);
+            var result = await catalogService.ChangeAvailableItems(updateFailed);
+            Assert.False(result);
         }
     }
 }
