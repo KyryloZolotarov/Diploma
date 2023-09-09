@@ -12,11 +12,7 @@ using Order.Host.Data;
 namespace Order.Hosts.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-<<<<<<<< HEAD:Order/Order.Hosts/Migrations/20230907192452_InitialMigration.Designer.cs
-    [Migration("20230907192452_InitialMigration")]
-========
     [Migration("20230908223009_InitialMigration")]
->>>>>>>> develop:Order/Order.Host/Migrations/20230908223009_InitialMigration.Designer.cs
     partial class InitialMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
