@@ -87,8 +87,6 @@ namespace Order.Hosts.Repositories
                     Email = user.Email,
                     Address = user.Address
                 };
-
-               // await _dbContext.OrderUsers.AddAsync(userDb);
             }
 
             var orderAdding = new OrderOrderEntity()

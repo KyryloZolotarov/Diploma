@@ -22,7 +22,7 @@ namespace IdentityServer
 
             services.AddMvc().SetCompatibilityVersion(Microsoft.AspNetCore.Mvc.CompatibilityVersion.Version_2_1);
             services.AddTransient<IProfileService, ProfileService>();
-            services.AddIdentityServer().AddProfileService<ProfileService>()
+            services.AddIdentityServer()
                 .AddInMemoryIdentityResources(Config.GetIdentityResources())
                 .AddInMemoryApiResources(Config.GetApis())
                 .AddInMemoryClients(Config.GetClients(configuration))

@@ -45,6 +45,12 @@ namespace MVC.Controllers
                         break;
                 }
             }
+            response.User.Id = user.Id;
+            response.User.Name = user.Name;
+            response.User.Email = user.Email;
+            response.User.Address = user.Address;
+            response.User.FamilyName = user.FamilyName;
+            response.User.GivenName = user.GivenName;
             return View(response);
         }
         [HttpPost]
