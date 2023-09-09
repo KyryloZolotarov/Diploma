@@ -22,9 +22,9 @@ namespace Order.Hosts.Services
             return await ExecuteSafeAsync(() => _orderItemRepository.Add(id, name, price, catalogSubTypeId, catalogModelId, count, orderId));
         }
 
-        public async Task<int?> Update(int id, string name, decimal price, int catalogSubTypeId, int catalogModelId, int count, int orderId)
+        public async Task<int?> Update(int id, int itemId, string name, decimal price, int catalogSubTypeId, int catalogModelId, int count, int orderId)
         {
-            return await ExecuteSafeAsync(() => _orderItemRepository.Update(id, name, price, catalogSubTypeId, catalogModelId, count, orderId));
+            return await ExecuteSafeAsync(() => _orderItemRepository.Update(id, itemId, name, price, catalogSubTypeId, catalogModelId, count, orderId));
         }
 
         public async Task<int?> Delete(int id)

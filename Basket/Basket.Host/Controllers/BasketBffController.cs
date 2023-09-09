@@ -84,7 +84,7 @@ namespace Basket.Host.Controllers
             var basketId = User.Claims.FirstOrDefault(x => x.Type == "sub")?.Value;
             _logger.LogInformation($"basket id: {basketId}");
             await _basketService.Delete(basketId!);
-            return NotFound();
+            return Ok();
         }
 
         [HttpPost]

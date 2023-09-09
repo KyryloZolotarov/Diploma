@@ -25,7 +25,7 @@ namespace Order.Hosts.Repositories
             {
                 var item1 = new OrderItemEntity()
                 {
-                    Id = id,
+                    ItemId = id,
                     Name = name,
                     Price = price,
                     CatalogModelId = catalogModelId,
@@ -45,7 +45,7 @@ namespace Order.Hosts.Repositories
             }
         }
 
-        public async Task<int?> Update(int id, string name, decimal price, int catalogSubTypeId, int catalogModelId, int count, int orderId)
+        public async Task<int?> Update(int id, int itemId, string name, decimal price, int catalogSubTypeId, int catalogModelId, int count, int orderId)
         {
             var orderStatus = await _dbContext.OrderOrders.AnyAsync(h => h.Id == orderId);
             var itemStatus = await _dbContext.OrderItems.AnyAsync(h => h.Id == id);
@@ -54,6 +54,7 @@ namespace Order.Hosts.Repositories
                 var item1 = new OrderItemEntity()
                 {
                     Id = id,
+                    ItemId = itemId,
                     Name = name,
                     Price = price,
                     CatalogModelId = catalogModelId,
