@@ -1,8 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc.RazorPages;
-using MVC.Dtos;
+﻿using MVC.Dtos;
 using MVC.Models.Enums;
-using MVC.Models.Requests;
-using MVC.Models.Responses;
 using MVC.Services.Interfaces;
 using MVC.ViewModels.CatalogViewModels;
 

@@ -70,7 +70,8 @@ namespace MVC.Services
                     Count = item.Count,
                     CatalogModelId = item.CatalogModelId,
                     CatalogSubTypeId = item.CatalogSubTypeId,
-                    OrderId = item.OrderId, Price = item.Price,
+                    OrderId = item.OrderId,
+                    Price = item.Price,
                     Order = new OrderForDisplay()
                     {
                         Id = item.Order.Id,
@@ -78,6 +79,7 @@ namespace MVC.Services
                         DateTime = item.Order.DateTime
                     }
                 });
+                ;
             }
             return orderFordDisplay;
         }
