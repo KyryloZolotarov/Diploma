@@ -37,7 +37,7 @@ namespace Order.Hosts.Controllers
         [ProducesResponseType(typeof(BaseResponse<int?>), (int)HttpStatusCode.OK)]
         public async Task<IActionResult> Update(UpdateItemRequest request)
         {
-            var result = await _orderItemService.Update(request.Id, request.Name, request.Price, request.CatalogSubTypeId, request.CatalogModelId, request.Count, request.OrderId);
+            var result = await _orderItemService.Update(request.Id, request.ItemId, request.Name, request.Price, request.CatalogSubTypeId, request.CatalogModelId, request.Count, request.OrderId);
             return Ok(new BaseResponse<int?>() { Id = result });
         }
 

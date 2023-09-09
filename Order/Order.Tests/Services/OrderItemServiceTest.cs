@@ -1,10 +1,12 @@
-﻿using Infrastructure.Services.Interfaces;
+﻿using Infrastructure.Exceptions;
+using Infrastructure.Services.Interfaces;
 using Infrastructure.Services;
 using Microsoft.Extensions.Logging;
 using Moq;
 using Order.Host.Data;
 using Order.Hosts.Repositories.Interfaces;
 using Order.Hosts.Services;
+using Microsoft.EntityFrameworkCore.Storage;
 
 namespace Order.Tests.Services
 {
@@ -16,17 +18,23 @@ namespace Order.Tests.Services
             var dbContextWrapperMock = new Mock<IDbContextWrapper<ApplicationDbContext>>();
             var loggerMock = new Mock<ILogger<BaseDataService<ApplicationDbContext>>>();
             var mockOrderItemRepository = new Mock<IOrderItemRepository>();
+            var returnID = 1;
+
+            var dbContextTransactionMock = new Mock<IDbContextTransaction>();
+            dbContextWrapperMock.Setup(s => s.BeginTransactionAsync(CancellationToken.None)).ReturnsAsync(dbContextTransactionMock.Object);
+
             mockOrderItemRepository
                 .Setup(repo => repo.Add(It.IsAny<int>(), It.IsAny<string>(), It.IsAny<decimal>(), It.IsAny<int>(), It.IsAny<int>(), It.IsAny<int>(), It.IsAny<int>()))
-                .ReturnsAsync(1); // Поддельный успешный результат добавления
+                .ReturnsAsync(returnID);
 
             var orderItemService = new OrderItemService(dbContextWrapperMock.Object, loggerMock.Object, mockOrderItemRepository.Object);
 
-            // Act
             var result = await orderItemService.Add(1, "Product", 10.0m, 1, 1, 5, 1);
 
-            // Assert
-            result.Should().Be(1); // Ожидаем успешный результат
+            Assert.NotNull(result);
+            Assert.Equal(returnID, result!.Value);
+
+            mockOrderItemRepository.Verify(x => x.Add(It.IsAny<int>(), It.IsAny<string>(), It.IsAny<decimal>(), It.IsAny<int>(), It.IsAny<int>(), It.IsAny<int>(), It.IsAny<int>()), Times.Once());
         }
 
         [Fact]
@@ -35,14 +43,17 @@ namespace Order.Tests.Services
             var dbContextWrapperMock = new Mock<IDbContextWrapper<ApplicationDbContext>>();
             var loggerMock = new Mock<ILogger<BaseDataService<ApplicationDbContext>>>();
             var mockOrderItemRepository = new Mock<IOrderItemRepository>();
+
+            var dbContextTransactionMock = new Mock<IDbContextTransaction>();
+            dbContextWrapperMock.Setup(s => s.BeginTransactionAsync(CancellationToken.None)).ReturnsAsync(dbContextTransactionMock.Object);
+
             mockOrderItemRepository
                 .Setup(repo => repo.Add(It.IsAny<int>(), It.IsAny<string>(), It.IsAny<decimal>(), It.IsAny<int>(), It.IsAny<int>(), It.IsAny<int>(), It.IsAny<int>()))
-                .ThrowsAsync(new Exception("Ошибка при добавлении")); // Поддельное исключение при добавлении
+                .ThrowsAsync(new BusinessException("Item adding failed"));
 
             var orderItemService = new OrderItemService(dbContextWrapperMock.Object, loggerMock.Object, mockOrderItemRepository.Object);
 
-            // Act & Assert
-            await Assert.ThrowsAsync<Exception>(() => orderItemService.Add(1, "Product", 10.0m, 1, 1, 5, 1));
+            await Assert.ThrowsAsync<BusinessException>(() => orderItemService.Add(1, "Product", 10.0m, 1, 1, 5, 1));
         }
 
         [Fact]
@@ -51,17 +62,23 @@ namespace Order.Tests.Services
             var dbContextWrapperMock = new Mock<IDbContextWrapper<ApplicationDbContext>>();
             var loggerMock = new Mock<ILogger<BaseDataService<ApplicationDbContext>>>();
             var mockOrderItemRepository = new Mock<IOrderItemRepository>();
+            var returnID = 1;
+
+            var dbContextTransactionMock = new Mock<IDbContextTransaction>();
+            dbContextWrapperMock.Setup(s => s.BeginTransactionAsync(CancellationToken.None)).ReturnsAsync(dbContextTransactionMock.Object);
+
             mockOrderItemRepository
-                .Setup(repo => repo.Update(It.IsAny<int>(), It.IsAny<string>(), It.IsAny<decimal>(), It.IsAny<int>(), It.IsAny<int>(), It.IsAny<int>(), It.IsAny<int>()))
-                .ReturnsAsync(1); // Поддельный успешный результат добавления
+                .Setup(repo => repo.Update(It.IsAny<int>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<decimal>(), It.IsAny<int>(), It.IsAny<int>(), It.IsAny<int>(), It.IsAny<int>()))
+                .ReturnsAsync(returnID);
 
             var orderItemService = new OrderItemService(dbContextWrapperMock.Object, loggerMock.Object, mockOrderItemRepository.Object);
 
-            // Act
-            var result = await orderItemService.Update(1, "Product", 10.0m, 1, 1, 5, 1);
+            var result = await orderItemService.Update(1, 1, "Product", 10.0m, 1, 1, 5, 1);
 
-            // Assert
-            result.Should().Be(1); // Ожидаем успешный результат
+            Assert.NotNull(result);
+            Assert.Equal(returnID, result!.Value);
+
+            mockOrderItemRepository.Verify(x => x.Update(It.IsAny<int>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<decimal>(), It.IsAny<int>(), It.IsAny<int>(), It.IsAny<int>(), It.IsAny<int>()), Times.Once());
         }
 
         [Fact]
@@ -70,14 +87,17 @@ namespace Order.Tests.Services
             var dbContextWrapperMock = new Mock<IDbContextWrapper<ApplicationDbContext>>();
             var loggerMock = new Mock<ILogger<BaseDataService<ApplicationDbContext>>>();
             var mockOrderItemRepository = new Mock<IOrderItemRepository>();
+
+            var dbContextTransactionMock = new Mock<IDbContextTransaction>();
+            dbContextWrapperMock.Setup(s => s.BeginTransactionAsync(CancellationToken.None)).ReturnsAsync(dbContextTransactionMock.Object);
+
             mockOrderItemRepository
-                .Setup(repo => repo.Update(It.IsAny<int>(), It.IsAny<string>(), It.IsAny<decimal>(), It.IsAny<int>(), It.IsAny<int>(), It.IsAny<int>(), It.IsAny<int>()))
-                .ThrowsAsync(new Exception("Ошибка при добавлении")); // Поддельное исключение при добавлении
+                .Setup(repo => repo.Update(It.IsAny<int>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<decimal>(), It.IsAny<int>(), It.IsAny<int>(), It.IsAny<int>(), It.IsAny<int>()))
+                .ThrowsAsync(new BusinessException("Item updating failed"));
 
             var orderItemService = new OrderItemService(dbContextWrapperMock.Object, loggerMock.Object, mockOrderItemRepository.Object);
 
-            // Act & Assert
-            await Assert.ThrowsAsync<Exception>(() => orderItemService.Update(1, "Product", 10.0m, 1, 1, 5, 1));
+            await Assert.ThrowsAsync<BusinessException>(() => orderItemService.Update(1, 1, "Product", 10.0m, 1, 1, 5, 1));
         }
 
         [Fact]
@@ -86,17 +106,21 @@ namespace Order.Tests.Services
             var dbContextWrapperMock = new Mock<IDbContextWrapper<ApplicationDbContext>>();
             var loggerMock = new Mock<ILogger<BaseDataService<ApplicationDbContext>>>();
             var mockOrderItemRepository = new Mock<IOrderItemRepository>();
+            var id = 1;
+
+            var dbContextTransactionMock = new Mock<IDbContextTransaction>();
+            dbContextWrapperMock.Setup(s => s.BeginTransactionAsync(CancellationToken.None)).ReturnsAsync(dbContextTransactionMock.Object);
+
             mockOrderItemRepository
                 .Setup(repo => repo.Delete(It.IsAny<int>()))
-                .ReturnsAsync(1); // Поддельный успешный результат удаления
+                .ReturnsAsync(id);
 
             var orderItemService = new OrderItemService(dbContextWrapperMock.Object, loggerMock.Object, mockOrderItemRepository.Object);
 
-            // Act
-            var result = await orderItemService.Delete(1);
-
-            // Assert
-            result.Should().Equals(1); // Ожидаем успешное удаление
+            var result = await orderItemService.Delete(id);
+            Assert.NotNull(result);
+            Assert.Equal(id, result!.Value);
+            mockOrderItemRepository.Verify(x => x.Delete(It.IsAny<int>()), Times.Once());
         }
 
         [Fact]
@@ -105,17 +129,17 @@ namespace Order.Tests.Services
             var dbContextWrapperMock = new Mock<IDbContextWrapper<ApplicationDbContext>>();
             var loggerMock = new Mock<ILogger<BaseDataService<ApplicationDbContext>>>();
             var mockOrderItemRepository = new Mock<IOrderItemRepository>();
+
+            var dbContextTransactionMock = new Mock<IDbContextTransaction>();
+            dbContextWrapperMock.Setup(s => s.BeginTransactionAsync(CancellationToken.None)).ReturnsAsync(dbContextTransactionMock.Object);
+
             mockOrderItemRepository
                 .Setup(repo => repo.Delete(It.IsAny<int>()))
-                .ReturnsAsync(5); // Поддельный неуспешный результат удаления
+                .ThrowsAsync(new BusinessException("Item deleting failed"));
 
             var orderItemService = new OrderItemService(dbContextWrapperMock.Object, loggerMock.Object, mockOrderItemRepository.Object);
 
-            // Act
-            var result = await orderItemService.Delete(1);
-
-            // Assert
-            result.Should().Equals(5); // Ожидаем неуспешное удаление
+            await Assert.ThrowsAsync<BusinessException>(() => orderItemService.Delete(1));
         }
     }
 }

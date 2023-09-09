@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using IdentityModel;
+using Microsoft.AspNetCore.Mvc;
 using MVC.Services.Interfaces;
 using MVC.ViewModels.BasketViewModels;
 using MVC.ViewModels.OrderViewModels;
@@ -18,6 +19,32 @@ namespace MVC.Controllers
         public async Task<IActionResult> Index()
         {
             var response = await _orderService.GetOrderList();
+            var user = new OrderUserForDisplay();
+            var claims = User.Claims.ToList();
+            foreach (var claim in claims)
+            {
+                switch (claim.Type)
+                {
+                    case JwtClaimTypes.Subject:
+                        user.Id = claim.Value;
+                        break;
+                    case JwtClaimTypes.GivenName:
+                        user.GivenName = claim.Value;
+                        break;
+                    case JwtClaimTypes.Name:
+                        user.Name = claim.Value;
+                        break;
+                    case JwtClaimTypes.FamilyName:
+                        user.FamilyName = claim.Value;
+                        break;
+                    case JwtClaimTypes.Email:
+                        user.Email = claim.Value;
+                        break;
+                    case JwtClaimTypes.Address:
+                        user.Address = claim.Value;
+                        break;
+                }
+            }
             return View(response);
         }
         [HttpPost]
@@ -37,7 +64,7 @@ namespace MVC.Controllers
                 });
             }
             var response = await _orderService.AddOrder(order);
-            return Ok(response);
+            return View();
         }
 
         public async Task<IActionResult> SingleOrder(int id)

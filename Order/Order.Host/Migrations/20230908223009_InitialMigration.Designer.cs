@@ -12,7 +12,11 @@ using Order.Host.Data;
 namespace Order.Hosts.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
+<<<<<<<< HEAD:Order/Order.Hosts/Migrations/20230907192452_InitialMigration.Designer.cs
     [Migration("20230907192452_InitialMigration")]
+========
+    [Migration("20230908223009_InitialMigration")]
+>>>>>>>> develop:Order/Order.Host/Migrations/20230908223009_InitialMigration.Designer.cs
     partial class InitialMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -24,6 +28,9 @@ namespace Order.Hosts.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
+            modelBuilder.HasSequence("order_item_hilo")
+                .IncrementsBy(10);
+
             modelBuilder.HasSequence("order_order_hilo")
                 .IncrementsBy(10);
 
@@ -33,7 +40,7 @@ namespace Order.Hosts.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer");
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+                    NpgsqlPropertyBuilderExtensions.UseHiLo(b.Property<int>("Id"), "order_item_hilo");
 
                     b.Property<int>("CatalogModelId")
                         .HasColumnType("integer");
@@ -42,6 +49,9 @@ namespace Order.Hosts.Migrations
                         .HasColumnType("integer");
 
                     b.Property<int>("Count")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("ItemId")
                         .HasColumnType("integer");
 
                     b.Property<string>("Name")

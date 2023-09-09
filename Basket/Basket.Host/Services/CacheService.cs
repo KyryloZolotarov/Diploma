@@ -37,6 +37,7 @@ namespace Basket.Host.Services
             var cacheKey = GetItemCacheKey(key);
 
             var serialized = await redis.StringGetAsync(cacheKey);
+            _logger.LogInformation($"Value in basket {serialized.ToString()}");
 
             return serialized.HasValue ?
                 _jsonSerializer.Deserialize<T>(serialized.ToString())

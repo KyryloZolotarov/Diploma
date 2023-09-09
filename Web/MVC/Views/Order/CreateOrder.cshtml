@@ -1,7 +1,7 @@
 ﻿@model MVC.ViewModels.OrderViewModels.ListOrderItemsFordDisplay
 
 @{
-    ViewBag.Title = "Order";
+    ViewBag.Title = "Order Cteated";
     Layout = "_Layout";
 }
 <section class="esh-catalog-hero">
@@ -10,23 +10,25 @@
 </section>
 
 <div class="container-fluid">
-
+    <div class="row justify-content-center">
+    <p class="h1">Order Created</p>
+    </div>
     <div class="container-fluid">
         <table class="table table-bordered">
             <thead>
-            <tr>
-                <th>Part Name</th>
-                <th>Brand</th>
-                <th>Model</th>
-                <th>Price</th>
-                <th>Count</th>
-                <th></th>
-            </tr>
+                <tr>
+                    <th>Part Name</th>
+                    <th>Brand</th>
+                    <th>Model</th>
+                    <th>Price</th>
+                    <th>Count</th>
+                    <th></th>
+                </tr>
             </thead>
             <tbody>
-            <tr>
-                @foreach (var item in Model.Items)
-                {
+                <tr>
+                    @foreach (var item in Model.Items)
+                    {
                     <tr>
                         <td>@item.Name</td>
                         <td>@item.CatalogModel.CatalogBrand.Brand</td>
@@ -34,8 +36,8 @@
                         <td>@item.Price</td>
                         <td>@item.Count</td>
                     </tr>
-                }
-            </tr>
+                    }
+                </tr>
             </tbody>
         </table>
     </div>
