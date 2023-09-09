@@ -66,6 +66,7 @@ namespace IdentityServer
                     RequirePkce = true,
                     RequireConsent = false,
                     AlwaysIncludeUserClaimsInIdToken =  true,
+                    AlwaysSendClientClaims = true,
                 },
                 new Client
                 {
