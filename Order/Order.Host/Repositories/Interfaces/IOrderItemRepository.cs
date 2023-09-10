@@ -1,9 +1,10 @@
-﻿namespace Order.Hosts.Repositories.Interfaces
+﻿namespace Order.Hosts.Repositories.Interfaces;
+
+public interface IOrderItemRepository
 {
-    public interface IOrderItemRepository
-    {
-        Task<int?> Add(int id, string name, decimal price, int catalogSubTypeId, int catalogModelId, int count, int orderId);
-        Task<int?> Update(int id, int itemId, string name, decimal price, int catalogSubTypeId, int catalogModelId, int count, int orderId);
-        Task<int?> Delete(int id);
-    }
+    Task<int?> Add(int id, string name, decimal price, int catalogSubTypeId, int catalogModelId, int count, int orderId);
+
+    Task<int?> Update(int id, int itemId, string name, decimal price, int catalogSubTypeId, int catalogModelId, int count, int orderId);
+
+    Task<int?> Delete(int id);
 }

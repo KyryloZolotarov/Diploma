@@ -1,5 +1,5 @@
-﻿using IdentityServer4.Models;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using IdentityServer4.Models;
 using Microsoft.Extensions.Configuration;
 
 namespace IdentityServer
@@ -17,14 +17,14 @@ namespace IdentityServer
 
         public static IEnumerable<ApiResource> GetApis()
         {
-            return new ApiResource[]
+            return new[]
             {
                 new ApiResource("alevelwebsite.com")
                 {
                     Scopes = new List<Scope>
                     {
                         new Scope("mvc")
-                    },
+                    }
                 },
 
                 new ApiResource("catalog")
@@ -36,7 +36,7 @@ namespace IdentityServer
                         new Scope("catalog.catalogtype"),
                         new Scope("catalog.catalogsubtype"),
                         new Scope("catalog.catalogmodel")
-                    },
+                    }
                 },
 
                 new ApiResource("order")
@@ -46,8 +46,8 @@ namespace IdentityServer
                         new Scope("order.order"),
                         new Scope("order.orderuser"),
                         new Scope("order.orderitem")
-                    },
-                },
+                    }
+                }
             };
         }
 
@@ -60,13 +60,13 @@ namespace IdentityServer
                     ClientId = "mvc_pkce",
                     ClientName = "MVC PKCE Client",
                     AllowedGrantTypes = GrantTypes.Code,
-                    ClientSecrets = {new Secret("secret".Sha256())},
-                    RedirectUris = { $"{configuration["MvcUrl"]}/signin-oidc"},
-                    AllowedScopes = {"openid", "profile", "mvc"},
+                    ClientSecrets = { new Secret("secret".Sha256()) },
+                    RedirectUris = { $"{configuration["MvcUrl"]}/signin-oidc" },
+                    AllowedScopes = { "openid", "profile", "mvc" },
                     RequirePkce = true,
                     RequireConsent = false,
-                    AlwaysIncludeUserClaimsInIdToken =  true,
-                    AlwaysSendClientClaims = true,
+                    AlwaysIncludeUserClaimsInIdToken = true,
+                    AlwaysSendClientClaims = true
                 },
                 new Client
                 {
@@ -79,7 +79,7 @@ namespace IdentityServer
                     ClientSecrets =
                     {
                         new Secret("secret".Sha256())
-                    },
+                    }
                 },
                 new Client
                 {
@@ -112,7 +112,7 @@ namespace IdentityServer
 
                     AllowedScopes =
                     {
-                        "mvc",
+                        "mvc"
                     }
                 },
                 new Client
@@ -130,9 +130,9 @@ namespace IdentityServer
                         "mvc",
                         "order.order",
                         "order.orderuser",
-                        "order.orderitem",
+                        "order.orderitem"
                     }
-                },
+                }
             };
         }
     }

@@ -1,7 +1,6 @@
-﻿namespace MVC.Models.Responses
+﻿namespace MVC.Models.Responses;
+
+public class ListOrderResponse
 {
-    public class ListOrderResponse
-    {
-        public List<OrderFromDb> Orders { get; set; } 
-    }
+    public List<OrderFromDb> Orders { get; set; }
 }

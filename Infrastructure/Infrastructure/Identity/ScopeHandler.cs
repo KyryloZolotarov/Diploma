@@ -2,7 +2,6 @@ using System.Reflection;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.Controllers;
-using Microsoft.AspNetCore.Routing;
 
 namespace Infrastructure.Identity;
 
@@ -41,7 +40,8 @@ public class ScopeHandler : AuthorizationHandler<ScopeRequirement>
         if (descriptor != null)
         {
             var scopeAttribute = (ScopeAttribute?)descriptor.MethodInfo.GetCustomAttribute(typeof(ScopeAttribute))
-                                 ?? (ScopeAttribute?)descriptor.ControllerTypeInfo.GetCustomAttribute(typeof(ScopeAttribute));
+                                 ?? (ScopeAttribute?)descriptor.ControllerTypeInfo.GetCustomAttribute(
+                                     typeof(ScopeAttribute));
 
             return scopeAttribute?.ScopeName;
         }

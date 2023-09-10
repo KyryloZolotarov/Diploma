@@ -17,8 +17,8 @@ public class ApplicationUser : IdentityUser
     public string ZipCode { get; set; }
     public double Latitude { get; set; }
     public double Longitude { get; set; }
-    [Required]
-    public string Name { get; set; }
-    [Required]
-    public string LastName { get; set; }
+
+    [Required] public string Name { get; set; }
+
+    [Required] public string LastName { get; set; }
 }

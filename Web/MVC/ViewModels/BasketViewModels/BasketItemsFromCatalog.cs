@@ -1,7 +1,6 @@
-﻿namespace MVC.ViewModels.BasketViewModels
+﻿namespace MVC.ViewModels.BasketViewModels;
+
+public class BasketItemsFromCatalog
 {
-    public class BasketItemsFromCatalog
-    {
-        public List<BasketItemForDisplay> Items { get; set; }
-    }
+    public List<BasketItemForDisplay> Items { get; set; }
 }

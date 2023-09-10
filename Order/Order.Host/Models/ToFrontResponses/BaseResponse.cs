@@ -1,7 +1,6 @@
-﻿namespace Order.Hosts.Models.Responses
+﻿namespace Order.Hosts.Models.Responses;
+
+public class BaseResponse<T>
 {
-    public class BaseResponse<T>
-    {
-        public T Id { get; set; } = default!;
-    }
+    public T Id { get; set; } = default!;
 }

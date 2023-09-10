@@ -37,14 +37,14 @@ public static class AuthorizationExtensions
         {
             options.AddPolicy(AuthPolicy.AllowEndUserPolicy, policy =>
             {
-                    policy.AuthenticationSchemes.Add(AuthScheme.Site);
-                    policy.RequireClaim(JwtRegisteredClaimNames.Sub);
+                policy.AuthenticationSchemes.Add(AuthScheme.Site);
+                policy.RequireClaim(JwtRegisteredClaimNames.Sub);
             });
             options.AddPolicy(AuthPolicy.AllowClientPolicy, policy =>
             {
-                    policy.AuthenticationSchemes.Add(AuthScheme.Internal);
-                    policy.Requirements.Add(new DenyAnonymousAuthorizationRequirement());
-                    policy.Requirements.Add(new ScopeRequirement());
+                policy.AuthenticationSchemes.Add(AuthScheme.Internal);
+                policy.Requirements.Add(new DenyAnonymousAuthorizationRequirement());
+                policy.Requirements.Add(new ScopeRequirement());
             });
         });
 

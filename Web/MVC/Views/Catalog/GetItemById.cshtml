@@ -9,15 +9,15 @@
     </div>
 </section>
 
-@if (User.Identity != null && User.Identity.IsAuthenticated)
+@if (User.Identity is {IsAuthenticated: true })
 {
     <div class="container text-center">
         <div class="row justify-content-center">
             <div class="col-md-6">
                 <div class="card">
                     <div class="card-body">
-                        <div class="esh-catalog-thumbnail mb-3">
-                            <img class="esh-catalog-thumbnail mx-auto d-block" src="@Model.catalogItem.PictureUrl" alt="Card image">
+                        <div>
+                            <img class="mx-auto" src="@Model.catalogItem.PictureUrl" alt="Card image">
                         </div>
                         <p class="card-text">@Model.catalogItem.Name</p>
                         <p class="card-text">@Model.catalogItem.CatalogModel.CatalogBrand.Brand @Model.catalogItem.CatalogModel.Model</p>
@@ -38,7 +38,6 @@
             </div>
         </div>
     </div>
-
 }
 else
 {
@@ -47,8 +46,8 @@ else
             <div class="col-md-6">
                 <div class="card text-center">
                     <div class="card-body">
-                        <div class="esh-catalog-thumbnail">
-                            <img src="@Model.catalogItem.PictureUrl" alt="Card image">
+                        <div>
+                            <img src="@Model.catalogItem.PictureUrl" alt="Card image" class="mx-auto">
                         </div>
                         <p class="card-text">@Model.catalogItem.Name</p>
                         <p class="card-text">@Model.catalogItem.CatalogModel.CatalogBrand.Brand @Model.catalogItem.CatalogModel.Model</p>
@@ -65,6 +64,7 @@ else
         </div>
     </div>
 }
+
 @section Scripts {
     <script>
         $(document).ready(function () {

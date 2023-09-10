@@ -17,9 +17,15 @@ public abstract class BaseDataService<T>
         _logger = logger;
     }
 
-    protected Task ExecuteSafeAsync(Func<Task> action, CancellationToken cancellationToken = default) => ExecuteSafeAsync(token => action(), cancellationToken);
+    protected Task ExecuteSafeAsync(Func<Task> action, CancellationToken cancellationToken = default)
+    {
+        return ExecuteSafeAsync(token => action(), cancellationToken);
+    }
 
-    protected Task<TResult> ExecuteSafeAsync<TResult>(Func<Task<TResult>> action, CancellationToken cancellationToken = default) => ExecuteSafeAsync(token => action(), cancellationToken);
+    protected Task<TResult> ExecuteSafeAsync<TResult>(Func<Task<TResult>> action, CancellationToken cancellationToken = default)
+    {
+        return ExecuteSafeAsync(token => action(), cancellationToken);
+    }
 
     private async Task ExecuteSafeAsync(Func<CancellationToken, Task> action, CancellationToken cancellationToken = default)
     {
@@ -34,13 +40,13 @@ public abstract class BaseDataService<T>
         catch (BusinessException ex)
         {
             await transaction.RollbackAsync(cancellationToken);
-            _logger.LogError(ex, $"transaction is rollbacked");
+            _logger.LogError(ex, "transaction is rollbacked");
             throw;
         }
         catch (Exception ex)
         {
             await transaction.RollbackAsync(cancellationToken);
-            _logger.LogError(ex, $"transaction is rollbacked");
+            _logger.LogError(ex, "transaction is rollbacked");
         }
     }
 
@@ -59,15 +65,15 @@ public abstract class BaseDataService<T>
         catch (BusinessException ex)
         {
             await transaction.RollbackAsync(cancellationToken);
-            _logger.LogError(ex, $"transaction is rollbacked");
+            _logger.LogError(ex, "transaction is rollbacked");
             throw;
         }
         catch (Exception ex)
         {
             await transaction.RollbackAsync(cancellationToken);
-            _logger.LogError(ex, $"transaction is rollbacked");
+            _logger.LogError(ex, "transaction is rollbacked");
         }
 
-        return default(TResult) !;
+        return default !;
     }
 }

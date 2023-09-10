@@ -19,7 +19,7 @@ public class HttpGlobalExceptionFilter : IExceptionFilter
     {
         if (context.Exception is BusinessException ex)
         {
-            var problemDetails = new ValidationProblemDetails()
+            var problemDetails = new ValidationProblemDetails
             {
                 Instance = context.HttpContext.Request.Path,
                 Status = StatusCodes.Status400BadRequest,

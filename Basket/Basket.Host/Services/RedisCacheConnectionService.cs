@@ -1,33 +1,31 @@
 ﻿using Basket.Host.Configurations;
 using Basket.Host.Services.Interfaces;
-using Microsoft.Extensions.Options;
 using StackExchange.Redis;
 
-namespace Basket.Host.Services
+namespace Basket.Host.Services;
+
+public class RedisCacheConnectionService : IRedisCacheConnectionService, IDisposable
 {
-    public class RedisCacheConnectionService : IRedisCacheConnectionService, IDisposable
+    private readonly Lazy<ConnectionMultiplexer> _connectionLazy;
+    private bool _disposed;
+
+    public RedisCacheConnectionService(
+        IOptions<RedisConfig> config)
     {
-        private readonly Lazy<ConnectionMultiplexer> _connectionLazy;
-        private bool _disposed;
+        var redisConfigurationOptions = ConfigurationOptions.Parse(config.Value.Host);
+        _connectionLazy =
+            new Lazy<ConnectionMultiplexer>(()
+                => ConnectionMultiplexer.Connect(redisConfigurationOptions));
+    }
 
-        public RedisCacheConnectionService(
-            IOptions<RedisConfig> config)
+    public void Dispose()
+    {
+        if (!_disposed)
         {
-            var redisConfigurationOptions = ConfigurationOptions.Parse(config.Value.Host);
-            _connectionLazy =
-                new Lazy<ConnectionMultiplexer>(()
-                    => ConnectionMultiplexer.Connect(redisConfigurationOptions));
-        }
-
-        public IConnectionMultiplexer Connection => _connectionLazy.Value;
-
-        public void Dispose()
-        {
-            if (!_disposed)
-            {
-                Connection.Dispose();
-                _disposed = true;
-            }
+            Connection.Dispose();
+            _disposed = true;
         }
     }
+
+    public IConnectionMultiplexer Connection => _connectionLazy.Value;
 }

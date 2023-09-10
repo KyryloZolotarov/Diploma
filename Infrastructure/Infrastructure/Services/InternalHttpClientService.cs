@@ -1,7 +1,6 @@
 using System.Text;
 using IdentityModel.Client;
 using Infrastructure.Configuration;
-using Infrastructure.Identity;
 using Infrastructure.Services.Interfaces;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
@@ -10,9 +9,9 @@ namespace Infrastructure.Services;
 
 public class InternalHttpClientService : IInternalHttpClientService
 {
-    private readonly IHttpClientFactory _clientFactory;
     private readonly AuthorizationConfig _authConfig;
     private readonly ClientConfig _clientConfig;
+    private readonly IHttpClientFactory _clientFactory;
 
     public InternalHttpClientService(
         IHttpClientFactory clientFactory,
@@ -28,12 +27,12 @@ public class InternalHttpClientService : IInternalHttpClientService
     {
         var client = _clientFactory.CreateClient();
         var tokenResponse = await client.RequestClientCredentialsTokenAsync(new ClientCredentialsTokenRequest
-            {
-                Address = $"{_authConfig.Authority}/connect/token",
+        {
+            Address = $"{_authConfig.Authority}/connect/token",
 
-                ClientId = _clientConfig.Id,
-                ClientSecret = _clientConfig.Secret
-            });
+            ClientId = _clientConfig.Id,
+            ClientSecret = _clientConfig.Secret
+        });
 
         client.SetBearerToken(tokenResponse.AccessToken);
 
@@ -56,6 +55,6 @@ public class InternalHttpClientService : IInternalHttpClientService
             return response!;
         }
 
-        return default(TResponse) !;
+        return default !;
     }
 }

@@ -1,8 +1,7 @@
-﻿namespace MVC.ViewModels.OrderViewModels
+﻿namespace MVC.ViewModels.OrderViewModels;
+
+public class ListOrderItemsFordDisplay
 {
-    public class ListOrderItemsFordDisplay
-    {
-        public List<OrderItemFordDisplay> Items { get; set; }
-        public DateTime DateTime { get; set; }
-    }
+    public List<OrderItemFordDisplay> Items { get; set; }
+    public DateTime DateTime { get; set; }
 }

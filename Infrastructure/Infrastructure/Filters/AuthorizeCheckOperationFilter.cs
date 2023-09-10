@@ -9,8 +9,10 @@ public class AuthorizeCheckOperationFilter : IOperationFilter
     public void Apply(OpenApiOperation operation, OperationFilterContext context)
     {
         // Check for authorize attribute
-        var hasAuthorize = context.MethodInfo.DeclaringType != null && (context.MethodInfo.DeclaringType.GetCustomAttributes(true).OfType<AuthorizeAttribute>().Any() ||
-                                                                        context.MethodInfo.GetCustomAttributes(true).OfType<AuthorizeAttribute>().Any());
+        var hasAuthorize = context.MethodInfo.DeclaringType != null &&
+                           (context.MethodInfo.DeclaringType.GetCustomAttributes(true).OfType<AuthorizeAttribute>()
+                                .Any() ||
+                            context.MethodInfo.GetCustomAttributes(true).OfType<AuthorizeAttribute>().Any());
 
         if (!hasAuthorize)
         {
@@ -26,11 +28,11 @@ public class AuthorizeCheckOperationFilter : IOperationFilter
         };
 
         operation.Security = new List<OpenApiSecurityRequirement>
+        {
+            new ()
             {
-                new OpenApiSecurityRequirement
-                {
-                    [oAuthScheme] = new[] { "swagger" }
-                }
-            };
+                [oAuthScheme] = new[] { "swagger" }
+            }
+        };
     }
 }

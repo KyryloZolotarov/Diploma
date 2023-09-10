@@ -5,7 +5,7 @@
         <h1>Login</h1>
     </div>
 
-    <partial name="_ValidationSummary" />
+    <partial name="_ValidationSummary"/>
 
     <div class="row">
 
@@ -19,7 +19,7 @@
                     <div class="panel-body">
 
                         <form asp-route="Login">
-                            <input type="hidden" asp-for="ReturnUrl" />
+                            <input type="hidden" asp-for="ReturnUrl"/>
 
                             <fieldset>
                                 <div class="form-group">
@@ -33,9 +33,11 @@
                                 <div class="form-group">
                                     <button class="btn btn-primary" name="button" value="login">Login</button>
                                     <button
-                                        class="btn btn-default" 
+                                        class="btn btn-default"
                                         name="button"
-                                        value="cancel">Cancel</button>
+                                        value="cancel">
+                                        Cancel
+                                    </button>
                                 </div>
                             </fieldset>
                         </form>

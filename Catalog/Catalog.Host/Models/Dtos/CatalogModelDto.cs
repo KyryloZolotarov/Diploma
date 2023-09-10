@@ -1,11 +1,10 @@
-﻿namespace Catalog.Host.Models.Dtos
+﻿namespace Catalog.Host.Models.Dtos;
+
+public class CatalogModelDto
 {
-    public class CatalogModelDto
-    {
-        public int Id { get; set; }
+    public int Id { get; set; }
 
-        public string Model { get; set; }
+    public string Model { get; set; }
 
-        public CatalogBrandDto CatalogBrand { get; set; }
-    }
+    public CatalogBrandDto CatalogBrand { get; set; }
 }

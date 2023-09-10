@@ -1,10 +1,7 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿namespace Catalog.Host.Data.Entities;
 
-namespace Catalog.Host.Data.Entities
+public class CatalogBrand
 {
-    public class CatalogBrand
-    {
-        public int Id { get; set; }
-        public string Brand { get; set; }
-    }
+    public int Id { get; set; }
+    public string Brand { get; set; }
 }

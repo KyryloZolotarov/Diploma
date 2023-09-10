@@ -1,12 +1,10 @@
-﻿using MVC.Models.Requests;
-using MVC.ViewModels.OrderViewModels;
+﻿using MVC.ViewModels.OrderViewModels;
 
-namespace MVC.Services.Interfaces
+namespace MVC.Services.Interfaces;
+
+public interface IOrderService
 {
-    public interface IOrderService
-    {
-        Task<bool> AddOrder(ListOrderItemsFordDisplay order);
-        Task<ListOrderItemsFordDisplay> GetOrder(int id);
-        Task<ListOrdersForDisplay> GetOrderList();
-    }
+    Task<bool> AddOrder(ListOrderItemsFordDisplay order);
+    Task<ListOrderItemsFordDisplay> GetOrder(int id);
+    Task<ListOrdersForDisplay> GetOrderList();
 }

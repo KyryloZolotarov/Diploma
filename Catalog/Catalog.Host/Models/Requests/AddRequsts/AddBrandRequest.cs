@@ -1,11 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Catalog.Host.Models.Requests.AddRequsts
+namespace Catalog.Host.Models.Requests.AddRequsts;
+
+public class AddBrandRequest
 {
-    public class AddBrandRequest
-    {
-        [Required]
-        [MaxLength(30)]
-        public string BrandName { get; set; } = string.Empty;
-    }
+    [Required] [MaxLength(30)] public string BrandName { get; set; } = string.Empty;
 }

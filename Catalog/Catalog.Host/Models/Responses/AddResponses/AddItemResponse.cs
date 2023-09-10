@@ -1,7 +1,6 @@
-﻿namespace Catalog.Host.Models.Responses.AddResponses
+﻿namespace Catalog.Host.Models.Responses.AddResponses;
+
+public class AddItemResponse<T>
 {
-    public class AddItemResponse<T>
-    {
-        public T Id { get; set; } = default!;
-    }
+    public T Id { get; set; } = default!;
 }

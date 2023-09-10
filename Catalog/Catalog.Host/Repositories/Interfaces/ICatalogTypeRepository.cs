@@ -1,9 +1,8 @@
-﻿namespace Catalog.Host.Repositories.Interfaces
+﻿namespace Catalog.Host.Repositories.Interfaces;
+
+public interface ICatalogTypeRepository
 {
-    public interface ICatalogTypeRepository
-    {
-        Task<int?> Add(string typeName);
-        Task<int?> Update(int id, string typeName);
-        Task<int?> Delete(int id);
-    }
+    Task<int?> Add(string typeName);
+    Task<int?> Update(int id, string typeName);
+    Task<int?> Delete(int id);
 }

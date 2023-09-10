@@ -1,6 +1,4 @@
-﻿using Infrastructure.Identity;
-
-namespace MVC;
+﻿namespace MVC;
 
 public class AppSettings
 {

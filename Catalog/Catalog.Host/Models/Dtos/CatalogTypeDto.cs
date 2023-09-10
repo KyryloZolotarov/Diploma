@@ -1,9 +1,8 @@
-﻿namespace Catalog.Host.Models.Dtos
-{
-    public class CatalogTypeDto
-    {
-        public int Id { get; set; }
+﻿namespace Catalog.Host.Models.Dtos;
 
-        public string Type { get; set; }
-    }
+public class CatalogTypeDto
+{
+    public int Id { get; set; }
+
+    public string Type { get; set; }
 }

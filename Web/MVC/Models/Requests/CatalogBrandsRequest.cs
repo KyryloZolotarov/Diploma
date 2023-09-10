@@ -1,9 +1,8 @@
-﻿namespace MVC.Models.Requests
-{
-    public class CatalogBrandsRequest
-    {
-        public int PageIndex { get; set; }
+﻿namespace MVC.Models.Requests;
 
-        public int PageSize { get; set; }
-    }
+public class CatalogBrandsRequest
+{
+    public int PageIndex { get; set; }
+
+    public int PageSize { get; set; }
 }

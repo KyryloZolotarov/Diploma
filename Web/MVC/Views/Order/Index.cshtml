@@ -12,10 +12,9 @@
 <div class="container-fluid">
     @if (Model.Orders != null && Model.Orders.Any())
     {
-
         <div class="container-fluid">
             <div class="row">
-                <div class="col-sm-8">
+                <div class="col-sm-6">
                     <table class="table-bordered">
                         <thead class="table-dark">
                         <tr>
@@ -41,7 +40,7 @@
                         </tbody>
                     </table>
                 </div>
-                <div class="col-sm-4">
+                <div class="col-sm-6">
                     <p>Account Info</p>
                     <table class="table-bordered">
                         <thead class="table">
@@ -67,7 +66,7 @@
                     </table>
                 </div>
             </div>
-            
+
         </div>
     }
     else
@@ -104,6 +103,5 @@
                 </tbody>
             </table>
         </div>
-
     }
 </div>

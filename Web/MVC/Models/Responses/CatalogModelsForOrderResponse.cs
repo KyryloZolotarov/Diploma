@@ -1,9 +1,8 @@
 ﻿using MVC.ViewModels.CatalogViewModels;
 
-namespace MVC.Models.Responses
+namespace MVC.Models.Responses;
+
+public class CatalogModelsForOrderResponse
 {
-    public class CatalogModelsForOrderResponse
-    {
-        public List<CatalogModel> Models { get; set; }
-    }
+    public List<CatalogModel> Models { get; set; }
 }

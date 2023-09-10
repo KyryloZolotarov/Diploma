@@ -1,7 +1,6 @@
-﻿namespace Basket.Host.Models
+﻿namespace Basket.Host.Models;
+
+public class GetResponse
 {
-    public class GetResponse
-    {
-        public string Data { get; set; } = null!;
-    }
+    public string Data { get; set; } = null!;
 }

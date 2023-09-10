@@ -3,17 +3,13 @@ using Basket.Host.Services;
 using Basket.Host.Services.Interfaces;
 using Infrastructure.Extensions;
 using Infrastructure.Filters;
-using Infrastructure.Services.Interfaces;
 using Microsoft.OpenApi.Models;
 
 var configuration = GetConfiguration();
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddControllers(options =>
-{
-    options.Filters.Add(typeof(HttpGlobalExceptionFilter));
-})
+builder.Services.AddControllers(options => { options.Filters.Add(typeof(HttpGlobalExceptionFilter)); })
     .AddJsonOptions(options => options.JsonSerializerOptions.WriteIndented = true);
 
 builder.Services.AddSwaggerGen(options =>
@@ -29,15 +25,15 @@ builder.Services.AddSwaggerGen(options =>
     options.AddSecurityDefinition("oauth2", new OpenApiSecurityScheme
     {
         Type = SecuritySchemeType.OAuth2,
-        Flows = new OpenApiOAuthFlows()
+        Flows = new OpenApiOAuthFlows
         {
-            Implicit = new OpenApiOAuthFlow()
+            Implicit = new OpenApiOAuthFlow
             {
                 AuthorizationUrl = new Uri($"{authority}/connect/authorize"),
                 TokenUrl = new Uri($"{authority}/connect/token"),
-                Scopes = new Dictionary<string, string>()
+                Scopes = new Dictionary<string, string>
                 {
-                    { "mvc", "website" },
+                    { "mvc", "website" }
                 }
             }
         }
@@ -62,7 +58,7 @@ builder.Services.AddCors(options =>
     options.AddPolicy(
         "CorsPolicy",
         builder => builder
-            .SetIsOriginAllowed((host) => true)
+            .SetIsOriginAllowed(host => true)
             .AllowAnyMethod()
             .AllowAnyHeader()
             .AllowCredentials());
@@ -96,7 +92,7 @@ IConfiguration GetConfiguration()
 {
     var builder = new ConfigurationBuilder()
         .SetBasePath(Directory.GetCurrentDirectory())
-        .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+        .AddJsonFile("appsettings.json", false, true)
         .AddEnvironmentVariables();
 
     return builder.Build();

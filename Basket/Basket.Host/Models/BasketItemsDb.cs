@@ -1,7 +1,6 @@
-﻿namespace Basket.Host.Models
+﻿namespace Basket.Host.Models;
+
+public class BasketItemsDb
 {
-    public class BasketItemsDb
-    {
-        public List<BasketItem> Items { get; set; } = null!;
-    }
+    public List<BasketItem> Items { get; set; } = null!;
 }

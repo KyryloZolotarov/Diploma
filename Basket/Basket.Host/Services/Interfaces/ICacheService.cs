@@ -1,12 +1,9 @@
-﻿using Basket.Host.Models;
+﻿namespace Basket.Host.Services.Interfaces;
 
-namespace Basket.Host.Services.Interfaces
+public interface ICacheService
 {
-    public interface ICacheService
-    {
-        Task AddOrUpdateAsync<T>(string key, T value);
+    Task AddOrUpdateAsync<T>(string key, T value);
 
-        Task<T> GetAsync<T>(string key);
-        Task Delete(string basketId);
-    }
+    Task<T> GetAsync<T>(string key);
+    Task Delete(string basketId);
 }

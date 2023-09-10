@@ -1,8 +1,7 @@
-﻿namespace MVC.Models.Requests
+﻿namespace MVC.Models.Requests;
+
+public class ListOrderItemsRequest
 {
-    public class ListOrderItemsRequest
-    {
-        public List<OrderItemRequest> Items { get; set; }
-        public DateTime DateTime { get; set; }
-    }
+    public List<OrderItemRequest> Items { get; set; }
+    public DateTime DateTime { get; set; }
 }

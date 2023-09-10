@@ -1,12 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc.Rendering;
-using MVC.Services;
-using MVC.Services.Interfaces;
-using MVC.ViewModels;
+﻿using MVC.Services.Interfaces;
 using MVC.ViewModels.BasketViewModels;
 using MVC.ViewModels.CatalogViewModels;
 using MVC.ViewModels.Pagination;
 
 namespace MVC.Controllers;
+
 public class CatalogController : Controller
 {
     private readonly ICatalogService _catalogService;
@@ -24,12 +22,9 @@ public class CatalogController : Controller
 
         var catalog = await _catalogService.GetCatalogItems(page.Value, itemsPage.Value, brandFilterApplied,
             modelFilterApplied, typesFilterApplied, subTypeFilterApplied);
-        if (catalog == null)
-        {
-            return View("Error");
-        }
+        if (catalog == null) return View("Error");
 
-        var info = new PaginationInfo()
+        var info = new PaginationInfo
         {
             ActualPage = page.Value,
             ItemsPerPage = catalog.Data.Count,
@@ -37,19 +32,17 @@ public class CatalogController : Controller
             TotalPages = (int)Math.Ceiling((decimal)catalog.Count / itemsPage.Value)
         };
 
-        var vm = new IndexViewModel()
+        var vm = new IndexViewModel
         {
             CatalogItems = catalog.Data,
-            Brands = (await _catalogService.GetBrands()).Select(x => new SelectListItem(x.Brand, x.Id.ToString()))
-                .Append(new SelectListItem("All", null)),
-            Types = (await _catalogService.GetTypes()).Select(x => new SelectListItem(x.Type, x.Id.ToString()))
-                .Append(new SelectListItem("All", null)),
+            Brands = (await _catalogService.GetBrands()).Select(x => new SelectListItem(x.Brand, x.Id.ToString())),
+            Types = (await _catalogService.GetTypes()).Select(x => new SelectListItem(x.Type, x.Id.ToString())),
             PaginationInfo = info
         };
 
         vm.PaginationInfo.Next =
-            (vm.PaginationInfo.ActualPage == vm.PaginationInfo.TotalPages - 1) ? "is-disabled" : "";
-        vm.PaginationInfo.Previous = (vm.PaginationInfo.ActualPage == 0) ? "is-disabled" : "";
+            vm.PaginationInfo.ActualPage == vm.PaginationInfo.TotalPages - 1 ? "is-disabled" : "";
+        vm.PaginationInfo.Previous = vm.PaginationInfo.ActualPage == 0 ? "is-disabled" : "";
 
         return View(vm);
     }
@@ -60,7 +53,7 @@ public class CatalogController : Controller
         {
             var initialModels = new List<SelectListItem>
             {
-                new SelectListItem { Value = "", Text = "All" },
+                new() { Value = "", Text = "All" }
             };
             return Json(initialModels);
         }
@@ -77,7 +70,7 @@ public class CatalogController : Controller
         {
             var initialSubType = new List<SelectListItem>
             {
-                new SelectListItem { Value = "", Text = "All" }
+                new() { Value = "", Text = "All" }
             };
             return Json(initialSubType);
         }
@@ -91,14 +84,14 @@ public class CatalogController : Controller
     public async Task<IActionResult> GetItemById(int id)
     {
         var vm = await _catalogService.GetItemById(id);
-        var item = new CatalogItemForSingleItem()
+        var item = new CatalogItemForSingleItem
         {
-            basketItem = new BasketItem()
+            basketItem = new BasketItem
             {
                 Id = id,
-                Count = 1,
+                Count = 1
             },
-            catalogItem = new CatalogItem()
+            catalogItem = new CatalogItem
             {
                 Id = vm.Id,
                 Name = vm.Name,
@@ -107,10 +100,10 @@ public class CatalogController : Controller
                 Description = vm.Description,
                 PictureUrl = vm.PictureUrl,
                 Price = vm.Price,
-                AvailableStock = vm.AvailableStock,
-            },
+                AvailableStock = vm.AvailableStock
+            }
         };
-        
+
         return View(item);
     }
 }

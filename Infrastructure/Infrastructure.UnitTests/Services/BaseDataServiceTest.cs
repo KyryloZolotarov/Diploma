@@ -1,5 +1,4 @@
 using System.Threading;
-using FluentAssertions;
 using Infrastructure.UnitTests.Mocks;
 
 namespace Infrastructure.UnitTests.Services;
@@ -16,7 +15,8 @@ public class BaseDataServiceTest
         _dbContextTransaction = new Mock<IDbContextTransaction>();
         _logger = new Mock<ILogger<MockService>>();
 
-        dbContextWrapper.Setup(s => s.BeginTransactionAsync(It.IsAny<CancellationToken>())).ReturnsAsync(_dbContextTransaction.Object);
+        dbContextWrapper.Setup(s => s.BeginTransactionAsync(It.IsAny<CancellationToken>()))
+            .ReturnsAsync(_dbContextTransaction.Object);
 
         _mockService = new MockService(dbContextWrapper.Object, _logger.Object);
     }
@@ -42,7 +42,7 @@ public class BaseDataServiceTest
         // act
         await _mockService.RunWithException();
 
-            // assert
+        // assert
         _dbContextTransaction.Verify(t => t.CommitAsync(CancellationToken.None), Times.Never);
         _dbContextTransaction.Verify(t => t.RollbackAsync(CancellationToken.None), Times.Once);
 
@@ -51,7 +51,7 @@ public class BaseDataServiceTest
                 LogLevel.Error,
                 It.IsAny<EventId>(),
                 It.Is<It.IsAnyType>((o, t) => o.ToString() !
-                    .Contains($"transaction is rollbacked")),
+                    .Contains("transaction is rollbacked")),
                 It.IsAny<Exception>(),
                 It.IsAny<Func<It.IsAnyType, Exception, string>>() !),
             Times.Once);

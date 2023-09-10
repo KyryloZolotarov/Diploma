@@ -1,9 +1,8 @@
-﻿namespace MVC.ViewModels.OrderViewModels
-{
-    public class ListOrdersForDisplay
-    {
-        public List<OrderForDisplay> Orders { get; set; }
+﻿namespace MVC.ViewModels.OrderViewModels;
 
-        public OrderUserForDisplay User { get; set; }
-    }
+public class ListOrdersForDisplay
+{
+    public List<OrderForDisplay> Orders { get; set; }
+
+    public OrderUserForDisplay User { get; set; }
 }

@@ -1,7 +1,6 @@
-﻿namespace Catalog.Host.Models.Responses
+﻿namespace Catalog.Host.Models.Responses;
+
+public class ItemsForBasketResponse<T>
 {
-    public class ItemsForBasketResponse<T>
-    {
-        public IEnumerable<T> Data { get; init; } = null!;
-    }
+    public IEnumerable<T> Data { get; init; } = null!;
 }

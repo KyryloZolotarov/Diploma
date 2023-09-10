@@ -16,6 +16,6 @@ public class MockService : BaseDataService<MockDbContext>
 
     public async Task RunWithoutException()
     {
-        await ExecuteSafeAsync<bool>(() => Task.FromResult(true));
+        await ExecuteSafeAsync(() => Task.FromResult(true));
     }
 }

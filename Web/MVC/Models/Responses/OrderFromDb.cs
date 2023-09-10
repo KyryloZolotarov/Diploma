@@ -1,9 +1,8 @@
-﻿namespace MVC.Models.Responses
+﻿namespace MVC.Models.Responses;
+
+public class OrderFromDb
 {
-    public class OrderFromDb
-    {
-        public int Id { get; set; }
-        public DateTime DateTime { get; set; }
-        public string UserId { get; set; }
-    }
+    public int Id { get; set; }
+    public DateTime DateTime { get; set; }
+    public string UserId { get; set; }
 }

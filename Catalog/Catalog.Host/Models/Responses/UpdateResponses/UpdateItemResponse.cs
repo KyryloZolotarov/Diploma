@@ -1,7 +1,6 @@
-﻿namespace Catalog.Host.Models.Responses.UpdateResponses
+﻿namespace Catalog.Host.Models.Responses.UpdateResponses;
+
+public class UpdateItemResponse<T>
 {
-    public class UpdateItemResponse<T>
-    {
-        public T Id { get; set; } = default!;
-    }
+    public T Id { get; set; } = default!;
 }

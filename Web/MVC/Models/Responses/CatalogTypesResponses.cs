@@ -1,12 +1,11 @@
 ﻿using MVC.ViewModels.CatalogViewModels;
 
-namespace MVC.Models.Responses
-{
-    public class CatalogTypesResponses
-    {
-        public int PageIndex { get; set; }
+namespace MVC.Models.Responses;
 
-        public int PageSize { get; set; }
-        public List<CatalogType> Types { get; set; }
-    }
+public class CatalogTypesResponses
+{
+    public int PageIndex { get; set; }
+
+    public int PageSize { get; set; }
+    public List<CatalogType> Types { get; set; }
 }

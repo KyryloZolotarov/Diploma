@@ -1,9 +1,8 @@
-﻿namespace Catalog.Host.Services.Interfaces
+﻿namespace Catalog.Host.Services.Interfaces;
+
+public interface ICatalogModelService
 {
-    public interface ICatalogModelService
-    {
-        Task<int?> Add(string modelName, int brandId);
-        Task<int?> Update(int id, string modelName, int brandId);
-        Task<int?> Delete(int id);
-    }
+    Task<int?> Add(string modelName, int brandId);
+    Task<int?> Update(int id, string modelName, int brandId);
+    Task<int?> Delete(int id);
 }

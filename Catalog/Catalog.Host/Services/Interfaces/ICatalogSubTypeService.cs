@@ -1,9 +1,8 @@
-﻿namespace Catalog.Host.Services.Interfaces
+﻿namespace Catalog.Host.Services.Interfaces;
+
+public interface ICatalogSubTypeService
 {
-    public interface ICatalogSubTypeService
-    {
-        Task<int?> Add(string subTypeName, int typeId);
-        Task<int?> Update(int id, string subTypeName, int typeId);
-        Task<int?> Delete(int id);
-    }
+    Task<int?> Add(string subTypeName, int typeId);
+    Task<int?> Update(int id, string subTypeName, int typeId);
+    Task<int?> Delete(int id);
 }

@@ -1,12 +1,11 @@
-﻿namespace Order.Hosts.Models.Requests
+﻿namespace Order.Hosts.Models.Requests;
+
+public class UpdateUserRequest
 {
-    public class UpdateUserRequest
-    {
-        public string Id { get; set; }
-        public string Name { get; set; }
-        public string GivenName { get; set; }
-        public string FamilyName { get; set; }
-        public string Email { get; set; }
-        public string Address { get; set; }
-    }
+    public string Id { get; set; }
+    public string Name { get; set; }
+    public string GivenName { get; set; }
+    public string FamilyName { get; set; }
+    public string Email { get; set; }
+    public string Address { get; set; }
 }

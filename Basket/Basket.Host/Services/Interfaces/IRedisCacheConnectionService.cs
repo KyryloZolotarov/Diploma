@@ -1,9 +1,8 @@
 ﻿using StackExchange.Redis;
 
-namespace Basket.Host.Services.Interfaces
+namespace Basket.Host.Services.Interfaces;
+
+public interface IRedisCacheConnectionService
 {
-    public interface IRedisCacheConnectionService
-    {
-        public IConnectionMultiplexer Connection { get; }
-    }
+    public IConnectionMultiplexer Connection { get; }
 }

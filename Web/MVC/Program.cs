@@ -1,11 +1,5 @@
-using System.IdentityModel.Tokens.Jwt;
-using Infrastructure.Configuration;
 using Infrastructure.Extensions;
-using Infrastructure.Identity;
-using Infrastructure.Services;
-using Infrastructure.Services.Interfaces;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
-using Microsoft.IdentityModel.Tokens;
 using MVC.Services;
 using MVC.Services.Interfaces;
 using MVC.ViewModels;
@@ -24,10 +18,7 @@ var callBackUrl = configuration.GetValue<string>("CallBackUrl");
 var redirectUrl = configuration.GetValue<string>("RedirectUri");
 var sessionCookieLifetime = configuration.GetValue("SessionCookieLifetimeMinutes", 60);
 
-builder.Services.AddAuthentication(options =>
-{
-    options.DefaultScheme = OpenIdConnectDefaults.AuthenticationScheme;
-})
+builder.Services.AddAuthentication(options => { options.DefaultScheme = OpenIdConnectDefaults.AuthenticationScheme; })
     .AddCookie(setup => setup.ExpireTimeSpan = TimeSpan.FromMinutes(sessionCookieLifetime))
     .AddOpenIdConnect(options =>
     {
@@ -65,10 +56,7 @@ builder.Services.AddTransient<IIdentityParser<ApplicationUser>, IdentityParser>(
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
-if (!app.Environment.IsDevelopment())
-{
-    app.UseExceptionHandler("/Error");
-}
+if (!app.Environment.IsDevelopment()) app.UseExceptionHandler("/Error");
 
 app.UseStaticFiles();
 
@@ -92,7 +80,7 @@ IConfiguration GetConfiguration()
 {
     var builder = new ConfigurationBuilder()
         .SetBasePath(Directory.GetCurrentDirectory())
-        .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+        .AddJsonFile("appsettings.json", false, true)
         .AddEnvironmentVariables();
 
     return builder.Build();

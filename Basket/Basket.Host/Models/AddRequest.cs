@@ -1,10 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Basket.Host.Models
+namespace Basket.Host.Models;
+
+public class AddRequest
 {
-    public class AddRequest
-    {
-        [Required]
-        public string Data { get; set; } = null!;
-    }
+    [Required] public string Data { get; set; } = null!;
 }

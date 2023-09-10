@@ -1,11 +1,10 @@
-﻿namespace MVC.ViewModels.CatalogViewModels
+﻿namespace MVC.ViewModels.CatalogViewModels;
+
+public record CatalogModel
 {
-    public record CatalogModel
-    {
-        public int Id { get; set; }
+    public int Id { get; set; }
 
-        public string Model { get; set; }
+    public string Model { get; set; }
 
-        public CatalogBrand CatalogBrand { get; set; }
-    }
+    public CatalogBrand CatalogBrand { get; set; }
 }

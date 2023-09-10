@@ -1,10 +1,9 @@
 ﻿using MVC.ViewModels.BasketViewModels;
 
-namespace MVC.ViewModels.CatalogViewModels
+namespace MVC.ViewModels.CatalogViewModels;
+
+public class CatalogItemForSingleItem
 {
-    public class CatalogItemForSingleItem
-    {
-        public CatalogItem catalogItem { get; set; }
-        public BasketItem basketItem { get; set; }
-    }
+    public CatalogItem catalogItem { get; set; }
+    public BasketItem basketItem { get; set; }
 }

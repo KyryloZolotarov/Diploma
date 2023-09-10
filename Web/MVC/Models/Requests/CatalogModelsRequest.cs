@@ -1,7 +1,6 @@
-﻿namespace MVC.Models.Requests
+﻿namespace MVC.Models.Requests;
+
+public class CatalogModelsRequest
 {
-    public class CatalogModelsRequest
-    {
-        public int BrandId { get; set; }
-    }
+    public int BrandId { get; set; }
 }

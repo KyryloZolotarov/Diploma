@@ -1,5 +1,3 @@
-using Microsoft.AspNetCore.Http;
-
 namespace Infrastructure.Exceptions;
 
 public class BusinessException : Exception

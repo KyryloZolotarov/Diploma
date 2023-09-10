@@ -14,11 +14,11 @@ public class CatalogItemEntityTypeConfiguration
             .IsRequired();
 
         builder.Property(ci => ci.Name)
-            .IsRequired(true)
+            .IsRequired()
             .HasMaxLength(50);
 
         builder.Property(ci => ci.Price)
-            .IsRequired(true);
+            .IsRequired();
 
         builder.Property(ci => ci.PictureFileName)
             .IsRequired(false);

@@ -1,9 +1,8 @@
-﻿namespace MVC.Models.Filters
-{
-    public class SubTypeFilterModel
-    {
-        public int Id { get; set; }
+﻿namespace MVC.Models.Filters;
 
-        public string SubType { get; set; }
-    }
+public class SubTypeFilterModel
+{
+    public int Id { get; set; }
+
+    public string SubType { get; set; }
 }

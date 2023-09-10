@@ -1,8 +1,7 @@
-﻿namespace Catalog.Host.Models.Requests.UpdateRequsts
+﻿namespace Catalog.Host.Models.Requests.UpdateRequsts;
+
+public class UpdateAvailableItemsRequest
 {
-    public class UpdateAvailableItemsRequest
-    {
-        public int Id { get; set; }
-        public int ChangeAvailable { get; set; }
-    }
+    public int Id { get; set; }
+    public int ChangeAvailable { get; set; }
 }

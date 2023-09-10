@@ -1,9 +1,6 @@
-﻿using Catalog.Host.Models.Dtos;
+﻿namespace Catalog.Host.Data;
 
-namespace Catalog.Host.Data
+public class BasketItems<T>
 {
-    public class BasketItems<T>
-    {
-        public List<T> Items { get; set; }
-    }
+    public List<T> Items { get; set; }
 }

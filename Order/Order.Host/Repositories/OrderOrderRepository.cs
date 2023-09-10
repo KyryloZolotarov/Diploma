@@ -6,155 +6,146 @@ using Order.Hosts.Models.Dtos;
 using Order.Hosts.Models.Requests;
 using Order.Hosts.Repositories.Interfaces;
 
-namespace Order.Hosts.Repositories
+namespace Order.Hosts.Repositories;
+
+public class OrderOrderRepository : IOrderOrderRepository
 {
-    public class OrderOrderRepository : IOrderOrderRepository
+    private readonly ApplicationDbContext _dbContext;
+    private readonly ILogger<OrderOrderRepository> _logger;
+
+    public OrderOrderRepository(
+        IDbContextWrapper<ApplicationDbContext> dbContextWrapper,
+        ILogger<OrderOrderRepository> logger)
     {
-        private readonly ApplicationDbContext _dbContext;
-        private readonly ILogger<OrderOrderRepository> _logger;
+        _dbContext = dbContextWrapper.DbContext;
+        _logger = logger;
+    }
 
-        public OrderOrderRepository(
-            IDbContextWrapper<ApplicationDbContext> dbContextWrapper,
-            ILogger<OrderOrderRepository> logger)
+    public async Task<int?> Add(string userId, DateTime dateTime)
+    {
+        var order = await _dbContext.OrderOrders.AddAsync(new OrderOrderEntity
         {
-            _dbContext = dbContextWrapper.DbContext;
-            _logger = logger;
-        }
+            UserId = userId,
+            DateTime = dateTime
+        });
 
-        public async Task<int?> Add(string userId, DateTime dateTime)
+        await _dbContext.SaveChangesAsync();
+        _logger.LogInformation($"Order {order.Entity.Id}");
+        return order.Entity.Id;
+    }
+
+    public async Task<int?> Update(string userId, DateTime dateTime)
+    {
+        var orderExists = await _dbContext.OrderOrders.AnyAsync(x => x.UserId == userId);
+        if (orderExists)
         {
-            var order = await _dbContext.OrderOrders.AddAsync(new OrderOrderEntity()
+            var order = _dbContext.OrderOrders.Update(new OrderOrderEntity
             {
                 UserId = userId,
                 DateTime = dateTime
             });
-
             await _dbContext.SaveChangesAsync();
-            _logger.LogInformation($"Order {order.Entity.Id}");
+            _logger.LogInformation($"Brand {order.Entity.Id}");
             return order.Entity.Id;
         }
 
-        public async Task<int?> Update(string userId, DateTime dateTime)
+        throw new BusinessException($"Brand id: {userId} was not founded");
+    }
+
+    public async Task<int?> Delete(int id)
+    {
+        var orderExists = await _dbContext.OrderOrders.AnyAsync(x => x.Id == id);
+        if (orderExists)
         {
-            var orderExists = await _dbContext.OrderOrders.AnyAsync(x => x.UserId == userId);
-            if (orderExists == true)
-            {
-                var order = _dbContext.OrderOrders.Update(new OrderOrderEntity()
-                {
-                    UserId = userId,
-                    DateTime = dateTime
-                });
-                await _dbContext.SaveChangesAsync();
-                _logger.LogInformation($"Brand {order.Entity.Id}");
-                return order.Entity.Id;
-            }
-            else
-            {
-                throw new BusinessException($"Brand id: {userId} was not founded");
-            }
-        }
-
-        public async Task<int?> Delete(int id)
-        {
-            var orderExists = await _dbContext.OrderOrders.AnyAsync(x => x.Id == id);
-            if (orderExists == true)
-            {
-                var orderDelete = await _dbContext.OrderOrders.FirstAsync(h => h.Id == id);
-                _dbContext.OrderOrders.Remove(orderDelete);
-                await _dbContext.SaveChangesAsync();
-                _logger.LogInformation($"Order Id Deleted {orderDelete.Id}");
-                return orderDelete.Id;
-            }
-            else
-            {
-                throw new BusinessException($"Order Id {id} was not founded");
-            }
-        }
-
-        public async Task<bool> AddOrder(OrderUserDto user, ListItemsForFrontRequest order)
-        {
-            var isUserExist = true;
-            var userDb = await _dbContext.OrderUsers.FirstOrDefaultAsync(x => x.Id == user.Id);
-            if (userDb == null)
-            {
-                isUserExist = false;
-                userDb = new OrderUserEntity()
-                {
-                    Id = user.Id,
-                    Name = user.Name,
-                    GivenName = user.GivenName,
-                    FamilyName = user.FamilyName,
-                    Email = user.Email,
-                    Address = user.Address
-                };
-            }
-
-            var orderAdding = new OrderOrderEntity()
-            {
-                UserId = user.Id,
-                DateTime = order.DateTime.ToUniversalTime(),
-                User = isUserExist ? null : userDb,
-            };
-
-            var items = new List<OrderItemEntity>();
-
-            foreach (var item in order.Items)
-            {
-                items.Add(new OrderItemEntity()
-                {
-                    ItemId = item.Id,
-                    Name = item.Name,
-                    Price = item.Price,
-                    CatalogModelId = item.CatalogModelId,
-                    CatalogSubTypeId = item.CatalogSubTypeId,
-                    OrderId = orderAdding.Id,
-                    Order = orderAdding
-                });
-            }
-
-            await _dbContext.OrderItems.AddRangeAsync(items);
+            var orderDelete = await _dbContext.OrderOrders.FirstAsync(h => h.Id == id);
+            _dbContext.OrderOrders.Remove(orderDelete);
             await _dbContext.SaveChangesAsync();
-
-            _logger.LogInformation($"Order id {orderAdding.Id} added");
-            return true;
+            _logger.LogInformation($"Order Id Deleted {orderDelete.Id}");
+            return orderDelete.Id;
         }
 
-        public async Task<OrderOrderResponse> GetOrder(int id)
+        throw new BusinessException($"Order Id {id} was not founded");
+    }
+
+    public async Task<bool> AddOrder(OrderUserDto user, ListItemsForFrontRequest order)
+    {
+        var isUserExist = true;
+        var userDb = await _dbContext.OrderUsers.FirstOrDefaultAsync(x => x.Id == user.Id);
+        if (userDb == null)
         {
-            var orderExists = await _dbContext.OrderOrders.AnyAsync(x => x.Id == id);
-            if (orderExists)
+            isUserExist = false;
+            userDb = new OrderUserEntity
             {
-                var items = _dbContext.OrderItems.Where(x => x.OrderId == id).ToList();
-                var order = await _dbContext.OrderOrders.FirstOrDefaultAsync(y => y.Id == id);
-                var itemsList = new OrderOrderResponse
-                {
-                    Items = new ()
-                };
-                itemsList.Items.AddRange(items);
-                itemsList.Order.Id = order.Id;
-                itemsList.Order.DateTime = order.DateTime;
-                itemsList.Order.UserId = order.UserId;
-                itemsList.Order.User = order.User;
-                return itemsList;
-            }
-            else
-            {
-                throw new BusinessException($"Order with id: {id} not found");
-            }
+                Id = user.Id,
+                Name = user.Name,
+                GivenName = user.GivenName,
+                FamilyName = user.FamilyName,
+                Email = user.Email,
+                Address = user.Address
+            };
         }
 
-        public async Task<ListOrdersResponse> GetOrderList(string userId)
+        var orderAdding = new OrderOrderEntity
         {
-            var userExists = await _dbContext.OrderUsers.AnyAsync(x => x.Id == userId);
-            if (userExists)
+            UserId = user.Id,
+            DateTime = order.DateTime.ToUniversalTime(),
+            User = isUserExist ? null : userDb
+        };
+
+        var items = new List<OrderItemEntity>();
+
+        foreach (var item in order.Items)
+        {
+            items.Add(new OrderItemEntity
             {
-                var orders = _dbContext.OrderOrders.Where(x => x.UserId == userId).ToList();
-                return new ListOrdersResponse() { Orders = orders };
-            }
-            else
-            {
-                throw new BusinessException($"User with id: {userId} not found");
-            }
+                ItemId = item.Id,
+                Name = item.Name,
+                Price = item.Price,
+                CatalogModelId = item.CatalogModelId,
+                CatalogSubTypeId = item.CatalogSubTypeId,
+                OrderId = orderAdding.Id,
+                Order = orderAdding
+            });
         }
+
+        await _dbContext.OrderItems.AddRangeAsync(items);
+        await _dbContext.SaveChangesAsync();
+
+        _logger.LogInformation($"Order id {orderAdding.Id} added");
+        return true;
+    }
+
+    public async Task<OrderOrderResponse> GetOrder(int id)
+    {
+        var orderExists = await _dbContext.OrderOrders.AnyAsync(x => x.Id == id);
+        if (orderExists)
+        {
+            var items = _dbContext.OrderItems.Where(x => x.OrderId == id).ToList();
+            var order = await _dbContext.OrderOrders.FirstOrDefaultAsync(y => y.Id == id);
+            var itemsList = new OrderOrderResponse
+            {
+                Items = new List<OrderItemEntity>()
+            };
+            itemsList.Items.AddRange(items);
+            itemsList.Order.Id = order.Id;
+            itemsList.Order.DateTime = order.DateTime;
+            itemsList.Order.UserId = order.UserId;
+            itemsList.Order.User = order.User;
+            return itemsList;
+        }
+
+        throw new BusinessException($"Order with id: {id} not found");
+    }
+
+    public async Task<ListOrdersResponse> GetOrderList(string userId)
+    {
+        var userExists = await _dbContext.OrderUsers.AnyAsync(x => x.Id == userId);
+        if (userExists)
+        {
+            var orders = _dbContext.OrderOrders.Where(x => x.UserId == userId).ToList();
+            return new ListOrdersResponse { Orders = orders };
+        }
+
+        throw new BusinessException($"User with id: {userId} not found");
     }
 }

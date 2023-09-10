@@ -1,10 +1,8 @@
-﻿using Order.Hosts.Models.BaseResponses;
-using Order.Hosts.Models.Dtos;
+﻿using Order.Hosts.Models.Dtos;
 
-namespace Order.Hosts.Models.ToFrontResponses
+namespace Order.Hosts.Models.ToFrontResponses;
+
+public class ListOrderForFrontResponse
 {
-    public class ListOrderForFrontResponse
-    {
-        public List<OrderOrderDto> Orders { get; set; }
-    }
+    public List<OrderOrderDto> Orders { get; set; }
 }
