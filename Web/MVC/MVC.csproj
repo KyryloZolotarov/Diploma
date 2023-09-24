@@ -34,4 +34,8 @@
 		<UpToDateCheckInput Remove="Views\Order\CreateOrder.cshtml" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <Folder Include="Repositories\Interfaces\" />
+	</ItemGroup>
+
 </Project>

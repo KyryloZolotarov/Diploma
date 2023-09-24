@@ -1,4 +1,5 @@
-﻿using MVC.Models.Requests;
+﻿using Infrastructure.Services.Interfaces;
+using MVC.Models.Requests;
 using MVC.Models.Responses;
 using MVC.Services.Interfaces;
 using MVC.ViewModels.CatalogViewModels;

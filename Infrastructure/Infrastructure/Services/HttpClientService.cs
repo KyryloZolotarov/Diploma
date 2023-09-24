@@ -1,5 +1,8 @@
+using System.Text;
 using IdentityModel.Client;
-using MVC.Services.Interfaces;
+using Infrastructure.Services.Interfaces;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
 
 namespace MVC.Services;
@@ -20,15 +23,24 @@ public class HttpClientService : IHttpClientService
         var client = _clientFactory.CreateClient();
 
         var token = await _httpContextAccessor.HttpContext.GetTokenAsync("access_token");
-        if (!string.IsNullOrEmpty(token)) client.SetBearerToken(token);
+        if (token == null)
+        {
+            return default !;
+        }
+
+        if (!string.IsNullOrEmpty(token))
+        {
+            client.SetBearerToken(token);
+        }
 
         var httpMessage = new HttpRequestMessage();
         httpMessage.RequestUri = new Uri(url);
         httpMessage.Method = method;
 
         if (content != null)
-            httpMessage.Content =
-                new StringContent(JsonConvert.SerializeObject(content), Encoding.UTF8, "application/json");
+        {
+            httpMessage.Content = new StringContent(JsonConvert.SerializeObject(content), Encoding.UTF8, "application/json");
+        }
 
         var result = await client.SendAsync(httpMessage);
 
@@ -36,7 +48,10 @@ public class HttpClientService : IHttpClientService
         {
             var resultContent = await result.Content.ReadAsStringAsync();
             var response = JsonConvert.DeserializeObject<TResponse>(resultContent);
-            return response;
+            if (response != null)
+            {
+                return response;
+            }
         }
 
         return default !;
@@ -45,9 +60,11 @@ public class HttpClientService : IHttpClientService
     public async Task<TResponse> SendAsync<TResponse>(string url, HttpMethod method)
     {
         var client = _clientFactory.CreateClient();
-
         var token = await _httpContextAccessor.HttpContext.GetTokenAsync("access_token");
-        if (!string.IsNullOrEmpty(token)) client.SetBearerToken(token);
+        if (!string.IsNullOrEmpty(token))
+        {
+            client.SetBearerToken(token);
+        }
 
         var httpMessage = new HttpRequestMessage();
         httpMessage.RequestUri = new Uri(url);
@@ -59,7 +76,10 @@ public class HttpClientService : IHttpClientService
         {
             var resultContent = await result.Content.ReadAsStringAsync();
             var response = JsonConvert.DeserializeObject<TResponse>(resultContent);
-            return response;
+            if (response != null)
+            {
+                return response;
+            }
         }
 
         return default!;
@@ -70,15 +90,20 @@ public class HttpClientService : IHttpClientService
         var client = _clientFactory.CreateClient();
 
         var token = await _httpContextAccessor.HttpContext.GetTokenAsync("access_token");
-        if (!string.IsNullOrEmpty(token)) client.SetBearerToken(token);
+        if (!string.IsNullOrEmpty(token))
+        {
+            client.SetBearerToken(token);
+        }
 
         var httpMessage = new HttpRequestMessage();
         httpMessage.RequestUri = new Uri(url);
         httpMessage.Method = method;
 
         if (content != null)
+        {
             httpMessage.Content =
                 new StringContent(JsonConvert.SerializeObject(content), Encoding.UTF8, "application/json");
+        }
 
         var result = await client.SendAsync(httpMessage);
     }
@@ -88,7 +113,10 @@ public class HttpClientService : IHttpClientService
         var client = _clientFactory.CreateClient();
 
         var token = await _httpContextAccessor.HttpContext.GetTokenAsync("access_token");
-        if (!string.IsNullOrEmpty(token)) client.SetBearerToken(token);
+        if (!string.IsNullOrEmpty(token))
+        {
+            client.SetBearerToken(token);
+        }
 
         var httpMessage = new HttpRequestMessage();
         httpMessage.RequestUri = new Uri(url);
