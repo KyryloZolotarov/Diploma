@@ -21,6 +21,10 @@ public class HttpClientService : IHttpClientService
     public async Task<TResponse> SendAsync<TResponse, TRequest>(string url, HttpMethod method, TRequest? content)
     {
         var client = _clientFactory.CreateClient();
+        if (_httpContextAccessor.HttpContext == null)
+        {
+            return default!;
+        }
 
         var token = await _httpContextAccessor.HttpContext.GetTokenAsync("access_token");
         if (token == null)
@@ -60,6 +64,11 @@ public class HttpClientService : IHttpClientService
     public async Task<TResponse> SendAsync<TResponse>(string url, HttpMethod method)
     {
         var client = _clientFactory.CreateClient();
+        if (_httpContextAccessor.HttpContext == null)
+        {
+            return default!;
+        }
+
         var token = await _httpContextAccessor.HttpContext.GetTokenAsync("access_token");
         if (!string.IsNullOrEmpty(token))
         {
@@ -88,6 +97,10 @@ public class HttpClientService : IHttpClientService
     public async Task SendAsync<TRequest>(string url, HttpMethod method, TRequest? content)
     {
         var client = _clientFactory.CreateClient();
+        if (_httpContextAccessor.HttpContext == null)
+        {
+            return;
+        }
 
         var token = await _httpContextAccessor.HttpContext.GetTokenAsync("access_token");
         if (!string.IsNullOrEmpty(token))
@@ -111,6 +124,10 @@ public class HttpClientService : IHttpClientService
     public async Task SendAsync(string url, HttpMethod method)
     {
         var client = _clientFactory.CreateClient();
+        if (_httpContextAccessor.HttpContext == null)
+        {
+            return;
+        }
 
         var token = await _httpContextAccessor.HttpContext.GetTokenAsync("access_token");
         if (!string.IsNullOrEmpty(token))

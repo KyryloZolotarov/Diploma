@@ -1,4 +1,5 @@
 using Infrastructure.Extensions;
+using Infrastructure.Services.Interfaces;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using MVC.Services;
 using MVC.Services.Interfaces;

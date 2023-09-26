@@ -1,6 +1,7 @@
 ﻿using Infrastructure.Services.Interfaces;
 using MVC.Models.Requests;
 using MVC.Models.Responses;
+using MVC.Repositories.Interfaces;
 using MVC.Services.Interfaces;
 using MVC.ViewModels.CatalogViewModels;
 using MVC.ViewModels.OrderViewModels;
@@ -9,24 +10,24 @@ namespace MVC.Services;
 
 public class OrderService : IOrderService
 {
-    private readonly IHttpClientService _httpClient;
-    private readonly ILogger<OrderService> _logger;
-    private readonly IOptions<AppSettings> _settings;
+    private readonly IOrderRepository _orderRepository;
+    private readonly ICatalogRepository _catalogRepository;
+    private readonly IBasketRepository _basketRepository;
 
-    public OrderService(IHttpClientService httpClient, ILogger<OrderService> logger, IOptions<AppSettings> settings)
+    public OrderService(IBasketRepository basket,  ICatalogRepository catalog, IOrderRepository orderRepository)
     {
-        _httpClient = httpClient;
-        _settings = settings;
-        _logger = logger;
+        _basketRepository = basket;
+        _catalogRepository = catalog;
+        _orderRepository = orderRepository;
     }
 
     public async Task<bool> AddOrder(ListOrderItemsFordDisplay order)
     {
         var orderForDb = new ListOrderItemsRequest { Items = new List<OrderItemRequest>(), DateTime = order.DateTime };
-        var result1 =
-            await _httpClient.SendAsync<bool, ListOrderItemsRequest>(
-                $"{_settings.Value.CatalogUrl}/ChangeAvailableItems", HttpMethod.Post, orderForDb);
 
+        var result2 = await _catalogRepository.ChangeAvailableItems(orderForDb);
+
+        if(result2 == false) { return false; }
         foreach (var item in order.Items)
             orderForDb.Items.Add(new OrderItemRequest
             {
@@ -42,18 +43,14 @@ public class OrderService : IOrderService
                     DateTime = order.DateTime
                 }
             });
-        var result =
-            await _httpClient.SendAsync<bool, ListOrderItemsRequest>(
-                $"{_settings.Value.OrderUrl}/AddOrder", HttpMethod.Post, orderForDb);
-        if (result) await _httpClient.SendAsync($"{_settings.Value.BasketUrl}/Delete", HttpMethod.Delete);
+        var result = await _orderRepository.AddOrder(orderForDb);
+        if (result) await _basketRepository.ClearBasket();
         return result;
     }
 
     public async Task<ListOrderItemsFordDisplay> GetOrder(int id)
     {
-        var result =
-            await _httpClient.SendAsync<ListOrderItemsResponse, int>(
-                $"{_settings.Value.OrderUrl}/GetOrder", HttpMethod.Post, id);
+        var result = await _orderRepository.GetOrder(id);
 
         var orderFordDisplay = new ListOrderItemsFordDisplay
             { Items = new List<OrderItemFordDisplay>(), DateTime = result.Order.DateTime };
@@ -79,8 +76,7 @@ public class OrderService : IOrderService
             });
         }
 
-        var modelsResult = await _httpClient.SendAsync<CatalogModelsForOrderResponse, CatalogModelForOrderRequest>(
-            $"{_settings.Value.CatalogUrl}/GetModelsForOrder", HttpMethod.Post, modelIds);
+        var modelsResult = await _catalogRepository.GetItemsForOrder(modelIds);
 
         foreach (var item in orderFordDisplay.Items)
         {
@@ -99,9 +95,7 @@ public class OrderService : IOrderService
 
     public async Task<ListOrdersForDisplay> GetOrderList()
     {
-        var result =
-            await _httpClient.SendAsync<ListOrderResponse>(
-                $"{_settings.Value.OrderUrl}/GetOrderList", HttpMethod.Get);
+        var result = await _orderRepository.GetOrderList();
         var ordersForDisplay = new ListOrdersForDisplay { Orders = new List<OrderForDisplay>() };
         if (result == null) return ordersForDisplay;
         foreach (var item in result.Orders)
