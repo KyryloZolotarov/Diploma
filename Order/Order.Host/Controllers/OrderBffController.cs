@@ -29,40 +29,7 @@ public class OrderBffController : ControllerBase
     [ProducesResponseType(typeof(bool), (int)HttpStatusCode.OK)]
     public async Task<IActionResult> AddOrder([FromBody] ListItemsForFrontRequest order)
     {
-        var user = new OrderUserDto();
-        var claims = User.Claims.ToList();
-        foreach (var claim in claims)
-        {
-            switch (claim.Type)
-            {
-                case JwtClaimTypes.Subject:
-                case ClaimTypes.NameIdentifier:
-                    user.Id = claim.Value;
-                    break;
-                case ClaimTypes.GivenName:
-                case JwtClaimTypes.GivenName:
-                    user.GivenName = claim.Value;
-                    break;
-                case ClaimTypes.Name:
-                case JwtClaimTypes.Name:
-                    user.Name = claim.Value;
-                    break;
-                case JwtClaimTypes.FamilyName:
-                case ClaimTypes.Surname:
-                    user.FamilyName = claim.Value;
-                    break;
-                case JwtClaimTypes.Email:
-                case ClaimTypes.Email:
-                case ClaimTypes.Upn:
-                    user.Email = claim.Value;
-                    break;
-                case JwtClaimTypes.Address:
-                case ClaimTypes.StreetAddress:
-                    user.Address = claim.Value;
-                    break;
-            }
-        }
-
+        var user = User.GetClaims();
         var result = await _orderService.AddOrder(user, order);
         return Ok(result);
     }
@@ -71,6 +38,7 @@ public class OrderBffController : ControllerBase
     [ProducesResponseType(typeof(OrderOrderForFrontResponse), (int)HttpStatusCode.OK)]
     public async Task<IActionResult> GetOrder([FromBody] int id)
     {
+        var user = User.GetClaims();
         var result = await _orderService.GetOrder(id);
         return Ok(result);
     }
@@ -79,8 +47,8 @@ public class OrderBffController : ControllerBase
     [ProducesResponseType(typeof(ListOrderForFrontResponse), (int)HttpStatusCode.OK)]
     public async Task<IActionResult> GetOrderList()
     {
-        var userId = User.Claims.FirstOrDefault(x => x.Type == "sub")?.Value;
-        var result = await _orderService.GetOrderList(userId);
+        var user = User.GetClaims();
+        var result = await _orderService.GetOrderList(user.Id);
         return Ok(result);
     }
 }

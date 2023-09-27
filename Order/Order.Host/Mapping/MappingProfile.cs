@@ -10,6 +10,6 @@ public class MappingProfile : Profile
         CreateMap<OrderItemEntity, OrderItemDto>().ForMember(nameof(OrderItemDto.Id), opt
             => opt.MapFrom(x => x.ItemId));
         CreateMap<OrderOrderEntity, OrderOrderDto>();
-        CreateMap<OrderUserEntity, OrderUserDto>();
+        CreateMap<OrderUserEntity, CurrentUser>();
     }
 }

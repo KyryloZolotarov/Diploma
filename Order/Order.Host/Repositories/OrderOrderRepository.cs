@@ -57,7 +57,7 @@ public class OrderOrderRepository : IOrderOrderRepository
         var orderExists = await _dbContext.OrderOrders.AnyAsync(x => x.Id == id);
         if (orderExists)
         {
-            var orderDelete = await _dbContext.OrderOrders.FirstAsync(h => h.Id == id);
+            var orderDelete = await _dbContext.OrderOrders.FirstOrDefaultAsync(h => h.Id == id);
             _dbContext.OrderOrders.Remove(orderDelete);
             await _dbContext.SaveChangesAsync();
             _logger.LogInformation($"Order Id Deleted {orderDelete.Id}");
@@ -67,7 +67,7 @@ public class OrderOrderRepository : IOrderOrderRepository
         throw new BusinessException($"Order Id {id} was not founded");
     }
 
-    public async Task<bool> AddOrder(OrderUserDto user, ListItemsForFrontRequest order)
+    public async Task<bool> AddOrder(CurrentUser user, ListItemsForFrontRequest order)
     {
         var isUserExist = true;
         var userDb = await _dbContext.OrderUsers.FirstOrDefaultAsync(x => x.Id == user.Id);

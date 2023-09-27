@@ -18,54 +18,29 @@ public class CatalogSubTypeRepository : ICatalogSubTypeRepository
         _logger = logger;
     }
 
-    public async Task<int?> Add(string subTypeName, int typeId)
+    public async Task<int?> Add(CatalogSubType subType)
     {
-        var subTypeStatus = await _dbContext.CatalogTypes.AnyAsync(h => h.Id == typeId);
-        if (subTypeStatus)
-        {
-            var subType = await _dbContext.AddAsync(new CatalogSubType
-            {
-                SubType = subTypeName,
-                CatalogTypeId = typeId
-            });
-            await _dbContext.SaveChangesAsync();
-            _logger.LogInformation($"SubType {subType.Entity.SubType} id: {subType.Entity.Id} added");
-            return subType.Entity.Id;
-        }
-
-        throw new BusinessException($"Type with Id: {typeId} was not found");
+        await _dbContext.AddAsync(subType);
+        await _dbContext.SaveChangesAsync();
+        return subType.Id;
     }
 
-    public async Task<int?> Update(int id, string subTypeName, int typeId)
+    public async Task<int?> Update(CatalogSubType subType)
     {
-        var subTypeStatus = await _dbContext.CatalogTypes.AnyAsync(h => h.Id == typeId);
-        if (subTypeStatus)
-        {
-            var subType = _dbContext.Update(new CatalogSubType
-            {
-                SubType = subTypeName,
-                CatalogTypeId = typeId
-            });
-            await _dbContext.SaveChangesAsync();
-            _logger.LogInformation($"SubType {subType.Entity.SubType} id: {subType.Entity.Id} updated");
-            return subType.Entity.Id;
-        }
-
-        throw new BusinessException($"Type with Id: {typeId.ToString()} was not found");
+        _dbContext.Update(subType);
+        await _dbContext.SaveChangesAsync();
+        return subType.Id;
     }
 
-    public async Task<int?> Delete(int id)
+    public async Task<int?> Delete(CatalogSubType subType)
     {
-        var subTypeExists = await _dbContext.CatalogSubTypes.AnyAsync(x => x.Id == id);
-        if (subTypeExists)
-        {
-            var subTypeDelete = await _dbContext.CatalogSubTypes.FirstAsync(h => h.Id == id);
-            _dbContext.Remove(subTypeDelete);
-            await _dbContext.SaveChangesAsync();
-            _logger.LogInformation($"SubType {subTypeDelete.SubType} id: {subTypeDelete.Id} deleted");
-            return subTypeDelete.Id;
-        }
+        _dbContext.Remove(subType);
+        await _dbContext.SaveChangesAsync();
+        return subType.Id;
+    }
 
-        throw new BusinessException($"SubType id: {id} was not founded");
+    public async Task<CatalogSubType> CheckSubTypeExist(int id)
+    {
+        return await _dbContext.CatalogSubTypes.FirstOrDefaultAsync(h => h.Id == id);
     }
 }

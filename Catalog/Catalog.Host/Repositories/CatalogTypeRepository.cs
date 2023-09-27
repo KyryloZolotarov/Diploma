@@ -18,48 +18,29 @@ public class CatalogTypeRepository : ICatalogTypeRepository
         _logger = logger;
     }
 
-    public async Task<int?> Add(string typeName)
+    public async Task<int?> Add(CatalogType type)
     {
-        var type = await _dbContext.AddAsync(new CatalogType
-        {
-            Type = typeName
-        });
-
+        var addedType = await _dbContext.AddAsync(type);
         await _dbContext.SaveChangesAsync();
-        _logger.LogInformation($"Type {type.Entity.Type} id: {type.Entity.Id} added");
-        return type.Entity.Id;
+        return addedType.Entity.Id;
     }
 
-    public async Task<int?> Update(int id, string typeName)
+    public async Task<int?> Update(CatalogType type)
     {
-        var typeExists = await _dbContext.CatalogTypes.AnyAsync(x => x.Id == id);
-        if (typeExists)
-        {
-            var type = _dbContext.Update(new CatalogType
-            {
-                Id = id,
-                Type = typeName
-            });
-            await _dbContext.SaveChangesAsync();
-            _logger.LogInformation($"Type {type.Entity.Type} id: {type.Entity.Id} updated");
-            return type.Entity.Id;
-        }
-
-        throw new BusinessException($"Type id: {id} was not founded");
+        var typeUpdated = _dbContext.Update(type);
+        await _dbContext.SaveChangesAsync();
+        return typeUpdated.Entity.Id;
     }
 
-    public async Task<int?> Delete(int id)
+    public async Task<int?> Delete(CatalogType type)
     {
-        var typeExists = await _dbContext.CatalogTypes.AnyAsync(x => x.Id == id);
-        if (typeExists)
-        {
-            var typeDelete = await _dbContext.CatalogTypes.FirstAsync(h => h.Id == id);
-            _dbContext.Remove(typeDelete);
-            await _dbContext.SaveChangesAsync();
-            _logger.LogInformation($"Type {typeDelete.Type} id: {typeDelete.Id} deleted");
-            return typeDelete.Id;
-        }
+        _dbContext.Remove(type);
+        await _dbContext.SaveChangesAsync();
+        return type.Id;
+    }
 
-        throw new BusinessException($"Type id: {id} was not founded");
+    public async Task<CatalogType> CheckTypeExist(int id)
+    {
+        return await _dbContext.CatalogTypes.FirstOrDefaultAsync(h => h.Id == id);
     }
 }

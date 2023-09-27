@@ -6,21 +6,25 @@ using Catalog.Host.Models.Requests.UpdateRequsts;
 using Catalog.Host.Models.Responses;
 using Catalog.Host.Repositories.Interfaces;
 using Catalog.Host.Services.Interfaces;
+using Infrastructure.Exceptions;
 
 namespace Catalog.Host.Services;
 
 public class CatalogService : BaseDataService<ApplicationDbContext>, ICatalogService
 {
     private readonly ICatalogItemRepository _catalogItemRepository;
+    private readonly ICatalogModelRepository _catalogModelRepository;
     private readonly IMapper _mapper;
 
     public CatalogService(
+        ICatalogModelRepository catalogModelRepository,
         IDbContextWrapper<ApplicationDbContext> dbContextWrapper,
         ILogger<BaseDataService<ApplicationDbContext>> logger,
         ICatalogItemRepository catalogItemRepository,
         IMapper mapper)
         : base(dbContextWrapper, logger)
     {
+        _catalogModelRepository = catalogModelRepository;
         _catalogItemRepository = catalogItemRepository;
         _mapper = mapper;
     }
@@ -86,7 +90,9 @@ public class CatalogService : BaseDataService<ApplicationDbContext>, ICatalogSer
     {
         return await ExecuteSafeAsync(async () =>
         {
-            var result = await _catalogItemRepository.GetItemsListAsync(items.Items);
+            var ids = new List<int>();
+            ids.AddRange(items.Items.Select(x => x.Id));
+            var result = await _catalogItemRepository.GetItemsListAsync(ids);
             var mappedResult = new BasketItems<CatalogItemDto>
                 { Items = result.Items.Select(s => _mapper.Map<CatalogItemDto>(s)).ToList() };
             return mappedResult;
@@ -95,18 +101,30 @@ public class CatalogService : BaseDataService<ApplicationDbContext>, ICatalogSer
 
     public async Task<bool> ChangeAvailableItems(UpdateAvailableItemsRequest item)
     {
-        return await ExecuteSafeAsync(async () =>
+        var updating = ExecuteSafeAsync(() => _catalogItemRepository.CheckItemExist(item.Id));
+        if (item == null)
         {
-            var result = await _catalogItemRepository.ChangeAvailableItems(item.Id, item.ChangeAvailable);
-            return result;
-        });
+            throw new BusinessException($"Item with id: {item.Id} not found");
+        }
+
+        updating.Result.AvailableStock = item.ChangeAvailable;
+
+        var result = await ExecuteSafeAsync(() => _catalogItemRepository.Update(updating.Result));
+        if (result == item.Id)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
     }
 
     public async Task<CatalogModelsForOrderResponse> GetCatalogModelForOrder(CatalogModelsForOrderRequest modelIds)
     {
         return await ExecuteSafeAsync(async () =>
         {
-            var result = await _catalogItemRepository.GetModelsForOrderAsync(modelIds);
+            var result = await _catalogModelRepository.GetModelsForOrderAsync(modelIds);
             var mappedResult = new CatalogModelsForOrderResponse
                 { Models = result.Select(s => _mapper.Map<CatalogModelDto>(s)).ToList() };
             return mappedResult;

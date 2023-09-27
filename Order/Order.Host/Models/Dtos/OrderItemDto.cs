@@ -11,5 +11,5 @@ public class OrderItemDto
     public int CatalogModelId { get; set; }
     public int Count { get; set; }
     public int OrderId { get; set; }
-    public OrderOrderEntity? Order { get; set; }
+    public OrderOrderDto? Order { get; set; }
 }

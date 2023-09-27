@@ -85,7 +85,7 @@ public class OrderItemRepository : IOrderItemRepository
         var itemExists = await _dbContext.OrderItems.AnyAsync(x => x.Id == id);
         if (itemExists)
         {
-            var itemDelete = await _dbContext.OrderItems.FirstAsync(h => h.Id == id);
+            var itemDelete = await _dbContext.OrderItems.FirstOrDefaultAsync(h => h.Id == id);
             _dbContext.OrderItems.Remove(itemDelete);
             await _dbContext.SaveChangesAsync();
             _logger.LogInformation($"Item Id Deleted {itemDelete.Id}");

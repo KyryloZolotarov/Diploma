@@ -3,6 +3,7 @@ using Catalog.Host.Models.Requests.UpdateRequsts;
 using Catalog.Host.Models.Responses.AddResponses;
 using Catalog.Host.Models.Responses.UpdateResponses;
 using Catalog.Host.Services.Interfaces;
+using Infrastructure.Exceptions;
 using Infrastructure.Identity;
 using Microsoft.AspNetCore.Authorization;
 
@@ -29,23 +30,44 @@ public class CatalogTypeController : Controller
     [ProducesResponseType(typeof(AddTypeResponse<int?>), (int)HttpStatusCode.OK)]
     public async Task<IActionResult> Add(AddTypeRequest request)
     {
-        var result = await _catalogTypeService.Add(request.TypeName);
-        return Ok(new AddTypeResponse<int?> { Id = result });
+        try
+        {
+            var result = await _catalogTypeService.Add(request.TypeName);
+            return Ok(new AddTypeResponse<int?> { Id = result });
+        }
+        catch (BusinessException ex)
+        {
+            return NotFound(ex.Message);
+        }
     }
 
     [HttpPatch]
     [ProducesResponseType(typeof(AddTypeResponse<int?>), (int)HttpStatusCode.OK)]
     public async Task<IActionResult> Update(UpdateTypeRequest request)
     {
-        var result = await _catalogTypeService.Update(request.Id, request.TypeName);
-        return Ok(new UpdateTypeResponse<int?> { Id = result });
+        try
+        {
+            var result = await _catalogTypeService.Update(request.Id, request.TypeName);
+            return Ok(new UpdateTypeResponse<int?> { Id = result });
+        }
+        catch (BusinessException ex)
+        {
+            return NotFound(ex.Message);
+        }
     }
 
     [HttpDelete]
     [ProducesResponseType((int)HttpStatusCode.NoContent)]
     public async Task<IActionResult> Delete(int id)
     {
-        var result = await _catalogTypeService.Delete(id);
-        return NoContent();
+        try
+        {
+            var result = await _catalogTypeService.Delete(id);
+            return NoContent();
+        }
+        catch (BusinessException ex)
+        {
+            return NotFound(ex);
+        }
     }
 }

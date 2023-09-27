@@ -5,6 +5,7 @@ using Catalog.Host.Models.Requests;
 using Catalog.Host.Models.Requests.UpdateRequsts;
 using Catalog.Host.Models.Responses;
 using Catalog.Host.Services.Interfaces;
+using Infrastructure.Exceptions;
 using Infrastructure.Identity;
 using Microsoft.AspNetCore.Authorization;
 
@@ -39,13 +40,7 @@ public class CatalogBffController : ControllerBase
     [ProducesResponseType(typeof(BasketItems<CatalogItemDto>), (int)HttpStatusCode.OK)]
     public async Task<IActionResult> ListItems([FromBody] ItemsForBasketRequest request)
     {
-        _logger.LogInformation($"items count {request.Items.Count}");
         var result = await _catalogService.GetListCatalogItemsAsync(request);
-        foreach (var item in result.Items)
-        {
-            _logger.LogInformation($"item id: {item.Id}");
-        }
-
         return Ok(result);
     }
 
@@ -54,9 +49,7 @@ public class CatalogBffController : ControllerBase
     [ProducesResponseType(typeof(CatalogItemDto), (int)HttpStatusCode.OK)]
     public async Task<IActionResult> GetItemById([FromBody] int id)
     {
-        _logger.LogInformation($"item id {id}");
         var result = await _catalogService.GetCatalogItemByIdAsync(id);
-        _logger.LogInformation($"item id {result.Id}, item name {result.Name}");
         return Ok(result);
     }
 
@@ -64,9 +57,15 @@ public class CatalogBffController : ControllerBase
     [ProducesResponseType(typeof(bool), (int)HttpStatusCode.OK)]
     public async Task<IActionResult> ChangeAvailableItems([FromBody] UpdateAvailableItemsRequest item)
     {
-        _logger.LogInformation($"item id {item.Id}, count {item.ChangeAvailable}");
-        var result = await _catalogService.ChangeAvailableItems(item);
-        return Ok(result);
+        try
+        {
+            var result = await _catalogService.ChangeAvailableItems(item);
+            return Ok(result);
+        }
+        catch (BusinessException ex)
+        {
+            return NotFound(ex.Message);
+        }
     }
 
     [HttpGet]

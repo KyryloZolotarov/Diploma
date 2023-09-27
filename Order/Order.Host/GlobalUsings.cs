@@ -3,6 +3,7 @@ global using System.Net;
 global using System.Threading.Tasks;
 global using AutoMapper;
 global using Infrastructure;
+global using Infrastructure.Extensions;
 global using Infrastructure.Services;
 global using Infrastructure.Services.Interfaces;
 global using Microsoft.AspNetCore.Mvc;

@@ -1,8 +1,11 @@
-﻿namespace Catalog.Host.Repositories.Interfaces;
+﻿using Catalog.Host.Data.Entities;
+
+namespace Catalog.Host.Repositories.Interfaces;
 
 public interface ICatalogSubTypeRepository
 {
-    Task<int?> Add(string subTypeName, int typeId);
-    Task<int?> Update(int id, string subTypeName, int typeId);
-    Task<int?> Delete(int id);
+    Task<int?> Add(CatalogSubType subType);
+    Task<int?> Update(CatalogSubType subType);
+    Task<int?> Delete(CatalogSubType subType);
+    Task<CatalogSubType> CheckSubTypeExist(int id);
 }

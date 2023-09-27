@@ -3,6 +3,7 @@ using Catalog.Host.Models.Requests.UpdateRequsts;
 using Catalog.Host.Models.Responses.AddResponses;
 using Catalog.Host.Models.Responses.UpdateResponses;
 using Catalog.Host.Services.Interfaces;
+using Infrastructure.Exceptions;
 using Infrastructure.Identity;
 using Microsoft.AspNetCore.Authorization;
 
@@ -29,7 +30,9 @@ public class CatalogItemController : Controller
     [ProducesResponseType(typeof(AddItemResponse<int?>), (int)HttpStatusCode.OK)]
     public async Task<IActionResult> Add(AddItemRequest request)
     {
-        var result = await _catalogItemService.Add(
+        try
+        {
+            var result = await _catalogItemService.Add(
             request.Name,
             request.Description,
             request.Price,
@@ -38,14 +41,21 @@ public class CatalogItemController : Controller
             request.CatalogSubTypeId,
             request.CatalogModelId,
             request.PartNumber);
-        return Ok(new AddItemResponse<int?> { Id = result });
+            return Ok(new AddItemResponse<int?> { Id = result });
+        }
+        catch (BusinessException ex)
+        {
+            return NotFound(ex.Message);
+        }
     }
 
     [HttpPut]
     [ProducesResponseType(typeof(UpdateItemResponse<int?>), (int)HttpStatusCode.OK)]
     public async Task<IActionResult> Update(UpdateItemRequest request)
     {
-        var result = await _catalogItemService.Update(
+        try
+        {
+            var result = await _catalogItemService.Update(
             request.Id,
             request.Name,
             request.Description,
@@ -55,14 +65,26 @@ public class CatalogItemController : Controller
             request.CatalogSubTypeId,
             request.CatalogModelId,
             request.PartNumber);
-        return Ok(new UpdateItemResponse<int?> { Id = result });
+            return Ok(new UpdateItemResponse<int?> { Id = result });
+        }
+        catch (BusinessException ex)
+        {
+            return NotFound(ex.Message);
+        }
     }
 
     [HttpDelete]
     [ProducesResponseType((int)HttpStatusCode.NoContent)]
     public async Task<IActionResult> Delete(int id)
     {
-        await _catalogItemService.Delete(id);
-        return NoContent();
+        try
+        {
+            await _catalogItemService.Delete(id);
+            return NoContent();
+        }
+        catch (BusinessException ex)
+        {
+            return NotFound(ex.Message);
+        }
     }
 }

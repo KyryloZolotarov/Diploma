@@ -10,17 +10,16 @@ public interface ICatalogItemRepository
     Task<PaginatedItems<CatalogItem>> GetByPageAsync(int pageIndex, int pageSize, int? brandFilter, int? typeFilter, int? subTypeFilter, int? modelFilter);
 
     Task<CatalogItem> GetByIdAsync(int id);
-    Task<BasketItems<CatalogItem>> GetItemsListAsync(List<BasketItemDto> items);
+    Task<BasketItems<CatalogItem>> GetItemsListAsync(List<int> basketItemIds);
 
-    Task<int?> Add(string name, string description, decimal price, int availableStock, string pictureFileName, int catalogSubTypeId, int catalogModelId, string partNumber);
+    Task<int?> Add(CatalogItem item);
 
-    Task<int?> Update(int id, string name, string description, decimal price, int availableStock, string pictureFileName, int catalogSubTypeId, int catalogModelId, string partNumber);
+    Task<int?> Update(CatalogItem item);
 
-    Task<int?> Delete(int id);
+    Task<int?> Delete(CatalogItem item);
     Task<List<CatalogType>> GetTypesAsync();
     Task<List<CatalogBrand>> GetBrandsAsync();
     Task<IEnumerable<CatalogSubType>> GetSubTypesAsync(int id);
     Task<IEnumerable<CatalogModel>> GetModelsAsync(int id);
-    Task<bool> ChangeAvailableItems(int id, int count);
-    Task<IEnumerable<CatalogModel>> GetModelsForOrderAsync(CatalogModelsForOrderRequest modelIds);
+    Task<CatalogItem> CheckItemExist(int id);
 }

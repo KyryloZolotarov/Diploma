@@ -1,8 +1,11 @@
-﻿namespace Catalog.Host.Repositories.Interfaces;
+﻿using Catalog.Host.Data.Entities;
+
+namespace Catalog.Host.Repositories.Interfaces;
 
 public interface ICatalogTypeRepository
 {
-    Task<int?> Add(string typeName);
-    Task<int?> Update(int id, string typeName);
-    Task<int?> Delete(int id);
+    Task<int?> Add(CatalogType type);
+    Task<int?> Update(CatalogType type);
+    Task<int?> Delete(CatalogType type);
+    Task<CatalogType> CheckTypeExist(int id);
 }

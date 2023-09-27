@@ -3,6 +3,7 @@ using Catalog.Host.Models.Requests.UpdateRequsts;
 using Catalog.Host.Models.Responses.AddResponses;
 using Catalog.Host.Models.Responses.UpdateResponses;
 using Catalog.Host.Services.Interfaces;
+using Infrastructure.Exceptions;
 using Infrastructure.Identity;
 using Microsoft.AspNetCore.Authorization;
 
@@ -29,23 +30,44 @@ public class CatalogBrandController : ControllerBase
     [ProducesResponseType(typeof(AddBrandResponse<int?>), (int)HttpStatusCode.OK)]
     public async Task<IActionResult> Add(AddBrandRequest request)
     {
-        var result = await _catalogBrandService.Add(request.BrandName);
-        return Ok(new AddBrandResponse<int?> { Id = result });
+        try
+        {
+            var result = await _catalogBrandService.Add(request.BrandName);
+            return Ok(new AddBrandResponse<int?> { Id = result });
+        }
+        catch (BusinessException ex)
+        {
+            return NotFound(ex.Message);
+        }
     }
 
     [HttpPut]
     [ProducesResponseType(typeof(UpdateBrandResponse<int?>), (int)HttpStatusCode.OK)]
     public async Task<IActionResult> Update(UpdateBrandRequest request)
     {
-        var result = await _catalogBrandService.Update(request.Id, request.BrandName);
-        return Ok(new UpdateBrandResponse<int?> { Id = result });
+        try
+        {
+            var result = await _catalogBrandService.Update(request.Id, request.BrandName);
+            return Ok(new UpdateBrandResponse<int?> { Id = result });
+        }
+        catch (BusinessException ex)
+        {
+            return NotFound(ex.Message);
+        }
     }
 
     [HttpDelete]
     [ProducesResponseType((int)HttpStatusCode.NoContent)]
     public async Task<IActionResult> Delete(int id)
     {
-        var result = await _catalogBrandService.Delete(id);
-        return NoContent();
+        try
+        {
+            var result = await _catalogBrandService.Delete(id);
+            return NoContent();
+        }
+        catch (BusinessException ex)
+        {
+            return NotFound(ex.Message);
+        }
     }
 }

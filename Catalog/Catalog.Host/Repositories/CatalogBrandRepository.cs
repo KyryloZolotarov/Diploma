@@ -18,48 +18,29 @@ public class CatalogBrandRepository : ICatalogBrandRepository
         _logger = logger;
     }
 
-    public async Task<int?> Add(string brandName)
+    public async Task<int?> Add(CatalogBrand brand)
     {
-        var brand = await _dbContext.AddAsync(new CatalogBrand
-        {
-            Brand = brandName
-        });
-
+        await _dbContext.AddAsync(brand);
         await _dbContext.SaveChangesAsync();
-        _logger.LogInformation($"Brand {brand.Entity.Brand} id: {brand.Entity.Id} added");
-        return brand.Entity.Id;
+        return brand.Id;
     }
 
-    public async Task<int?> Update(int id, string brandName)
+    public async Task<int?> Update(CatalogBrand brand)
     {
-        var brandExists = await _dbContext.CatalogBrands.AnyAsync(x => x.Id == id);
-        if (brandExists)
-        {
-            var brand = _dbContext.Update(new CatalogBrand
-            {
-                Id = id,
-                Brand = brandName
-            });
-            await _dbContext.SaveChangesAsync();
-            _logger.LogInformation($"Brand {brand.Entity.Brand} id: {brand.Entity.Id} updated");
-            return brand.Entity.Id;
-        }
-
-        throw new BusinessException($"Brand id: {id} was not founded");
+        _dbContext.Update(brand);
+        await _dbContext.SaveChangesAsync();
+        return brand.Id;
     }
 
-    public async Task<int?> Delete(int id)
+    public async Task<int?> Delete(CatalogBrand brand)
     {
-        var brandExists = await _dbContext.CatalogBrands.AnyAsync(x => x.Id == id);
-        if (brandExists)
-        {
-            var brandDelete = await _dbContext.CatalogBrands.FirstAsync(h => h.Id == id);
-            _dbContext.Remove(brandDelete);
-            await _dbContext.SaveChangesAsync();
-            _logger.LogInformation($"Brand {brandDelete.Brand} id: {brandDelete.Id} deleted");
-            return brandDelete.Id;
-        }
+        _dbContext.Remove(brand);
+        await _dbContext.SaveChangesAsync();
+        return brand.Id;
+    }
 
-        throw new BusinessException($"Brand id: {id} was not founded");
+    public async Task<CatalogBrand> CheckBrandExist(int id)
+    {
+        return await _dbContext.CatalogBrands.FirstOrDefaultAsync(h => h.Id == id);
     }
 }

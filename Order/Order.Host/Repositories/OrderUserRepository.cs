@@ -63,7 +63,7 @@ public class OrderUserRepository : IOrderUserRepository
         var userExists = await _dbContext.OrderUsers.AnyAsync(x => x.Id == id);
         if (userExists)
         {
-            var userDelete = await _dbContext.OrderUsers.FirstAsync(h => h.Id == id);
+            var userDelete = await _dbContext.OrderUsers.FirstOrDefaultAsync(h => h.Id == id);
             _dbContext.OrderUsers.Remove(userDelete);
             await _dbContext.SaveChangesAsync();
             _logger.LogInformation($"User Id Deleted {userDelete.Id}");

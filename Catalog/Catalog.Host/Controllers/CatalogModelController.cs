@@ -3,6 +3,7 @@ using Catalog.Host.Models.Requests.UpdateRequsts;
 using Catalog.Host.Models.Responses.AddResponses;
 using Catalog.Host.Models.Responses.UpdateResponses;
 using Catalog.Host.Services.Interfaces;
+using Infrastructure.Exceptions;
 using Infrastructure.Identity;
 using Microsoft.AspNetCore.Authorization;
 
@@ -29,23 +30,44 @@ public class CatalogModelController : Controller
     [ProducesResponseType(typeof(AddModelResponse<int?>), (int)HttpStatusCode.OK)]
     public async Task<IActionResult> Add(AddModelRequest request)
     {
-        var result = await _catalogModelService.Add(request.ModelName, request.CatalogBrandId);
-        return Ok(new AddModelResponse<int?> { Id = result });
+        try
+        {
+            var result = await _catalogModelService.Add(request.ModelName, request.CatalogBrandId);
+            return Ok(new AddModelResponse<int?> { Id = result });
+        }
+        catch (BusinessException ex)
+        {
+            return NotFound(ex.Message);
+        }
     }
 
     [HttpPut]
     [ProducesResponseType(typeof(UpdateModelResponse<int?>), (int)HttpStatusCode.OK)]
     public async Task<IActionResult> Update(UpdateModelRequest request)
     {
-        var result = await _catalogModelService.Update(request.Id, request.ModelName, request.CatalogBrandId);
-        return Ok(new UpdateModelResponse<int?> { Id = result });
+        try
+        {
+            var result = await _catalogModelService.Update(request.Id, request.ModelName, request.CatalogBrandId);
+            return Ok(new UpdateModelResponse<int?> { Id = result });
+        }
+        catch (BusinessException ex)
+        {
+            return NotFound(ex.Message);
+        }
     }
 
     [HttpDelete]
     [ProducesResponseType((int)HttpStatusCode.NoContent)]
     public async Task<IActionResult> Delete(int id)
     {
-        var result = await _catalogModelService.Delete(id);
-        return NoContent();
+        try
+        {
+            var result = await _catalogModelService.Delete(id);
+            return NoContent();
+        }
+        catch (BusinessException ex)
+        {
+            return NotFound(ex.Message);
+        }
     }
 }

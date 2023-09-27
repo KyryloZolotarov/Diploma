@@ -6,7 +6,7 @@ namespace Order.Hosts.Services.Interfaces;
 
 public interface IOrderService
 {
-    Task<bool> AddOrder(OrderUserDto user, ListItemsForFrontRequest order);
+    Task<bool> AddOrder(CurrentUser user, ListItemsForFrontRequest order);
     Task<OrderOrderForFrontResponse> GetOrder(int id);
     Task<ListOrderForFrontResponse> GetOrderList(string userId);
 }

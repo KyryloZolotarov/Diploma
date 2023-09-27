@@ -23,7 +23,7 @@ public class OrderService : BaseDataService<ApplicationDbContext>, IOrderService
         _mapper = mapper;
     }
 
-    public async Task<bool> AddOrder(OrderUserDto user, ListItemsForFrontRequest order)
+    public async Task<bool> AddOrder(CurrentUser user, ListItemsForFrontRequest order)
     {
         return await ExecuteSafeAsync(() => _orderOrderRepository.AddOrder(user, order));
     }

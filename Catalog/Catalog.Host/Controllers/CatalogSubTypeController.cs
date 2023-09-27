@@ -3,6 +3,7 @@ using Catalog.Host.Models.Requests.UpdateRequsts;
 using Catalog.Host.Models.Responses.AddResponses;
 using Catalog.Host.Models.Responses.UpdateResponses;
 using Catalog.Host.Services.Interfaces;
+using Infrastructure.Exceptions;
 using Infrastructure.Identity;
 using Microsoft.AspNetCore.Authorization;
 
@@ -29,23 +30,44 @@ public class CatalogSubTypeController : Controller
     [ProducesResponseType(typeof(AddSubTypeResponse<int?>), (int)HttpStatusCode.OK)]
     public async Task<IActionResult> Add(AddSubTypeRequest request)
     {
-        var result = await _catalogSubTypeService.Add(request.SubTypeName, request.CatalogTypeId);
-        return Ok(new AddSubTypeResponse<int?> { Id = result });
+        try
+        {
+            var result = await _catalogSubTypeService.Add(request.SubTypeName, request.CatalogTypeId);
+            return Ok(new AddSubTypeResponse<int?> { Id = result });
+        }
+        catch (BusinessException ex)
+        {
+            return NotFound(ex.Message);
+        }
     }
 
     [HttpPut]
     [ProducesResponseType(typeof(UpdateSubTypeResponse<int?>), (int)HttpStatusCode.OK)]
     public async Task<IActionResult> Update(UpdateSubTypeRequest request)
     {
-        var result = await _catalogSubTypeService.Update(request.Id, request.SubTypeName, request.CatalogTypeId);
-        return Ok(new UpdateSubTypeResponse<int?> { Id = result });
+        try
+        {
+            var result = await _catalogSubTypeService.Update(request.Id, request.SubTypeName, request.CatalogTypeId);
+            return Ok(new UpdateSubTypeResponse<int?> { Id = result });
+        }
+        catch (BusinessException ex)
+        {
+            return NotFound(ex.Message);
+        }
     }
 
     [HttpDelete]
     [ProducesResponseType((int)HttpStatusCode.NoContent)]
     public async Task<IActionResult> Delete(int id)
     {
-        var result = await _catalogSubTypeService.Delete(id);
-        return NoContent();
+        try
+        {
+            var result = await _catalogSubTypeService.Delete(id);
+            return NoContent();
+        }
+        catch (BusinessException ex)
+        {
+            return NotFound(ex);
+        }
     }
 }
