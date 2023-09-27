@@ -30,44 +30,23 @@ public class CatalogSubTypeController : Controller
     [ProducesResponseType(typeof(AddSubTypeResponse<int?>), (int)HttpStatusCode.OK)]
     public async Task<IActionResult> Add(AddSubTypeRequest request)
     {
-        try
-        {
-            var result = await _catalogSubTypeService.Add(request.SubTypeName, request.CatalogTypeId);
-            return Ok(new AddSubTypeResponse<int?> { Id = result });
-        }
-        catch (BusinessException ex)
-        {
-            return NotFound(ex.Message);
-        }
+        var result = await _catalogSubTypeService.Add(request.SubTypeName, request.CatalogTypeId);
+        return Ok(new AddSubTypeResponse<int?> { Id = result });
     }
 
     [HttpPut]
     [ProducesResponseType(typeof(UpdateSubTypeResponse<int?>), (int)HttpStatusCode.OK)]
     public async Task<IActionResult> Update(UpdateSubTypeRequest request)
     {
-        try
-        {
-            var result = await _catalogSubTypeService.Update(request.Id, request.SubTypeName, request.CatalogTypeId);
-            return Ok(new UpdateSubTypeResponse<int?> { Id = result });
-        }
-        catch (BusinessException ex)
-        {
-            return NotFound(ex.Message);
-        }
+        var result = await _catalogSubTypeService.Update(request.Id, request.SubTypeName, request.CatalogTypeId);
+        return Ok(new UpdateSubTypeResponse<int?> { Id = result });
     }
 
     [HttpDelete]
     [ProducesResponseType((int)HttpStatusCode.NoContent)]
     public async Task<IActionResult> Delete(int id)
     {
-        try
-        {
-            var result = await _catalogSubTypeService.Delete(id);
-            return NoContent();
-        }
-        catch (BusinessException ex)
-        {
-            return NotFound(ex);
-        }
+        var result = await _catalogSubTypeService.Delete(id);
+        return NoContent();
     }
 }

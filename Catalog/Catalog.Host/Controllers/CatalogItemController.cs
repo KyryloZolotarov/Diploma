@@ -30,9 +30,7 @@ public class CatalogItemController : Controller
     [ProducesResponseType(typeof(AddItemResponse<int?>), (int)HttpStatusCode.OK)]
     public async Task<IActionResult> Add(AddItemRequest request)
     {
-        try
-        {
-            var result = await _catalogItemService.Add(
+        var result = await _catalogItemService.Add(
             request.Name,
             request.Description,
             request.Price,
@@ -41,21 +39,14 @@ public class CatalogItemController : Controller
             request.CatalogSubTypeId,
             request.CatalogModelId,
             request.PartNumber);
-            return Ok(new AddItemResponse<int?> { Id = result });
-        }
-        catch (BusinessException ex)
-        {
-            return NotFound(ex.Message);
-        }
+        return Ok(new AddItemResponse<int?> { Id = result });
     }
 
     [HttpPut]
     [ProducesResponseType(typeof(UpdateItemResponse<int?>), (int)HttpStatusCode.OK)]
     public async Task<IActionResult> Update(UpdateItemRequest request)
     {
-        try
-        {
-            var result = await _catalogItemService.Update(
+        var result = await _catalogItemService.Update(
             request.Id,
             request.Name,
             request.Description,
@@ -65,26 +56,14 @@ public class CatalogItemController : Controller
             request.CatalogSubTypeId,
             request.CatalogModelId,
             request.PartNumber);
-            return Ok(new UpdateItemResponse<int?> { Id = result });
-        }
-        catch (BusinessException ex)
-        {
-            return NotFound(ex.Message);
-        }
+        return Ok(new UpdateItemResponse<int?> { Id = result });
     }
 
     [HttpDelete]
     [ProducesResponseType((int)HttpStatusCode.NoContent)]
     public async Task<IActionResult> Delete(int id)
     {
-        try
-        {
-            await _catalogItemService.Delete(id);
-            return NoContent();
-        }
-        catch (BusinessException ex)
-        {
-            return NotFound(ex.Message);
-        }
+        await _catalogItemService.Delete(id);
+        return NoContent();
     }
 }

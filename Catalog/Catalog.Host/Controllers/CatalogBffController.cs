@@ -57,15 +57,8 @@ public class CatalogBffController : ControllerBase
     [ProducesResponseType(typeof(bool), (int)HttpStatusCode.OK)]
     public async Task<IActionResult> ChangeAvailableItems([FromBody] UpdateAvailableItemsRequest item)
     {
-        try
-        {
-            var result = await _catalogService.ChangeAvailableItems(item);
-            return Ok(result);
-        }
-        catch (BusinessException ex)
-        {
-            return NotFound(ex.Message);
-        }
+        var result = await _catalogService.ChangeAvailableItems(item);
+        return Ok(result);
     }
 
     [HttpGet]

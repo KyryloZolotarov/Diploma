@@ -39,7 +39,7 @@ public class OrderBffController : ControllerBase
     public async Task<IActionResult> GetOrder([FromBody] int id)
     {
         var user = User.GetClaims();
-        var result = await _orderService.GetOrder(id);
+        var result = await _orderService.GetOrder(user.Id, id);
         return Ok(result);
     }
 

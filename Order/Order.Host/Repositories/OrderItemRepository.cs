@@ -43,4 +43,17 @@ public class OrderItemRepository : IOrderItemRepository
     {
         return await _dbContext.OrderItems.FirstOrDefaultAsync(h => h.Id == id);
     }
+
+    public async Task<bool> AddItemsForOrder(List<OrderItemEntity> items)
+    {
+        await _dbContext.OrderItems.AddRangeAsync(items);
+        await _dbContext.SaveChangesAsync();
+        return true;
+    }
+
+    public async Task<List<OrderItemEntity>> GetItemsForOrder(int orderId)
+    {
+        var result = _dbContext.OrderItems.Where(x => x.OrderId == orderId).ToList();
+        return result;
+    }
 }

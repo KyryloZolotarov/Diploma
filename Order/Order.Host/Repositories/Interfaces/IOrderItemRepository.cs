@@ -10,4 +10,6 @@ public interface IOrderItemRepository
 
     Task<int?> Delete(OrderItemEntity item);
     Task<OrderItemEntity> CheckItemExist(int id);
+    Task<bool> AddItemsForOrder(List<OrderItemEntity> items);
+    Task<List<OrderItemEntity>> GetItemsForOrder(int orderId);
 }

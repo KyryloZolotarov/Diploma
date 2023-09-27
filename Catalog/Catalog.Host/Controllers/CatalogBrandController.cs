@@ -30,44 +30,23 @@ public class CatalogBrandController : ControllerBase
     [ProducesResponseType(typeof(AddBrandResponse<int?>), (int)HttpStatusCode.OK)]
     public async Task<IActionResult> Add(AddBrandRequest request)
     {
-        try
-        {
-            var result = await _catalogBrandService.Add(request.BrandName);
-            return Ok(new AddBrandResponse<int?> { Id = result });
-        }
-        catch (BusinessException ex)
-        {
-            return NotFound(ex.Message);
-        }
+        var result = await _catalogBrandService.Add(request.BrandName);
+        return Ok(new AddBrandResponse<int?> { Id = result });
     }
 
     [HttpPut]
     [ProducesResponseType(typeof(UpdateBrandResponse<int?>), (int)HttpStatusCode.OK)]
     public async Task<IActionResult> Update(UpdateBrandRequest request)
     {
-        try
-        {
-            var result = await _catalogBrandService.Update(request.Id, request.BrandName);
-            return Ok(new UpdateBrandResponse<int?> { Id = result });
-        }
-        catch (BusinessException ex)
-        {
-            return NotFound(ex.Message);
-        }
+        var result = await _catalogBrandService.Update(request.Id, request.BrandName);
+        return Ok(new UpdateBrandResponse<int?> { Id = result });
     }
 
     [HttpDelete]
     [ProducesResponseType((int)HttpStatusCode.NoContent)]
     public async Task<IActionResult> Delete(int id)
     {
-        try
-        {
-            var result = await _catalogBrandService.Delete(id);
-            return NoContent();
-        }
-        catch (BusinessException ex)
-        {
-            return NotFound(ex.Message);
-        }
+        var result = await _catalogBrandService.Delete(id);
+        return NoContent();
     }
 }

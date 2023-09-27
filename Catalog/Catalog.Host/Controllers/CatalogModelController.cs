@@ -30,44 +30,23 @@ public class CatalogModelController : Controller
     [ProducesResponseType(typeof(AddModelResponse<int?>), (int)HttpStatusCode.OK)]
     public async Task<IActionResult> Add(AddModelRequest request)
     {
-        try
-        {
-            var result = await _catalogModelService.Add(request.ModelName, request.CatalogBrandId);
-            return Ok(new AddModelResponse<int?> { Id = result });
-        }
-        catch (BusinessException ex)
-        {
-            return NotFound(ex.Message);
-        }
+        var result = await _catalogModelService.Add(request.ModelName, request.CatalogBrandId);
+        return Ok(new AddModelResponse<int?> { Id = result });
     }
 
     [HttpPut]
     [ProducesResponseType(typeof(UpdateModelResponse<int?>), (int)HttpStatusCode.OK)]
     public async Task<IActionResult> Update(UpdateModelRequest request)
     {
-        try
-        {
-            var result = await _catalogModelService.Update(request.Id, request.ModelName, request.CatalogBrandId);
-            return Ok(new UpdateModelResponse<int?> { Id = result });
-        }
-        catch (BusinessException ex)
-        {
-            return NotFound(ex.Message);
-        }
+        var result = await _catalogModelService.Update(request.Id, request.ModelName, request.CatalogBrandId);
+        return Ok(new UpdateModelResponse<int?> { Id = result });
     }
 
     [HttpDelete]
     [ProducesResponseType((int)HttpStatusCode.NoContent)]
     public async Task<IActionResult> Delete(int id)
     {
-        try
-        {
-            var result = await _catalogModelService.Delete(id);
-            return NoContent();
-        }
-        catch (BusinessException ex)
-        {
-            return NotFound(ex.Message);
-        }
+        var result = await _catalogModelService.Delete(id);
+        return NoContent();
     }
 }

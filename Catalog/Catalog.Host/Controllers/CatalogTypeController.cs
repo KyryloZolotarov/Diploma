@@ -30,44 +30,23 @@ public class CatalogTypeController : Controller
     [ProducesResponseType(typeof(AddTypeResponse<int?>), (int)HttpStatusCode.OK)]
     public async Task<IActionResult> Add(AddTypeRequest request)
     {
-        try
-        {
-            var result = await _catalogTypeService.Add(request.TypeName);
-            return Ok(new AddTypeResponse<int?> { Id = result });
-        }
-        catch (BusinessException ex)
-        {
-            return NotFound(ex.Message);
-        }
+        var result = await _catalogTypeService.Add(request.TypeName);
+        return Ok(new AddTypeResponse<int?> { Id = result });
     }
 
     [HttpPatch]
     [ProducesResponseType(typeof(AddTypeResponse<int?>), (int)HttpStatusCode.OK)]
     public async Task<IActionResult> Update(UpdateTypeRequest request)
     {
-        try
-        {
-            var result = await _catalogTypeService.Update(request.Id, request.TypeName);
-            return Ok(new UpdateTypeResponse<int?> { Id = result });
-        }
-        catch (BusinessException ex)
-        {
-            return NotFound(ex.Message);
-        }
+        var result = await _catalogTypeService.Update(request.Id, request.TypeName);
+        return Ok(new UpdateTypeResponse<int?> { Id = result });
     }
 
     [HttpDelete]
     [ProducesResponseType((int)HttpStatusCode.NoContent)]
     public async Task<IActionResult> Delete(int id)
     {
-        try
-        {
-            var result = await _catalogTypeService.Delete(id);
-            return NoContent();
-        }
-        catch (BusinessException ex)
-        {
-            return NotFound(ex);
-        }
+        var result = await _catalogTypeService.Delete(id);
+        return NoContent();
     }
 }

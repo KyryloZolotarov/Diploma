@@ -10,8 +10,6 @@ public interface IOrderOrderRepository
     Task<int?> Add(OrderOrderEntity order);
     Task<int?> Update(OrderOrderEntity order);
     Task<int?> Delete(OrderOrderEntity order);
-    Task<bool> AddOrder(CurrentUser user, ListItemsForFrontRequest order);
-    Task<OrderOrderResponse> GetOrder(int id);
     Task<ListOrdersResponse> GetOrderList(string userId);
     Task<OrderOrderEntity> CheckOrderExist(int id);
 }
