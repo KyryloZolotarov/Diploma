@@ -20,31 +20,31 @@ public class CatalogTypeService : BaseDataService<ApplicationDbContext>, ICatalo
         _catalogTypeRepository = catalogTypeRepository;
     }
 
-    public Task<int?> Add(string typeName)
+    public async Task<int?> Add(string typeName)
     {
         var type = new CatalogType() { Type = typeName };
-        return ExecuteSafeAsync(() => _catalogTypeRepository.Add(type));
+        return await ExecuteSafeAsync(() => _catalogTypeRepository.Add(type));
     }
 
-    public Task<int?> Update(int id, string typeName)
+    public async Task<int?> Update(int id, string typeName)
     {
-        var type = ExecuteSafeAsync(() => _catalogTypeRepository.CheckTypeExist(id));
+        var type = await ExecuteSafeAsync(() => _catalogTypeRepository.CheckTypeExist(id));
         if (type == null)
         {
             throw new BusinessException($"Type with id: {id} not found");
         }
 
-        return ExecuteSafeAsync(() => _catalogTypeRepository.Update(type.Result));
+        return await ExecuteSafeAsync(() => _catalogTypeRepository.Update(type));
     }
 
-    public Task<int?> Delete(int id)
+    public async Task<int?> Delete(int id)
     {
-        var type = ExecuteSafeAsync(() => _catalogTypeRepository.CheckTypeExist(id));
+        var type = await ExecuteSafeAsync(() => _catalogTypeRepository.CheckTypeExist(id));
         if (type == null)
         {
             throw new BusinessException($"Type with id: {id} not found");
         }
 
-        return ExecuteSafeAsync(() => _catalogTypeRepository.Delete(type.Result));
+        return await ExecuteSafeAsync(() => _catalogTypeRepository.Delete(type));
     }
 }

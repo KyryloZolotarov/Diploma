@@ -1,10 +1,13 @@
-﻿namespace Order.Hosts.Repositories.Interfaces;
+﻿using Order.Hosts.Data.Entities;
+
+namespace Order.Hosts.Repositories.Interfaces;
 
 public interface IOrderItemRepository
 {
-    Task<int?> Add(int id, string name, decimal price, int catalogSubTypeId, int catalogModelId, int count, int orderId);
+    Task<int?> Add(OrderItemEntity item);
 
-    Task<int?> Update(int id, int itemId, string name, decimal price, int catalogSubTypeId, int catalogModelId, int count, int orderId);
+    Task<int?> Update(OrderItemEntity item);
 
-    Task<int?> Delete(int id);
+    Task<int?> Delete(OrderItemEntity item);
+    Task<OrderItemEntity> CheckItemExist(int id);
 }

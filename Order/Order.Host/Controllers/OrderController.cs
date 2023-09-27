@@ -35,7 +35,7 @@ public class OrderController : ControllerBase
     [ProducesResponseType(typeof(BaseResponse<int?>), (int)HttpStatusCode.OK)]
     public async Task<IActionResult> Update(UpdateOrderRequest request)
     {
-        var result = await _orderOrderService.Update(request.UserId, request.DateTime);
+        var result = await _orderOrderService.Update(request.Id, request.UserId, request.DateTime);
         return Ok(new BaseResponse<int?> { Id = result });
     }
 

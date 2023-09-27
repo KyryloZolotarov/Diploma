@@ -22,40 +22,40 @@ public class CatalogSubTypeService : BaseDataService<ApplicationDbContext>, ICat
         _catalogSubTypeRepository = catalogSubTypeRepository;
     }
 
-    public Task<int?> Add(string subTypeName, int typeId)
+    public async Task<int?> Add(string subTypeName, int typeId)
     {
-        var type = ExecuteSafeAsync(() => _catalogTypeRepository.CheckTypeExist(typeId));
+        var type = await ExecuteSafeAsync(() => _catalogTypeRepository.CheckTypeExist(typeId));
         if (type == null)
         {
             throw new BusinessException($"Type with id: {typeId} not found");
         }
 
-        var subType = new CatalogSubType() { SubType = subTypeName, CatalogTypeId = type.Result.Id };
-        return ExecuteSafeAsync(() => _catalogSubTypeRepository.Add(subType));
+        var subType = new CatalogSubType() { SubType = subTypeName, CatalogTypeId = type.Id };
+        return await ExecuteSafeAsync(() => _catalogSubTypeRepository.Add(subType));
     }
 
-    public Task<int?> Update(int id, string subTypeName, int typeId)
+    public async Task<int?> Update(int id, string subTypeName, int typeId)
     {
-        var subType = ExecuteSafeAsync(() => _catalogSubTypeRepository.CheckSubTypeExist(id));
+        var subType = await ExecuteSafeAsync(() => _catalogSubTypeRepository.CheckSubTypeExist(id));
         if (subType == null)
         {
             throw new BusinessException($"SubType with id: {id} not found");
         }
 
-        subType.Result.SubType = subTypeName;
-        subType.Result.CatalogTypeId = typeId;
+        subType.SubType = subTypeName;
+        subType.CatalogTypeId = typeId;
 
-        return ExecuteSafeAsync(() => _catalogSubTypeRepository.Update(subType.Result));
+        return await ExecuteSafeAsync(() => _catalogSubTypeRepository.Update(subType));
     }
 
-    public Task<int?> Delete(int id)
+    public async Task<int?> Delete(int id)
     {
-        var subType = ExecuteSafeAsync(() => _catalogSubTypeRepository.CheckSubTypeExist(id));
+        var subType = await ExecuteSafeAsync(() => _catalogSubTypeRepository.CheckSubTypeExist(id));
         if (subType == null)
         {
             throw new BusinessException($"SubType with id: {id} not found");
         }
 
-        return ExecuteSafeAsync(() => _catalogSubTypeRepository.Delete(subType.Result));
+        return await ExecuteSafeAsync(() => _catalogSubTypeRepository.Delete(subType));
     }
 }

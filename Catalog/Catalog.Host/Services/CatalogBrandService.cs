@@ -21,33 +21,33 @@ public class CatalogBrandService : BaseDataService<ApplicationDbContext>, ICatal
         _catalogBrandRepository = catalogBrandRepository;
     }
 
-    public Task<int?> Add(string brandName)
+    public async Task<int?> Add(string brandName)
     {
         var brand = new CatalogBrand() { Brand = brandName };
-        return ExecuteSafeAsync(() => _catalogBrandRepository.Add(brand));
+        return await ExecuteSafeAsync(() => _catalogBrandRepository.Add(brand));
     }
 
-    public Task<int?> Update(int id, string brandName)
+    public async Task<int?> Update(int id, string brandName)
     {
-        var brand = ExecuteSafeAsync(() => _catalogBrandRepository.CheckBrandExist(id));
+        var brand = await ExecuteSafeAsync(() => _catalogBrandRepository.CheckBrandExist(id));
         if (brand == null)
         {
             throw new BusinessException($"Brand with id: {id} not found");
         }
 
-        brand.Result.Brand = brandName;
+        brand.Brand = brandName;
 
-        return ExecuteSafeAsync(() => _catalogBrandRepository.Update(brand.Result));
+        return await ExecuteSafeAsync(() => _catalogBrandRepository.Update(brand));
     }
 
-    public Task<int?> Delete(int id)
+    public async Task<int?> Delete(int id)
     {
-        var brand = ExecuteSafeAsync(() => _catalogBrandRepository.CheckBrandExist(id));
+        var brand = await ExecuteSafeAsync(() => _catalogBrandRepository.CheckBrandExist(id));
         if (brand == null)
         {
             throw new BusinessException($"Brand with id: {id} not found");
         }
 
-        return ExecuteSafeAsync(() => _catalogBrandRepository.Delete(brand.Result));
+        return await ExecuteSafeAsync(() => _catalogBrandRepository.Delete(brand));
     }
 }

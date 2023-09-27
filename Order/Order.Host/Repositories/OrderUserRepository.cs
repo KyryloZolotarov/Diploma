@@ -18,58 +18,29 @@ public class OrderUserRepository : IOrderUserRepository
         _logger = logger;
     }
 
-    public async Task<string> Add(string id, string name, string givenName, string familyName, string email, string address)
+    public async Task<string> Add(OrderUserEntity user)
     {
-        var user1 = new OrderUserEntity
-        {
-            Id = id,
-            Name = name,
-            GivenName = givenName,
-            FamilyName = familyName,
-            Email = email,
-            Address = address
-        };
-        var user = await _dbContext.OrderUsers.AddAsync(user1);
-
+        await _dbContext.OrderUsers.AddAsync(user);
         await _dbContext.SaveChangesAsync();
-        _logger.LogInformation($"User {user.Entity.Name} id: {user.Entity.Id} added");
-        return user.Entity.Id;
+        return user.Id;
     }
 
-    public async Task<string> Update(string id, string name, string givenName, string familyName, string email, string address)
+    public async Task<string> Update(OrderUserEntity user)
     {
-        var userExists = await _dbContext.OrderUsers.AnyAsync(x => x.Id == id);
-        if (userExists)
-        {
-            var user = _dbContext.OrderUsers.Update(new OrderUserEntity
-            {
-                Id = id,
-                Name = name,
-                GivenName = givenName,
-                FamilyName = familyName,
-                Email = email,
-                Address = address
-            });
-            await _dbContext.SaveChangesAsync();
-            _logger.LogInformation($"User {user.Entity.Name} id: {user.Entity.Id} updated");
-            return user.Entity.Id;
-        }
-
-        throw new BusinessException($"User {name} id: {id} was not founded");
+        _dbContext.OrderUsers.Update(user);
+        await _dbContext.SaveChangesAsync();
+        return user.Id;
     }
 
-    public async Task<string> Delete(string id)
+    public async Task<string> Delete(OrderUserEntity user)
     {
-        var userExists = await _dbContext.OrderUsers.AnyAsync(x => x.Id == id);
-        if (userExists)
-        {
-            var userDelete = await _dbContext.OrderUsers.FirstOrDefaultAsync(h => h.Id == id);
-            _dbContext.OrderUsers.Remove(userDelete);
-            await _dbContext.SaveChangesAsync();
-            _logger.LogInformation($"User Id Deleted {userDelete.Id}");
-            return userDelete.Id;
-        }
+        _dbContext.OrderUsers.Remove(user);
+        await _dbContext.SaveChangesAsync();
+        return user.Id;
+    }
 
-        throw new BusinessException($"User Id {id} was not founded");
+    public async Task<OrderUserEntity> CheckUserExist(string id)
+    {
+        return await _dbContext.OrderUsers.FirstOrDefaultAsync(h => h.Id == id);
     }
 }

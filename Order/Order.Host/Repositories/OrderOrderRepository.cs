@@ -21,50 +21,25 @@ public class OrderOrderRepository : IOrderOrderRepository
         _logger = logger;
     }
 
-    public async Task<int?> Add(string userId, DateTime dateTime)
+    public async Task<int?> Add(OrderOrderEntity order)
     {
-        var order = await _dbContext.OrderOrders.AddAsync(new OrderOrderEntity
-        {
-            UserId = userId,
-            DateTime = dateTime
-        });
-
+        await _dbContext.OrderOrders.AddAsync(order);
         await _dbContext.SaveChangesAsync();
-        _logger.LogInformation($"Order {order.Entity.Id}");
-        return order.Entity.Id;
+        return order.Id;
     }
 
-    public async Task<int?> Update(string userId, DateTime dateTime)
+    public async Task<int?> Update(OrderOrderEntity order)
     {
-        var orderExists = await _dbContext.OrderOrders.AnyAsync(x => x.UserId == userId);
-        if (orderExists)
-        {
-            var order = _dbContext.OrderOrders.Update(new OrderOrderEntity
-            {
-                UserId = userId,
-                DateTime = dateTime
-            });
-            await _dbContext.SaveChangesAsync();
-            _logger.LogInformation($"Brand {order.Entity.Id}");
-            return order.Entity.Id;
-        }
-
-        throw new BusinessException($"Brand id: {userId} was not founded");
+        _dbContext.OrderOrders.Update(order);
+        await _dbContext.SaveChangesAsync();
+        return order.Id;
     }
 
-    public async Task<int?> Delete(int id)
+    public async Task<int?> Delete(OrderOrderEntity order)
     {
-        var orderExists = await _dbContext.OrderOrders.AnyAsync(x => x.Id == id);
-        if (orderExists)
-        {
-            var orderDelete = await _dbContext.OrderOrders.FirstOrDefaultAsync(h => h.Id == id);
-            _dbContext.OrderOrders.Remove(orderDelete);
-            await _dbContext.SaveChangesAsync();
-            _logger.LogInformation($"Order Id Deleted {orderDelete.Id}");
-            return orderDelete.Id;
-        }
-
-        throw new BusinessException($"Order Id {id} was not founded");
+        _dbContext.OrderOrders.Remove(order);
+        await _dbContext.SaveChangesAsync();
+        return order.Id;
     }
 
     public async Task<bool> AddOrder(CurrentUser user, ListItemsForFrontRequest order)
@@ -147,5 +122,10 @@ public class OrderOrderRepository : IOrderOrderRepository
         }
 
         throw new BusinessException($"User with id: {userId} not found");
+    }
+
+    public async Task<OrderOrderEntity> CheckOrderExist(int id)
+    {
+        return await _dbContext.OrderOrders.FirstOrDefaultAsync(h => h.Id == id);
     }
 }

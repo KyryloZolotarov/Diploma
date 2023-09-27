@@ -24,40 +24,40 @@ public class CatalogModelService : BaseDataService<ApplicationDbContext>, ICatal
         _catalogModelRepository = catalogModelRepository;
     }
 
-    public Task<int?> Add(string modelName, int brandId)
+    public async Task<int?> Add(string modelName, int brandId)
     {
-        var brand = ExecuteSafeAsync(() => _catalogBrandRepository.CheckBrandExist(brandId));
+        var brand = await ExecuteSafeAsync(() => _catalogBrandRepository.CheckBrandExist(brandId));
         if (brand == null)
         {
             throw new BusinessException($"Brand with id: {brandId} not found");
         }
 
         var model = new CatalogModel() { Model = modelName, CatalogBrandId = brandId };
-        return ExecuteSafeAsync(() => _catalogModelRepository.Add(model));
+        return await ExecuteSafeAsync(() => _catalogModelRepository.Add(model));
     }
 
-    public Task<int?> Update(int id, string modelName, int brandId)
+    public async Task<int?> Update(int id, string modelName, int brandId)
     {
-        var model = ExecuteSafeAsync(() => _catalogModelRepository.CheckModelExist(id));
+        var model = await ExecuteSafeAsync(() => _catalogModelRepository.CheckModelExist(id));
         if (model == null)
         {
             throw new BusinessException($"Model with id: {id} not found");
         }
 
-        model.Result.Model = modelName;
-        model.Result.CatalogBrandId = brandId;
+        model.Model = modelName;
+        model.CatalogBrandId = brandId;
 
-        return ExecuteSafeAsync(() => _catalogModelRepository.Update(model.Result));
+        return await ExecuteSafeAsync(() => _catalogModelRepository.Update(model));
     }
 
-    public Task<int?> Delete(int id)
+    public async Task<int?> Delete(int id)
     {
-        var model = ExecuteSafeAsync(() => _catalogModelRepository.CheckModelExist(id));
+        var model = await ExecuteSafeAsync(() => _catalogModelRepository.CheckModelExist(id));
         if (model == null)
         {
             throw new BusinessException($"Model with id: {id} not found");
         }
 
-        return ExecuteSafeAsync(() => _catalogModelRepository.Delete(model.Result));
+        return await ExecuteSafeAsync(() => _catalogModelRepository.Delete(model));
     }
 }

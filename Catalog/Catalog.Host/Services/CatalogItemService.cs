@@ -25,9 +25,9 @@ public class CatalogItemService : BaseDataService<ApplicationDbContext>, ICatalo
         _catalogItemRepository = catalogItemRepository;
     }
 
-    public Task<int?> Add(string name, string description, decimal price, int availableStock, string pictureFileName, int subTypeId, int modelId, string partNumber)
+    public async Task<int?> Add(string name, string description, decimal price, int availableStock, string pictureFileName, int subTypeId, int modelId, string partNumber)
     {
-        var subType = ExecuteSafeAsync(() => _catalogSubTypeRepository.CheckSubTypeExist(subTypeId));
+        var subType = await ExecuteSafeAsync(() => _catalogSubTypeRepository.CheckSubTypeExist(subTypeId));
         if (subType == null)
         {
             throw new BusinessException($"SubType with id: {subTypeId} not found");
@@ -51,40 +51,37 @@ public class CatalogItemService : BaseDataService<ApplicationDbContext>, ICatalo
             PartNumber = partNumber
         };
 
-        return ExecuteSafeAsync(() => _catalogItemRepository.Add(item));
+        return await ExecuteSafeAsync(() => _catalogItemRepository.Add(item));
     }
 
-    public Task<int?> Update(int id, string name, string description, decimal price, int availableStock, string pictureFileName, int subTypeId, int modelId, string partNumber)
+    public async Task<int?> Update(int id, string name, string description, decimal price, int availableStock, string pictureFileName, int subTypeId, int modelId, string partNumber)
     {
-        var item = ExecuteSafeAsync(() => _catalogItemRepository.CheckItemExist(id));
+        var item = await ExecuteSafeAsync(() => _catalogItemRepository.CheckItemExist(id));
         if (item == null)
         {
             throw new BusinessException($"Item with id: {id} not found");
         }
 
-        var itemUpdating = new CatalogItem()
-        {
-            Description = description,
-            Name = name,
-            PictureFileName = pictureFileName,
-            Price = price,
-            AvailableStock = availableStock,
-            CatalogModelId = modelId,
-            CatalogSubTypeId = subTypeId,
-            PartNumber = partNumber
-        };
+        item.Description = description;
+        item.Price = price;
+        item.AvailableStock = availableStock;
+        item.PictureFileName = pictureFileName;
+        item.Price = price;
+        item.PartNumber = partNumber;
+        item.CatalogModelId = modelId;
+        item.CatalogSubTypeId = subTypeId;
 
-        return ExecuteSafeAsync(() => _catalogItemRepository.Update(itemUpdating));
+        return await ExecuteSafeAsync(() => _catalogItemRepository.Update(item));
     }
 
-    public Task<int?> Delete(int id)
+    public async Task<int?> Delete(int id)
     {
-        var item = ExecuteSafeAsync(() => _catalogItemRepository.CheckItemExist(id));
+        var item = await ExecuteSafeAsync(() => _catalogItemRepository.CheckItemExist(id));
         if (item == null)
         {
             throw new BusinessException($"Item with id: {id} not found");
         }
 
-        return ExecuteSafeAsync(() => _catalogItemRepository.Delete(item.Result));
+        return await ExecuteSafeAsync(() => _catalogItemRepository.Delete(item));
     }
 }
