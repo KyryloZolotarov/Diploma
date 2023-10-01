@@ -1,0 +1,107 @@
+﻿@model MVC.ViewModels.OrderViewModels.ListOrdersForDisplay
+
+@{
+    ViewBag.Title = "Orders";
+    Layout = "_Layout";
+}
+<section class="esh-catalog-hero">
+    <div class="container-fluid">
+    </div>
+</section>
+
+<div class="container-fluid">
+    @if (Model.Orders != null && Model.Orders.Any())
+    {
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-sm-6">
+                    <table class="table-bordered">
+                        <thead class="table-dark">
+                        <tr>
+                            <th>Order Id</th>
+                            <th>Date</th>
+                            <th></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        @foreach (var order in Model.Orders)
+                        {
+                            <tr>
+                                <td>@order.Id</td>
+                                <td>@order.DateTime.Date</td>
+                                <td>
+                                    <form asp-controller="Order" asp-action="SingleOrder">
+                                        <input type="hidden" name="id" value="@order.Id"/>
+                                        <button type="submit" class="btn btn-link">View Details</button>
+                                    </form>
+                                </td>
+                            </tr>
+                        }
+                        </tbody>
+                    </table>
+                </div>
+                <div class="col-sm-6">
+                    <p>Account Info</p>
+                    <table class="table-bordered">
+                        <thead class="table">
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td>Id</td>
+                            <td>@Model.User.Id</td>
+                        </tr>
+                        <tr>
+                            <td>FamilyName</td>
+                            <td>@Model.User.FamilyName</td>
+                        </tr>
+                        <tr>
+                            <td>Name</td>
+                            <td>@Model.User.Name</td>
+                        </tr>
+                        <tr>
+                            <td>Email</td>
+                            <td>@Model.User.Email</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+    }
+    else
+    {
+        <div class="row justify-content-center">
+            <p class="h1">You have no orders</p>
+        </div>
+        <div class="container-fluid">
+            <p>Account Info</p>
+            <table class="table">
+                <thead class="table">
+                </thead>
+                <tbody>
+                <tr>
+                    <td>Id</td>
+                    <td>@Model.User.Id</td>
+                </tr>
+                <tr>
+                    <td>FamilyName</td>
+                    <td>@Model.User.FamilyName</td>
+                </tr>
+                <tr>
+                    <td>Name</td>
+                    <td>@Model.User.Name</td>
+                </tr>
+                <tr>
+                    <td>Address</td>
+                    <td>@Model.User.Address</td>
+                </tr>
+                <tr>
+                    <td>Email</td>
+                    <td>@Model.User.Email</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    }
+</div>

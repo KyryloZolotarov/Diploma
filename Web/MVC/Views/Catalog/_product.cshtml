@@ -1,0 +1,57 @@
+﻿@model MVC.ViewModels.CatalogViewModels.CatalogItem
+
+
+
+@if (Context.User.Identity.IsAuthenticated)
+{
+    <div>
+        <div class="card" style="width:100%">
+            <div style="height:300px;  vertical-align: middle">
+                <img class="esh-catalog-thumbnail" src="@Model.PictureUrl" alt="Card image">
+            </div>
+            <div class="card-body">
+                <p class="card-text">@Model.Name</p>
+                <p class="card-text">@Model.CatalogModel.CatalogBrand.Brand @Model.CatalogModel.Model</p>
+                <div class="esh-catalog-price">
+                    <span>@Model.Price.ToString("N2")</span>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <form asp-controller="Basket" asp-action="AddItemToBasket" method="post">
+                            <input type="hidden" asp-for="@Model.Id"/>
+                            <button class="btn btn-primary">Add to cart</button>
+                        </form>
+                    </div>
+                    <div class="col">
+                        <form asp-controller="Catalog" asp-action="GetItemById" method="post">
+                            <input type="hidden" asp-for="@Model.Id"/>
+                            <button class="btn btn-primary">View Details</button>
+                        </form>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+}
+else
+{
+    <div>
+        <div class="card" style="width:100%">
+            <div style="height:300px;  vertical-align: middle">
+                <img class="esh-catalog-thumbnail" src="@Model.PictureUrl" alt="Card image">
+            </div>
+            <div class="card-body">
+                <p class="card-text">@Model.Name</p>
+                <p class="card-text">@Model.CatalogModel.CatalogBrand.Brand @Model.CatalogModel.Model</p>
+                <div class="esh-catalog-price">
+                    <span>@Model.Price.ToString("N2")</span>
+                </div>
+                <form asp-controller="Catalog" asp-action="GetItemById" method="post">
+                    <input type="hidden" asp-for="@Model.Id"/>
+                    <button class="btn btn-primary">View Details</button>
+                </form>
+            </div>
+        </div>
+    </div>
+}

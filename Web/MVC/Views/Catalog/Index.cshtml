@@ -1,0 +1,134 @@
+﻿@model MVC.ViewModels.CatalogViewModels.IndexViewModel
+
+@{
+    ViewData["Title"] = "Catalog";
+}
+<section class="esh-catalog-hero">
+    <div class="container-fluid">
+    </div>
+</section>
+
+<section class="esh-catalog-filters">
+    <div class="container-fluid">
+        <form asp-action="Index" asp-controller="Catalog" method="post">
+            <label class="esh-catalog-label" data-title="brand">
+                <select id="brandDropdown" asp-for="@Model.BrandFilterApplied" asp-items="@Model.Brands" class="esh-catalog-filter">
+                    <option value="">All</option>
+                </select>
+            </label>
+            <label class="esh-catalog-label" data-title="model">
+                <select id="modelDropdown" asp-for="@Model.ModelFilterApplied" class="esh-catalog-filter">
+                    <option value="">All</option>
+                </select>
+            </label>
+            <label class="esh-catalog-label" data-title="type">
+                <select id="typeDropdown" asp-for="@Model.TypesFilterApplied" asp-items="@Model.Types" class="esh-catalog-filter">
+                    <option value="">All</option>
+                </select>
+            </label>
+            <label class="esh-catalog-label" data-title="subtype">
+                <select id="subTypeDropdown" asp-for="@Model.SubTypeFilterApplied" class="esh-catalog-filter">
+                    <option value="">All</option>
+                </select>
+            </label>
+            <input class="esh-catalog-send" type="image" src="~/images/arrow-right.svg"/>
+        </form>
+    </div>
+</section>
+
+<div class="container-fluid">
+    <div class="row">
+        <br/>
+        @if (ViewBag.BasketInoperativeMsg != null)
+        {
+            <div class="alert alert-warning" role="alert">
+                &nbsp;@ViewBag.BasketInoperativeMsg
+            </div>
+        }
+    </div>
+
+    @if (Model.CatalogItems.Any())
+    {
+        <partial name="_pagination" for="PaginationInfo"/>
+
+        <div class="esh-catalog-items row">
+            @foreach (var catalogItem in Model.CatalogItems)
+            {
+                <div class="esh-catalog-item col-md-4">
+                    <partial name="_product" model="catalogItem"/>
+                </div>
+            }
+        </div>
+
+        <partial name="_pagination" for="PaginationInfo"/>
+    }
+    else
+    {
+        <div class="esh-catalog-items row">
+            THERE ARE NO RESULTS THAT MATCH YOUR SEARCH
+        </div>
+    }
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            $("#brandDropdown").change(function () {
+                var selectedBrand = $(this).val();
+                if (selectedBrand === "") {
+                    $("#modelDropdown").empty();
+                    $("#modelDropdown").append($('<option>', {
+                        value: "",
+                        text: "All"
+                    }));
+                } else {
+                    $.ajax({
+                        url: "/Catalog/GetModels",
+                        type: "GET",
+                        data: { selectedBrand: selectedBrand },
+                        success: function (data) {
+                            $("#modelDropdown").empty();
+                            $.each(data, function (index, item) {
+                                $("#modelDropdown").append($('<option>', {
+                                    value: item.value,
+                                    text: item.text
+                                }));
+                            });
+                        }
+                    });
+                }
+            });
+        });
+    </script>
+
+    <script>
+        $(document).ready(function () {
+            $("#typeDropdown").change(function () {
+                var selectedType = $(this).val();
+                if (selectedBrand === "") {
+                    $("subTypeDropdown").empty();
+                    $("#subTypeDropdown").append($('<option>', {
+                        value: "",
+                        text: "All"
+                    }));
+                } else {
+                var selectedType = $(this).val();
+                $.ajax({
+                    url: "/Catalog/GetSubTypes",
+                    type: "GET",
+                    data: { selectedType: selectedType },
+                    success: function (data) {
+                        $("#subTypeDropdown").empty();
+                        $.each(data, function (index, item) {
+                            $("#subTypeDropdown").append($('<option>', {
+                                value: item.value,
+                                text: item.text
+                            }));
+                        });
+                    }
+                });
+                }
+            });
+        });
+    </script>
+}

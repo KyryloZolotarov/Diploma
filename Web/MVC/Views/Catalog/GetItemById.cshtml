@@ -1,0 +1,96 @@
+﻿@model MVC.ViewModels.CatalogViewModels.CatalogItemForSingleItem
+
+@{
+    ViewBag.Title = "Item";
+    Layout = "_Layout";
+}
+<section class="esh-catalog-hero">
+    <div class="container-fluid">
+    </div>
+</section>
+
+@if (User.Identity is {IsAuthenticated: true })
+{
+    <div class="container text-center">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-body">
+                        <div>
+                            <img class="mx-auto" src="@Model.catalogItem.PictureUrl" alt="Card image">
+                        </div>
+                        <p class="card-text">@Model.catalogItem.Name</p>
+                        <p class="card-text">@Model.catalogItem.CatalogModel.CatalogBrand.Brand @Model.catalogItem.CatalogModel.Model</p>
+                        <p class="card-text">@Model.catalogItem.Description</p>
+                        <div class="esh-catalog-price mb-3">
+                            <span>@Model.catalogItem.Price.ToString("N2")</span>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <div id="sendData">
+                            <div class="esh-catalog-counter mb-2">
+                                <input type="number" value="1" class="esh-catalog-counter-value form-control form-control-sm" min="1" max="@Model.catalogItem.AvailableStock" id="valueInput" style="width: 100%;">
+                            </div>
+                            <button class="btn btn-primary btn-block">Add to cart</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+else
+{
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <div class="card text-center">
+                    <div class="card-body">
+                        <div>
+                            <img src="@Model.catalogItem.PictureUrl" alt="Card image" class="mx-auto">
+                        </div>
+                        <p class="card-text">@Model.catalogItem.Name</p>
+                        <p class="card-text">@Model.catalogItem.CatalogModel.CatalogBrand.Brand @Model.catalogItem.CatalogModel.Model</p>
+                        <p class="card-text">@Model.catalogItem.Description</p>
+                        <div class="esh-catalog-price">
+                            <span>@Model.catalogItem.Price.ToString("N2")</span>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <p>To order please sign in</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            $("#sendData button").click(function (e) {
+                e.preventDefault();  // Остановить действие по умолчанию
+
+                var itemId = @Model.catalogItem.Id;  // Я предполагаю, что у вас есть Id у catalogItem
+                var itemCount = $("#valueInput").val();
+                var dataToSend = { id: itemId, count: parseInt(itemCount) };
+
+                $.ajax({
+                    type: "POST",
+                    url: "/Basket/AddItemsInBasket",
+                    data: JSON.stringify(dataToSend),
+                    dataType: 'json',
+                    contentType: 'application/json; charset=utf-8'
+                })
+                    .done(function () {
+                        // Обработка успешного выполнения
+                        alert('Item added to basket!');
+                    })
+                    .fail(function () {
+                        // Обработка ошибок
+                        alert('Failed to add item to basket.');
+                    });
+            });
+        });
+    </script>
+}
