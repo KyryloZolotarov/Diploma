@@ -1,21 +1,24 @@
 using Catalog.Front.Services.Interfaces;
+using Catalog.Front.Models.Dtos;
+using System.Collections.ObjectModel;
 using Catalog.Front.ViewModels;
 
 namespace Catalog.Front.Pages;
 
 public partial class ExistingItems : ContentPage
 {
-    private CatalogItemDisplayViewModel _displayViewModel;
+    private readonly ICatalogItemService _catalogItemService;
+    public ObservableCollection<CatalogItemDto> Items { get; set; }
     public ExistingItems(ICatalogItemService catalogItemService)
     {
         InitializeComponent();
-        _displayViewModel = new CatalogItemDisplayViewModel(catalogItemService);
-        BindingContext = _displayViewModel;
-        GetItems().GetAwaiter();
+        _catalogItemService = catalogItemService;
+        BindingContext = Items;
     }
-    public async Task GetItems()
+    protected override void OnAppearing()
     {
-        await _displayViewModel.GetItemsAsync();
+        base.OnAppearing();
+        Items = _catalogItemService.GetItemsAsync().GetAwaiter().GetResult();
     }
 
     private void OnLabelClicked(object sender, TappedEventArgs e)

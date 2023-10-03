@@ -8,9 +8,6 @@ namespace Catalog.Front.Helpers.Interfaces
 {
     public interface IHttpClientHelper
     {
-        Task<TResponse> SendAsync<TResponse, TRequest>(string url, HttpMethod method, TRequest? content);
-        Task<TResponse> SendAsync<TResponse>(string url, HttpMethod method);
-        Task SendAsync(string url, HttpMethod method);
-        Task SendAsync<TRequest>(string url, HttpMethod method, TRequest? content);
+        Task<TResponse> PostAsync<TResponse, TRequest>(string url, HttpMethod method, TRequest? content);
     }
 }

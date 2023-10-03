@@ -38,8 +38,7 @@ namespace Catalog.Front.Repositories
 
         public async Task<IEnumerable<CatalogItemDto>> GetItemsAsync()
         {
-            return await _httpClient.SendAsync<IEnumerable<CatalogItemDto>>(
-                $"{_settings.Value.CatalogUrl}/GetItems", HttpMethod.Get);
+            throw new NotImplementedException();
         }
     }
 }

@@ -4,6 +4,7 @@ using Catalog.Front.Repositories;
 using Catalog.Front.Repositories.Intefaces;
 using Catalog.Front.Services;
 using Catalog.Front.Services.Interfaces;
+using Catalog.Front.ViewModels;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 
@@ -23,6 +24,14 @@ namespace Catalog.Front
                 });
 
             builder.Services.AddHttpClient();
+            builder.Services.AddHttpClient("identityServerClient", client =>
+            {
+                client.BaseAddress = new Uri("https://identityserver.example.com");
+            });
+            builder.Services.AddHttpClient("catalog", client =>
+            {
+                client.BaseAddress = new Uri("https://localhost:");
+            });
             builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             builder.Services.AddTransient<IHttpClientHelper, HttpClientHelper>();
 

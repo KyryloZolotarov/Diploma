@@ -14,6 +14,7 @@ namespace Catalog.Front.Services
     public class CatalogItemService : ICatalogItemService
     {
         private readonly ICatalogItemRepository _catalogItemRepository;
+        public ObservableCollection<CatalogItemDto> Items { get; set; } = new ObservableCollection<CatalogItemDto>();
 
         public CatalogItemService(
             ICatalogItemRepository catalogItemRepository)
@@ -38,14 +39,30 @@ namespace Catalog.Front.Services
 
         public async Task<ObservableCollection<CatalogItemDto>> GetItemsAsync()
         {
-            var items = await _catalogItemRepository.GetItemsAsync();
+            /*var items = await _catalogItemRepository.GetItemsAsync();
             var itemsList = new ObservableCollection<CatalogItemDto>();
             if (items == null) { return null; }
             foreach (var item in items)
             {
                 itemsList.Add(item);
-            }
-            return itemsList;
+            }*/
+            Items.Add(new CatalogItemDto()
+            {
+                Id = 0,
+                Name = "Name",
+                Description = "Description",
+                Price = 0,
+                AvailableStock = 0
+            });
+            Items.Add(new CatalogItemDto()
+            {
+                Id = 0,
+                Name = "Name",
+                Description = "Description",
+                Price = 0,
+                AvailableStock = 0
+            });
+            return Items;
         }
     }
 }
