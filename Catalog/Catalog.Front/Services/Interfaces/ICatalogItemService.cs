@@ -1,4 +1,4 @@
-﻿using Catalog.Front.Models.Dtos;
+﻿using Catalog.Front.Models;
 using Catalog.Front.ViewModels;
 using System;
 using System.Collections.Generic;

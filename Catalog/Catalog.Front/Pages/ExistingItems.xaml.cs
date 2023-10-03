@@ -1,5 +1,5 @@
 using Catalog.Front.Services.Interfaces;
-using Catalog.Front.Models.Dtos;
+using Catalog.Front.Models;
 using System.Collections.ObjectModel;
 using Catalog.Front.ViewModels;
 
@@ -13,12 +13,12 @@ public partial class ExistingItems : ContentPage
     {
         InitializeComponent();
         _catalogItemService = catalogItemService;
-        BindingContext = Items;
     }
     protected override void OnAppearing()
     {
         base.OnAppearing();
         Items = _catalogItemService.GetItemsAsync().GetAwaiter().GetResult();
+        catalogItemsList.ItemsSource = Items;
     }
 
     private void OnLabelClicked(object sender, TappedEventArgs e)

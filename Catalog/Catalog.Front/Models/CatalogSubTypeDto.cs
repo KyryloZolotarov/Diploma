@@ -1,4 +1,4 @@
-﻿namespace Catalog.Front.Models.Dtos;
+﻿namespace Catalog.Front.Models;
 
 public class CatalogSubTypeDto
 {

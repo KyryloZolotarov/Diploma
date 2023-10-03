@@ -1,5 +1,5 @@
 ﻿using Catalog.Front.Helpers.Interfaces;
-using Catalog.Front.Models.Dtos;
+using Catalog.Front.Models;
 using Catalog.Front.Repositories.Intefaces;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;

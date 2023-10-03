@@ -1,4 +1,4 @@
-﻿using Catalog.Front.Models.Dtos;
+﻿using Catalog.Front.Models;
 using Catalog.Front.Repositories.Intefaces;
 using Catalog.Front.Services.Interfaces;
 using Catalog.Front.ViewModels;
