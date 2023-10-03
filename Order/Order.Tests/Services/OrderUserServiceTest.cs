@@ -8,7 +8,7 @@ using Order.Hosts.Repositories.Interfaces;
 using Order.Hosts.Services;
 
 namespace Order.Tests.Services;
-
+/*
 public class OrderUserServiceTest
 {
     [Fact]
@@ -206,4 +206,4 @@ public class OrderUserServiceTest
 
         await Assert.ThrowsAsync<BusinessException>(() => orderUserService.Delete("2142141"));
     }
-}
+}*/

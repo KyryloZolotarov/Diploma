@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Catalog.Front.Pages.ExistingItems"
+             Title="Items">
+
+    <Grid RowDefinitions="Auto, *">
+        <Grid ColumnDefinitions="*, *, *, *, *" Grid.Row="0">
+            <Label Grid.Row="0" Grid.Column="0" Text="Id" FontAttributes="Bold" HorizontalOptions="Center" />
+            <Label Grid.Row="0" Grid.Column="1" Text="Name" FontAttributes="Bold" HorizontalOptions="Center" />
+            <Label Grid.Row="0" Grid.Column="2" Text="Description" FontAttributes="Bold" HorizontalOptions="Center" />
+            <Label Grid.Row="0" Grid.Column="3" Text="Price" FontAttributes="Bold" HorizontalOptions="Center" />
+            <Label Grid.Row="0" Grid.Column="4" Text="AvailableStock" FontAttributes="Bold" HorizontalOptions="Center" />
+        </Grid>
+
+        <CollectionView x:Name="catalogItemsList" ItemsSource="{Binding Items}" Grid.Row="1">
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <Grid ColumnDefinitions="*, *, *, *, *">
+                        <Label Grid.Column="0" Text="{Binding Id}" HorizontalOptions="CenterAndExpand"/>
+                        <Label Grid.Column="1" Text="{Binding Name}" HorizontalOptions="CenterAndExpand">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Tapped="OnLabelClicked" />
+                            </Label.GestureRecognizers>
+                        </Label>
+                        <Label Grid.Column="2" Text="{Binding Description}" HorizontalOptions="CenterAndExpand"/>
+                        <Label Grid.Column="3" Text="{Binding Price}" HorizontalOptions="CenterAndExpand"/>
+                        <Label Grid.Column="4" Text="{Binding AvailableStock}" HorizontalOptions="CenterAndExpand"/>
+                    </Grid>                    
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+    </Grid>
+</ContentPage>

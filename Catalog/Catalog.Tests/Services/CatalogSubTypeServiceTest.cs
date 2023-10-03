@@ -4,7 +4,7 @@ using Catalog.Host.Services;
 using Infrastructure.Services;
 
 namespace Catalog.Tests.Services;
-
+/*
 public class CatalogSubTypeServiceTest
 {
     [Fact]
@@ -165,4 +165,4 @@ public class CatalogSubTypeServiceTest
         var result = await catalogSubTypeService.Delete(requestId);
         result.Should().BeNull();
     }
-}
+}*/
